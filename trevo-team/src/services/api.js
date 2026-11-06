@@ -8,7 +8,19 @@
  * (na hospedagem, coloque o endereço público da API)
  */
 
-export const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:3001').replace(/\/$/, '')
+/**
+ * Limpa o endereço da API:
+ * - tira espaços e a barra do final;
+ * - coloca "https://" se faltar (sem isso, o navegador acha que é uma
+ *   página do próprio site e a Vercel devolve o index.html no lugar dos posts).
+ */
+function cleanApiUrl(value) {
+  let url = String(value || 'http://localhost:3001').trim().replace(/\/+$/, '')
+  if (!/^https?:\/\//i.test(url)) url = `https://${url}`
+  return url
+}
+
+export const API_URL = cleanApiUrl(import.meta.env.VITE_API_URL)
 
 /** Erro com a mensagem do servidor, o código HTTP e os erros de cada campo */
 export class ApiError extends Error {
@@ -48,6 +60,18 @@ async function request(path, { method = 'GET', body, token, form } = {}) {
   }
 
   if (response.status === 204) return null
+
+  // A API sempre responde JSON. Se veio outra coisa (ex.: uma página HTML),
+  // o endereço da API está errado.
+  const isJson = (response.headers.get('content-type') || '').includes('application/json')
+  if (!isJson) {
+    console.error(`Resposta inesperada de ${API_URL}${path}: confira o VITE_API_URL.`)
+    throw new ApiError(
+      'O site não encontrou a API. Confira o endereço em VITE_API_URL (na Vercel) e faça um Redeploy.',
+      response.status,
+    )
+  }
+
   const data = await response.json().catch(() => ({}))
   if (!response.ok) {
     throw new ApiError(data.error || 'Algo deu errado.', response.status, data.details)
