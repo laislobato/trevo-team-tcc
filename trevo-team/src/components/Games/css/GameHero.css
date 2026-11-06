@@ -1,0 +1,134 @@
+/**
+ * ESTILOS: GameHero
+ * =================
+ * Barra ciano estreita à esquerda com uma estrela laranja
+ * que atravessa a barra, e o conteúdo do jogo à direita.
+ */
+
+/* ================================================
+   CONTAINER DA SEÇÃO
+   ================================================ */
+
+.game-hero {
+  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-xl);
+}
+
+.game-hero-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: var(--spacing-xl);
+  align-items: start;
+}
+
+/* ================================================
+   BARRA CIANO + ESTRELA
+   ================================================ */
+
+.game-hero-bar {
+  width: 130px;
+  height: 430px;
+  background: var(--primary-cyan);
+  justify-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 100px;
+}
+
+.game-hero-star {
+  width: 170px;
+  height: 170px;
+  background: var(--primary-orange);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+/* ================================================
+   TEXTO
+   ================================================ */
+
+.game-hero-title {
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text-black);
+  margin: 0;
+}
+
+.game-hero-subtitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-black);
+  margin: 6px 0 0 0;
+}
+
+.game-hero-text {
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--text-black);
+  margin: var(--spacing-md) 0;
+}
+
+/* ================================================
+   INFORMAÇÕES (2 colunas)
+   ================================================ */
+
+.game-hero-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md) var(--spacing-lg);
+  margin: 0;
+}
+
+.game-hero-info-label {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-black);
+}
+
+.game-hero-info-value {
+  font-size: 15px;
+  color: #777777;
+  margin: 2px 0 0 0;
+}
+
+/* ================================================
+   RESPONSIVIDADE
+   ================================================ */
+
+@media (max-width: 768px) {
+  .game-hero-inner {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .game-hero-bar {
+    width: 120px;
+    height: 200px;
+    padding-top: 40px;
+  }
+
+  .game-hero-star {
+    width: 120px;
+    height: 120px;
+  }
+
+  .game-hero-title {
+    font-size: 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-hero {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+
+  .game-hero-title {
+    font-size: 40px;
+  }
+
+  .game-hero-info {
+    grid-template-columns: 1fr;
+  }
+}

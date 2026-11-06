@@ -1,0 +1,104 @@
+/**
+ * ESTILOS: GameCards
+ * ==================
+ * Três blocos lado a lado. O do meio é mais escuro e menor,
+ * com a frase logo acima.
+ */
+
+/* ================================================
+   CONTAINER
+   ================================================ */
+
+.game-cards {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+.game-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.game-card-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+
+/* ================================================
+   FRASE
+   ================================================ */
+
+.game-cards-quote {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 22px;
+  text-align: center;
+  color: var(--text-black);
+  margin: 0;
+}
+
+/* ================================================
+   BLOCO CINZA (imagem ou placeholder)
+   ================================================ */
+
+.game-card {
+  width: 100%;
+  height: 220px;
+  background: var(--light-gray);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.game-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.1);
+}
+
+/* Bloco do meio: mais escuro e menor */
+.game-card--dark {
+  background: #b3b3b3;
+  height: 130px;
+}
+
+.game-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ================================================
+   RESPONSIVIDADE
+   ================================================ */
+
+@media (max-width: 768px) {
+  .game-cards {
+    padding: var(--spacing-lg) var(--spacing-lg);
+  }
+
+  .game-cards-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .game-card {
+    height: 180px;
+  }
+
+  .game-card--dark {
+    height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-cards {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+}

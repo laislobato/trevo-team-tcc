@@ -1,0 +1,241 @@
+/**
+ * ESTILOS: Header
+ * ===============
+ * Computador: logo à esquerda e menu em linha à direita.
+ * Celular (até 768px): os 3 tracinhos ficam à esquerda do logo
+ * e o menu desce em lista ao clicar neles.
+ */
+
+/* ================================================
+   CONTAINER PRINCIPAL DO HEADER
+   ================================================ */
+
+.header {
+  background: var(--primary-cyan);
+  padding: 1rem var(--spacing-lg);
+  border-radius: 0 0 13px 13px;
+  margin-bottom: var(--spacing-xs);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Wrapper que organiza brand (esquerda) e menu (direita) */
+.header-wrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-lg);
+}
+
+/* ================================================
+   GRUPO ESQUERDO (tracinhos + logo)
+   ================================================ */
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  min-width: max-content;
+}
+
+/* ================================================
+   LOGO
+   ================================================ */
+
+.header-logo-section {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  min-width: max-content;
+  color: var(--text-black);
+  text-decoration: none;
+}
+
+.header-logo-circle {
+  width: 55px;
+  height: 55px;
+  background: var(--primary-green);
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.header-logo-section:hover .header-logo-circle {
+  transform: scale(1.05);
+}
+
+.header-logo-text {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 29px;
+  color: var(--text-black);
+  margin: 0;
+}
+
+/* ================================================
+   OS 3 TRACINHOS (escondidos no computador)
+   ================================================ */
+
+.header-menu-toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.header-menu-bar {
+  display: block;
+  width: 28px;
+  height: 3px;
+  background: var(--text-black);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Quando o menu está aberto, os tracinhos viram um X */
+.header-menu-toggle.is-open .header-menu-bar:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.header-menu-toggle.is-open .header-menu-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.header-menu-toggle.is-open .header-menu-bar:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+/* ================================================
+   MENU DE NAVEGAÇÃO
+   ================================================ */
+
+.header-nav {
+  display: flex;
+  gap: var(--spacing-lg);
+  min-width: max-content;
+}
+
+.header-nav-link {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-black);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  padding-bottom: 4px;
+}
+
+/* Underline no hover e na página atual */
+.header-nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--text-black);
+  transition: width 0.3s ease;
+}
+
+.header-nav-link:hover::after,
+.header-nav-link.active::after {
+  width: 100%;
+}
+
+/* ================================================
+   RESPONSIVIDADE: CELULAR (até 768px)
+   ================================================ */
+
+@media (max-width: 768px) {
+  /* Logo + tracinhos em uma linha, menu embaixo */
+  .header-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-sm);
+  }
+
+  .header-brand {
+    min-width: 0;
+  }
+
+  /* Tracinhos aparecem */
+  .header-menu-toggle {
+    display: flex;
+    margin-left: auto;
+  }
+
+  /* Menu escondido até clicar nos tracinhos */
+  .header-nav {
+    display: none;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+    min-width: unset;
+    animation: headerSlideDown 0.3s ease;
+  }
+
+  .header-nav.is-open {
+    display: flex;
+  }
+
+  .header-nav-link {
+    display: block;
+    width: 100%;
+    padding: var(--spacing-sm) 0;
+    font-size: 18px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  /* Na lista não usamos underline; a página atual fica em verde */
+  .header-nav-link::after {
+    display: none;
+  }
+
+  .header-nav-link.active {
+    color: var(--primary-green);
+  }
+}
+
+@keyframes headerSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================================================
+   RESPONSIVIDADE: CELULAR PEQUENO (até 480px)
+   ================================================ */
+
+@media (max-width: 480px) {
+  .header {
+    padding: var(--spacing-md);
+  }
+
+  .header-logo-circle {
+    width: 45px;
+    height: 45px;
+  }
+
+  .header-logo-text {
+    font-size: 18px;
+  }
+
+  .header-menu-toggle {
+    width: 40px;
+    height: 40px;
+  }
+}

@@ -1,0 +1,241 @@
+/**
+ * ARQUIVO: globals.css
+ * ====================
+ * Estilos globais e variáveis CSS
+ * 
+ * Contém:
+ * - Definição de cores
+ * - Definição de espaçamentos
+ * - Definição de tipografia
+ * - Reset CSS
+ * - Estilos gerais do body
+ */
+
+/* ================================================
+   VARIÁVEIS CSS (Acessível em todos os componentes)
+   ================================================ */
+
+:root {
+  /* -------- CORES -------- */
+  
+  /* Cores primárias do design */
+  --primary-cyan: #D0FFFB;
+  --primary-orange: #F8906A;
+  --primary-green: #3ECA22;
+  
+  /* Cores secundárias */
+  --dark-brown: #270707;
+  --light-gray: #D9D9D9;
+  --text-black: #000000;
+  --white: #FFFFFF;
+  
+  /* Sombras */
+  --shadow-green: rgba(107, 153, 126, 0.45);
+  --shadow-black: rgba(0, 0, 0, 0.1);
+  
+  /* -------- ESPAÇAMENTOS -------- */
+  /* Sistema de espaçamento baseado em 0.5rem */
+  
+  --spacing-xs: 0.5rem;    /* 8px */
+  --spacing-sm: 1rem;      /* 16px */
+  --spacing-md: 2rem;      /* 32px */
+  --spacing-lg: 4rem;      /* 64px */
+  --spacing-xl: 6rem;      /* 96px */
+  
+  /* -------- TIPOGRAFIA -------- */
+  
+  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-sm: 16px;
+  --font-size-base: 20px;
+  --font-size-lg: 24px;
+  --font-size-xl: 32px;
+  --font-size-xxl: 36px;
+  
+  /* -------- BORDER RADIUS -------- */
+  
+  --radius-sm: 10px;
+  --radius-md: 20px;
+  --radius-lg: 100px;
+  
+  /* -------- TRANSIÇÕES -------- */
+  
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* ================================================
+   RESET CSS (Remove estilos padrão do navegador)
+   ================================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth; /* Scroll suave */
+}
+
+body {
+  font-family: var(--font-main);
+  color: var(--text-black);
+  background: var(--white);
+  line-height: 1.6;
+  font-size: var(--font-size-base);
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* ================================================
+   ESTILOS GERAIS
+   ================================================ */
+
+.app-container {
+  width: 100%;
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+}
+
+/* -------- Imagens -------- */
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* -------- Links -------- */
+
+a {
+  color: var(--text-black);
+  text-decoration: none;
+  transition: color var(--transition-normal);
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+/* -------- Títulos -------- */
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* -------- Botões -------- */
+
+button {
+  font-family: var(--font-main);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* -------- Inputs -------- */
+
+input, textarea, select {
+  font-family: var(--font-main);
+  font-size: var(--font-size-base);
+  border: 2px solid var(--light-gray);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm);
+  transition: border-color var(--transition-normal);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--primary-green);
+}
+
+/* ================================================
+   SEÇÃO DIVISOR
+   ================================================ */
+
+.section-divider {
+  max-width: 1280px;
+  margin: var(--spacing-xl) auto;
+  height: 10px;
+  background: var(--text-black);
+  border-radius: 5px;
+  width: calc(100% - 2 * var(--spacing-lg));
+}
+
+/* ================================================
+   SCROLLBAR CUSTOMIZADO (Chrome/Edge)
+   ================================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--light-gray);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-orange);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #F8906A;
+}
+
+/* ================================================
+   RESPONSIVIDADE GERAL
+   ================================================ */
+
+/* Tablets (768px e abaixo) */
+@media (max-width: 768px) {
+  :root {
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    --font-size-base: 18px;
+  }
+}
+
+/* Smartphones (480px e abaixo) */
+@media (max-width: 480px) {
+  :root {
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-md: 1.5rem;
+    --font-size-base: 16px;
+  }
+
+  body {
+    font-size: 16px;
+  }
+}
+
+/* Modo escuro (opcional, para futuro) */
+@media (prefers-color-scheme: dark) {
+  /* Descomente se quiser implementar dark mode
+  :root {
+    --text-black: #FFFFFF;
+    --white: #1a1a1a;
+    --light-gray: #2a2a2a;
+  }
+  */
+}
+
+/* Modo reduzido de movimento (acessibilidade) */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,329 @@
+/**
+ * ESTILOS: Projects (NOVO DESIGN)
+ * ===============================
+ * Seção de portfólio com novo design
+ * - Círculo preto sobreposto na caixa
+ * - Caixa cinza com barra verde na base
+ * - Layout mais compacto
+ * 
+ * Fundo laranja (#F8906A) para destaque
+ */
+
+/* ================================================
+   CONTAINER PRINCIPAL
+   ================================================ */
+
+.projects {
+  padding: var(--spacing-xl) var(--spacing-lg);
+  background: transparent;
+  margin-bottom: var(--spacing-xl);
+  border-radius: 8px;
+}
+
+/* ================================================
+   HEADER DA SEÇÃO
+   ================================================ */
+
+.projects-header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Título principal */
+.projects-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--text-black);
+  margin: 0 0 var(--spacing-md) 0;
+  line-height: 44px;
+  letter-spacing: 0.5px;
+}
+
+/* Subtítulo */
+.projects-subtitle {
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--text-black);
+  margin: 0;
+  line-height: 29px;
+}
+
+/* ================================================
+   GRID DOS PROJETOS
+   ================================================ */
+
+.projects-grid {
+  display: grid;
+  /* Responsive: 3 colunas em desktop, 1 em mobile */
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--spacing-lg);
+  max-width: 1280px;
+  margin: 0 auto var(--spacing-lg);
+  padding: var(--spacing-lg) 0;
+}
+
+/* ================================================
+   CARD DO PROJETO (Layout com sobreposição)
+   ================================================ */
+
+.project-card {
+  position: relative;
+  /* Altura mínima para acomodar o círculo + caixa */
+  min-height: 320px;
+  transition: all 0.3s ease;
+}
+
+/* Efeito hover - sobe o card inteiro */
+.project-card:hover {
+  transform: translateY(-8px);
+}
+
+/* ================================================
+   CÍRCULO PRETO (SOBREPOSTO)
+   ================================================ */
+
+.project-circle {
+  position: absolute;
+  top: -35%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 140px;
+  background: var(--text-black);
+  border-radius: 50%;
+  z-index: 2;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Efeito hover no círculo */
+.project-card:hover .project-circle {
+  transform: translateX(-50%) scale(1.08);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* ================================================
+   CAIXA DO PROJETO (CINZA + VERDE)
+   ================================================ */
+
+.project-box {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 100%;
+  
+  /* Fundo cinza na maioria */
+  background: var(--light-gray);
+  border-radius: var(--radius-sm);
+  
+  /* Altura para acomodar conteúdo */
+  min-height: 220px;
+  
+  /* Overflow hidden para as bordas */
+  overflow: hidden;
+  
+  /* Shadow e transição */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  
+  /* Flex layout */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Efeito hover na caixa */
+.project-card:hover .project-box {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ================================================
+   CONTEÚDO INSIDE DA CAIXA
+   ================================================ */
+
+.project-content {
+  flex-grow: 1;
+  padding: var(--spacing-lg) var(--spacing-md);
+  padding-top: var(--spacing-lg);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Nome do projeto */
+.project-name {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-black);
+  margin: 0 0 var(--spacing-sm) 0;
+  line-height: 34px;
+  letter-spacing: 0.5px;
+}
+
+/* Descrição do projeto */
+.project-description {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-black);
+  line-height: 22px;
+  margin: 0;
+}
+
+/* ================================================
+   BARRA VERDE NA BASE
+   ================================================ */
+
+.project-footer-bar {
+  width: 100%;
+  height: 16px;
+  background: linear-gradient(to right, #6eb366 0%, #5aa356 0%);
+  flex-shrink: 0;
+  transition: background 0.3s ease;
+}
+
+/* Efeito hover na barra */
+.project-card:hover .project-footer-bar {
+  background: linear-gradient(to right, #5ca156 0%, #4d9548 0%);
+}
+
+/* ================================================
+   DESCRIÇÃO ABAIXO DOS CARDS
+   ================================================ */
+
+.projects-description {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--text-black);
+  line-height: 26px;
+  text-align: center;
+  margin: 0;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 var(--spacing-lg);
+}
+
+/* ================================================
+   RESPONSIVIDADE
+   ================================================ */
+
+/* Tablets (768px e abaixo) */
+@media (max-width: 768px) {
+  .projects {
+    padding: var(--spacing-lg) var(--spacing-lg);
+  }
+
+  .projects-title {
+    font-size: 28px;
+    line-height: 34px;
+  }
+
+  .projects-subtitle {
+    font-size: 20px;
+  }
+
+  .projects-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--spacing-md);
+  }
+
+  .project-card {
+    min-height: 280px;
+  }
+
+  .project-circle {
+    width: 120px;
+    height: 120px;
+  }
+
+  .project-box {
+    min-height: 190px;
+  }
+
+  .project-content {
+    padding: var(--spacing-lg) var(--spacing-md);
+    padding-top: var(--spacing-lg);
+  }
+
+  .project-name {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  .project-description {
+    font-size: 15px;
+  }
+
+  .projects-description {
+    font-size: 16px;
+    padding: 0 var(--spacing-md);
+  }
+}
+
+/* Smartphones (480px e abaixo) */
+@media (max-width: 480px) {
+  .projects {
+    padding: var(--spacing-lg) var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .projects-title {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  .projects-subtitle {
+    font-size: 18px;
+  }
+
+  /* Em mobile, sempre 1 coluna */
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .project-card {
+    min-height: 260px;
+  }
+
+  .project-circle {
+    width: 110px;
+    height: 110px;
+    top: 5px;
+  }
+
+  .project-box {
+    min-height: 180px;
+  }
+
+  .project-content {
+    padding: var(--spacing-lg) var(--spacing-sm);
+    padding-top: var(--spacing-lg);
+  }
+
+  .project-name {
+    font-size: 22px;
+    line-height: 28px;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .project-description {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .project-footer-bar {
+    height: 14px;
+  }
+
+  .projects-description {
+    font-size: 15px;
+    line-height: 22px;
+    padding: 0 var(--spacing-sm);
+  }
+}

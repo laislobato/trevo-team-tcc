@@ -1,0 +1,121 @@
+/**
+ * ESTILOS: GameCharacters
+ * =======================
+ * Personagens em linha que quebra (3 por linha no desktop).
+ * Cada um: silhueta preta com cabeça e corpo laranja,
+ * ao lado de um nome e uma caixa cinza.
+ */
+
+/* ================================================
+   CONTAINER E LISTA
+   ================================================ */
+
+.game-characters {
+  padding: var(--spacing-xl) 0;
+}
+
+.game-characters-list {
+  max-width: 1000px;
+  margin: var(--spacing-xl) auto 0;
+  padding: 0 var(--spacing-lg);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-xl) var(--spacing-xl);
+}
+
+/* ================================================
+   CARD DO PERSONAGEM
+   ================================================ */
+
+.game-character {
+  display: flex;
+  align-items: flex-end;
+  gap: 0;
+}
+
+/* Silhueta: fundo preto com arco no topo */
+.game-character-figure {
+  position: relative;
+  width: 120px;
+  height: 180px;
+  background: var(--text-black);
+  border-radius: 60px 60px 0 0;
+  flex-shrink: 0;
+}
+
+/* Cabeça laranja */
+.game-character-head {
+  position: absolute;
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--primary-orange);
+}
+
+/* Corpo laranja */
+.game-character-body {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 82px;
+  height: 100px;
+  border-radius: 41px 41px 0 0;
+  background: var(--primary-orange);
+}
+
+/* Nome e caixa cinza à direita da silhueta */
+.game-character-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.game-character-name {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 30px;
+  color: var(--text-black);
+  margin: 0 0 0 12px;
+}
+
+.game-character-box {
+  width: 200px;
+  min-height: 125px;
+  background: var(--light-gray);
+  padding: var(--spacing-sm);
+  margin-left: 0;
+}
+
+.game-character-text {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--text-black);
+  margin: 0;
+}
+
+/* ================================================
+   RESPONSIVIDADE
+   ================================================ */
+
+@media (max-width: 768px) {
+  .game-characters-list {
+    gap: var(--spacing-lg) var(--spacing-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .game-characters-list {
+    padding: 0 var(--spacing-md);
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .game-character-box {
+    width: 170px;
+  }
+}

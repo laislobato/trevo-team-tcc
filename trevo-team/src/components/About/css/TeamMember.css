@@ -1,0 +1,185 @@
+/**
+ * ESTILOS: TeamMember
+ * ===================
+ * Linha de um membro da equipe: cartão cinza de um lado,
+ * texto e bolinhas do outro. A classe --reverse inverte os lados.
+ */
+
+/* ================================================
+   LINHA DO MEMBRO (grid de duas colunas)
+   ================================================ */
+
+.team-member {
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: var(--spacing-xl);
+  margin-top: var(--spacing-lg);
+}
+
+/* Inverte: imagem à direita, texto à esquerda */
+.team-member--reverse .team-member-visual {
+  order: 2;
+}
+
+/* ================================================
+   CARTÃO CINZA (imagem)
+   ================================================ */
+
+.team-member-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.team-member-card {
+  position: relative;
+  width: 260px;
+  height: 300px;
+  background: var(--light-gray);
+  /* Espaço no topo para a bolinha que sobrepõe a caixa */
+  margin-top: 60px;
+}
+
+/* Bolinha preta sobreposta no topo do cartão */
+.team-member-avatar {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: var(--dark-brown);
+}
+
+/* Retângulo laranja pequeno na base */
+.team-member-tag {
+  position: absolute;
+  bottom: -18px;
+  left: 80px;
+  width: 96px;
+  height: 36px;
+  background: var(--primary-orange);
+}
+
+/* ================================================
+   TEXTO
+   ================================================ */
+
+.team-member-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--spacing-xs);
+}
+
+.team-member-role {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 40px;
+  color: var(--text-black);
+  margin: 0;
+}
+
+.team-member-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-black);
+  margin: 0;
+}
+
+.team-member-text {
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--text-black);
+  max-width: 280px;
+  margin: var(--spacing-sm) 0 0 0;
+}
+
+/* ================================================
+   BOLINHAS COLORIDAS
+   ================================================ */
+
+.team-member-circles {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-sm);
+}
+
+.team-member-circle {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.team-member-circle--cyan {
+  background: var(--primary-cyan);
+}
+
+.team-member-circle--orange {
+  background: var(--primary-orange);
+}
+
+/* ================================================
+   RESPONSIVIDADE
+   ================================================ */
+
+/* Tablets: empilha (cartão em cima, texto embaixo) */
+@media (max-width: 768px) {
+  .team-member {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+    padding: 0 var(--spacing-lg);
+  }
+
+  /* Mantém a imagem sempre em cima no empilhado */
+  .team-member--reverse .team-member-visual {
+    order: 0;
+  }
+
+  .team-member-role {
+    font-size: 26px;
+    line-height: 32px;
+  }
+}
+
+/* Celulares */
+@media (max-width: 480px) {
+  .team-member {
+    padding: 0 var(--spacing-md);
+  }
+
+  .team-member-card {
+    width: 220px;
+    height: 260px;
+  }
+
+  .team-member-avatar {
+    width: 90px;
+    height: 90px;
+    top: -45px;
+  }
+
+  .team-member-card {
+    margin-top: 45px;
+  }
+
+  .team-member-circle {
+    width: 56px;
+    height: 56px;
+  }
+
+  .team-member-text {
+    font-size: 13px;
+    line-height: 20px;
+  }
+}

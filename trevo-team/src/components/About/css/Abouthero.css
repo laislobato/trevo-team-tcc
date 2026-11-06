@@ -1,0 +1,137 @@
+/**
+ * ESTILOS: AboutHero
+ * ==================
+ * Bloco "SOBRE NÓS": fundo ciano, imagem com quadrados
+ * rotacionados à esquerda e texto + botão à direita.
+ */
+
+/* ================================================
+   CONTAINER DA SEÇÃO
+   ================================================ */
+
+.about-hero {
+  background: var(--primary-cyan);
+  padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+/* Grid de duas colunas (imagem | texto) */
+.about-hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: var(--spacing-xl);
+}
+
+/* ================================================
+   IMAGEM (quadrados sobrepostos)
+   ================================================ */
+
+.about-hero-visual {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 4 / 3;
+  justify-self: center;
+}
+
+/* Quadrado azul rotacionado, atrás */
+.about-hero-shape {
+  position: absolute;
+  inset: 6% 4% 4% 6%;
+  background: #7d95c9;
+  transform: rotate(-10deg);
+  border-radius: 4px;
+}
+
+/* Quadrado branco (lugar da foto), na frente */
+.about-hero-photo {
+  position: absolute;
+  top: 14%;
+  left: 12%;
+  width: 76%;
+  height: 72%;
+  background: var(--white);
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* ================================================
+   TEXTO
+   ================================================ */
+
+.about-hero-title {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 44px;
+  color: var(--text-black);
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.about-hero-paragraph {
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--text-black);
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+/* ================================================
+   BOTÃO LARANJA
+   ================================================ */
+
+.about-hero-button {
+  width: 100%;
+  height: 56px;
+  background: var(--primary-orange);
+  color: var(--text-black);
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.about-hero-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ================================================
+   RESPONSIVIDADE
+   ================================================ */
+
+/* Tablets e celulares: imagem em cima, texto embaixo */
+@media (max-width: 768px) {
+  .about-hero {
+    padding: var(--spacing-lg) var(--spacing-lg);
+  }
+
+  .about-hero-inner {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .about-hero-title {
+    font-size: 28px;
+    line-height: 34px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-hero {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+
+  .about-hero-paragraph {
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .about-hero-button {
+    font-size: 16px;
+    height: 50px;
+  }
+}

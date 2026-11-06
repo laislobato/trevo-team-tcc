@@ -1,0 +1,297 @@
+/**
+ * ESTILOS: Testimonials
+ * ====================
+ * Seção de depoimentos com design decorativo
+ * Inclui estrelas espalhadas aleatoriamente
+ */
+
+/* ================================================
+   CONTAINER PRINCIPAL
+   ================================================ */
+
+.testimonials {
+  position: relative;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  max-width: 1280px;
+  margin: 0 auto var(--spacing-xl);
+  width: 100%;
+}
+
+/* ================================================
+   ESTRELAS DECORATIVAS
+   ================================================ */
+
+.testimonials-star {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background: var(--primary-orange);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  
+  /* Transição para efeitos */
+  transition: transform 0.3s ease;
+}
+
+/* Efeito hover nas estrelas */
+.testimonials-star:hover {
+  transform: scale(1.1) rotate(10deg);
+}
+
+/* Posicionamento de cada estrela (espaçadas aleatoriamente) */
+.testimonials-star-1 {
+  top: 200px;
+  left: 5%;
+}
+
+.testimonials-star-2 {
+  top: 50px;
+  right: 8%;
+}
+
+.testimonials-star-3 {
+  bottom: 200px;
+  right: 25%;
+}
+
+.testimonials-star-4 {
+  bottom: -50px;
+  left: 20%;
+}
+
+/* ================================================
+   HEADER DA SEÇÃO
+   ================================================ */
+
+.testimonials-header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+  position: relative;
+  z-index: 1;
+}
+
+/* Título principal */
+.testimonials-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--text-black);
+  margin: 0 0 var(--spacing-md) 0;
+  line-height: 44px;
+  letter-spacing: 0.5px;
+}
+
+/* Subtítulo descritivo */
+.testimonials-subtitle {
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--text-black);
+  margin: 0;
+  line-height: 29px;
+}
+
+/* ================================================
+   GRID DOS DEPOIMENTOS
+   ================================================ */
+
+.testimonials-grid {
+  display: grid;
+  /* Responsive: 3 colunas em desktop, 1 em mobile */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg) 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* ================================================
+   CARD DO DEPOIMENTO
+   ================================================ */
+
+.testimonial-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* O gap foi removido para permitir a sobreposição correta */
+  transition: all 0.3s ease;
+}
+
+/* ================================================
+   ÍCONE DO DEPOIMENTO
+   ================================================ */
+
+.testimonial-icon {
+  width: 100px;
+  height: 100px;
+  background: var(--dark-brown);
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  
+  /* Margem negativa e z-index para criar a sobreposição */
+  margin-bottom: -35px; 
+  position: relative;
+  z-index: 2;
+}
+
+/* ================================================
+   CAIXA DE TEXTO DO DEPOIMENTO
+   ================================================ */
+
+.testimonial-box {
+  background: var(--light-gray);
+  /* Aumento do padding superior (ex: 60px) para compensar o ícone sobreposto */
+  padding: 60px var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-sm);
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+/* Efeito hover na caixa */
+.testimonial-card:hover .testimonial-box {
+  background: #e0e0e0;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* ================================================
+   TEXTO DO DEPOIMENTO
+   ================================================ */
+
+.testimonial-text {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--text-black);
+  line-height: 22px;
+  text-align: center;
+  margin: 0;
+}
+
+/* ================================================
+   RESPONSIVIDADE
+   ================================================ */
+
+
+   
+/* Tablets (768px e abaixo) */
+@media (max-width: 768px) {
+  .testimonials {
+    padding: var(--spacing-lg) var(--spacing-lg);
+  }
+
+  .testimonials-title {
+    font-size: 28px;
+    line-height: 34px;
+  }
+
+  .testimonials-subtitle {
+    font-size: 20px;
+  }
+
+  /* Reduz tamanho das estrelas */
+  .testimonials-star {
+    width: 50px;
+    height: 50px;
+  }
+
+  /* Reposiciona estrelas para tablets */
+  .testimonials-star-1 {
+    top: 150px;
+    left: 3%;
+  }
+
+  .testimonials-star-2 {
+    top: 80px;
+    right: 5%;
+  }
+
+  .testimonials-star-3 {
+    bottom: 100px;
+    right: 3%;
+  }
+
+  .testimonials-star-4 {
+    bottom: 150px;
+    left: 5%;
+  }
+
+  /* Grid com menos colunas */
+  .testimonials-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+}
+
+/* ================================================
+   EFEITO ESCADINHA (Apenas Desktop)
+   ================================================ */
+
+@media (min-width: 769px) {
+  .testimonials-grid {
+    align-items: flex-start; /* Evita que os cards estiquem e percam a forma */
+  }
+  
+  /* O primeiro card mantém-se na posição original */
+  .testimonial-card:nth-child(1) {
+    transform: translateY(0);
+  }
+  
+  /* O segundo card desce um pouco */
+  .testimonial-card:nth-child(2) {
+    transform: translateY(100px);
+  }
+  
+  /* O terceiro card desce ainda mais */
+  .testimonial-card:nth-child(3) {
+    transform: translateY(200px);
+  }
+}
+
+/* Smartphones (480px e abaixo) */
+@media (max-width: 480px) {
+  .testimonials {
+    padding: var(--spacing-lg) var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .testimonials-title {
+    font-size: 24px;
+  }
+
+  .testimonials-subtitle {
+    font-size: 18px;
+  }
+
+  /* Estrelas menores em mobile */
+  .testimonials-star {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Esconde algumas estrelas em mobile */
+  .testimonials-star-3,
+  .testimonials-star-4 {
+    display: none;
+  }
+
+  /* Em mobile, sempre 1 coluna */
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .testimonial-icon {
+    width: 70px;
+    height: 70px;
+  }
+
+  .testimonial-box {
+    padding: var(--spacing-md);
+    min-height: 100px;
+  }
+
+  .testimonial-text {
+    font-size: 16px;
+    line-height: 20px;
+  }
+}

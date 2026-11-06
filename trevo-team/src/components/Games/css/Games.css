@@ -1,0 +1,102 @@
+/**
+ * ESTILOS: Games (página)
+ * =======================
+ * Wrapper da página, títulos de seção com linha ciano
+ * e o bloco "Sobre o jogo".
+ */
+
+/* ================================================
+   WRAPPER DA PÁGINA
+   ================================================ */
+
+.games-page {
+  width: 100%;
+  overflow-x: hidden; /* evita rolagem horizontal no celular */
+  background: var(--white);
+}
+
+/* ================================================
+   TÍTULO DE SEÇÃO COM LINHA CIANO
+   Padrão: texto à esquerda, linha à direita
+   Variação --reverse: texto à direita, linha à esquerda
+   ================================================ */
+
+.games-heading {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.games-heading--reverse {
+  flex-direction: row-reverse;
+}
+
+.games-heading-text {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 38px;
+  color: var(--text-black);
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.games-heading-line {
+  flex: 1;
+  height: 8px;
+  background: var(--primary-cyan);
+  border-radius: 4px;
+}
+
+/* ================================================
+   BLOCO "SOBRE O JOGO"
+   ================================================ */
+
+.games-about {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  text-align: center;
+}
+
+.games-about-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-black);
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.games-about-text {
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--text-black);
+  margin: 0;
+}
+
+/* ================================================
+   RESPONSIVIDADE
+   ================================================ */
+
+@media (max-width: 768px) {
+  .games-heading-text {
+    font-size: 26px;
+    line-height: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .games-heading {
+    padding: 0 var(--spacing-md);
+  }
+
+  .games-heading-text {
+    font-size: 22px;
+    line-height: 28px;
+  }
+
+  .games-about {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+}

@@ -1,0 +1,219 @@
+/**
+ * ESTILOS: Hero (NOVO LAYOUT)
+ * ===========================
+ * Seção inspiradora logo após o header
+ * 
+ * Layout:
+ * - TOPO: Frases (esquerda e direita)
+ * - MEIO: Espaço vazio grande
+ * - CENTRO: Botão CTA
+ * - BASE: Avatares
+ */
+
+/* ================================================
+   CONTAINER PRINCIPAL DA SEÇÃO
+   ================================================ */
+
+.hero {
+  background: var(--primary-cyan);
+  padding: var(--spacing-xl) var(--spacing-lg);
+  padding-bottom: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  margin-bottom: calc(var(--spacing-xl) + 35px);
+  border-radius: 8px;
+  
+  /* Altura mínima para distribuir elementos verticalmente */
+  min-height: 520px;
+  
+  /* Position relative para avatares se posicionarem */
+  position: relative;
+}
+
+/* ================================================
+   CONTEÚDO PRINCIPAL (FRASES NO TOPO)
+   ================================================ */
+
+.hero-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-lg);
+  flex-shrink: 0;
+}
+
+/* ================================================
+   TEXTOS MOTIVADORES
+   ================================================ */
+
+.hero-text {
+  flex: 0 1 275px;
+  font-size: 20px;
+  line-height: 24px;
+  color: var(--text-black);
+  font-weight: 400;
+}
+
+/* Texto da esquerda - alinhado à esquerda */
+.hero-text-left {
+  text-align: left;
+}
+
+/* Texto da direita - alinhado à direita */
+.hero-text-right {
+  text-align: right;
+}
+
+/* ================================================
+   BOTÃO CTA (CALL TO ACTION) - NO MEIO
+   ================================================ */
+
+.hero-cta-button {
+  background: var(--primary-orange);
+  border: none;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-black);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  
+  /* Posicionamento */
+  flex-shrink: 0;
+  align-self: center;
+  max-width: 280px;
+}
+
+/* Efeito hover - sobe e aumenta sombra */
+.hero-cta-button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Efeito ativo - botão pressionado */
+.hero-cta-button:active {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ================================================
+   SEÇÃO DOS AVATARES - FORA DO CONTAINER (Borda)
+   ================================================ */
+
+.hero-avatars {
+  position: absolute;
+  bottom: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  flex-wrap: wrap;
+  
+  width: 100%;
+  max-width: 1280px;
+}
+
+/* Avatar individual */
+.hero-avatar {
+  width: 70px;
+  height: 70px;
+  background: var(--light-gray);
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Efeito hover nos avatares */
+.hero-avatar:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* ================================================
+   RESPONSIVIDADE
+   ================================================ */
+
+/* Tablets (768px e abaixo) */
+@media (max-width: 768px) {
+  .hero {
+    min-height: 450px;
+    padding: var(--spacing-lg) var(--spacing-lg);
+    padding-bottom: var(--spacing-lg);
+    margin-bottom: calc(var(--spacing-lg) + 30px);
+  }
+
+  .hero-content {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  /* Centraliza os textos em tablet */
+  .hero-text-left,
+  .hero-text-right {
+    text-align: center;
+  }
+
+  .hero-cta-button {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .hero-avatars {
+    gap: var(--spacing-md);
+    bottom: -30px;
+  }
+}
+
+/* Smartphones (480px e abaixo) */
+@media (max-width: 480px) {
+  .hero {
+    min-height: 400px;
+    padding: var(--spacing-lg) var(--spacing-md);
+    padding-bottom: var(--spacing-lg);
+    margin-bottom: calc(var(--spacing-lg) + 25px);
+  }
+
+  .hero-content {
+    gap: var(--spacing-sm);
+  }
+
+  .hero-text {
+    flex: 0 1 auto;
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .hero-text-left,
+  .hero-text-right {
+    text-align: center;
+  }
+
+  .hero-cta-button {
+    padding: var(--spacing-md) var(--spacing-md);
+    font-size: 16px;
+    max-width: 250px;
+  }
+
+  .hero-avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .hero-avatars {
+    gap: var(--spacing-sm);
+    bottom: -25px;
+  }
+}
