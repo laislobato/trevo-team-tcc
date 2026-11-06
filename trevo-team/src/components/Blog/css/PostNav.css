@@ -1,0 +1,85 @@
+/**
+ * ESTILOS: PostNav
+ * ================
+ * Dois cards ciano lado a lado: "← Anterior" e "Próxima →",
+ * cada um com miniatura laranja e o título do post.
+ */
+
+.post-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+  padding-bottom: var(--spacing-xl);
+}
+
+.post-nav-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--primary-cyan);
+  border-radius: 4px;
+  padding: var(--spacing-sm);
+  transition: transform var(--transition-normal);
+}
+
+.post-nav-card:hover {
+  transform: translateY(-4px);
+  opacity: 1;
+}
+
+.post-nav-label {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.post-nav-card--next .post-nav-label {
+  text-align: right;
+}
+
+.post-nav-body {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+/* No card "Próxima" a miniatura fica à direita */
+.post-nav-card--next .post-nav-body {
+  flex-direction: row-reverse;
+}
+
+.post-nav-thumb {
+  width: 120px;
+  height: 70px;
+  border-radius: 4px;
+  background: var(--primary-orange);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.post-nav-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.post-nav-title {
+  flex: 1;
+  font-size: 14px;
+  line-height: 19px;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .post-nav {
+    grid-template-columns: 1fr;
+  }
+
+  .post-nav-empty {
+    display: none;
+  }
+
+  .post-nav-thumb {
+    width: 90px;
+    height: 56px;
+  }
+}

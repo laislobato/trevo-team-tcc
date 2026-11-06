@@ -1,0 +1,109 @@
+/**
+ * ESTILOS: ContactForm
+ * ====================
+ * Campos laranja (como no protótipo), com texto preto.
+ * O foco do teclado aparece como borda preta.
+ */
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm);
+}
+
+.contact-form-field {
+  display: block;
+}
+
+/* Inputs, select e textarea com o mesmo visual */
+.contact-form-field input,
+.contact-form-field select,
+.contact-form-field textarea {
+  width: 100%;
+  background: var(--primary-orange);
+  color: var(--text-black);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 12px var(--spacing-sm);
+  font-size: 16px;
+}
+
+.contact-form-field textarea {
+  resize: vertical;
+  min-height: 150px;
+}
+
+.contact-form-field input::placeholder,
+.contact-form-field textarea::placeholder {
+  color: rgba(0, 0, 0, 0.65);
+}
+
+/* Select sem opção escolhida mostra o texto mais claro, como placeholder */
+.contact-form-field select:invalid {
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.contact-form-field input:focus,
+.contact-form-field select:focus,
+.contact-form-field textarea:focus {
+  border-color: var(--text-black);
+}
+
+.contact-form-privacy {
+  font-size: 13px;
+  color: #666666;
+  margin: 0;
+}
+
+.contact-form-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.contact-form-button {
+  background: var(--primary-orange);
+  color: var(--text-black);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 12px var(--spacing-md);
+  border-radius: 8px;
+  border: 2px solid transparent;
+}
+
+.contact-form-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+.contact-form-button:focus-visible {
+  border-color: var(--text-black);
+}
+
+.contact-form-success {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-black);
+  background: var(--primary-cyan);
+  padding: 8px var(--spacing-sm);
+  border-radius: 8px;
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .contact-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-form-button {
+    width: 100%;
+  }
+}

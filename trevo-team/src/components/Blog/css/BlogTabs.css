@@ -1,0 +1,48 @@
+/**
+ * ESTILOS: BlogTabs
+ * =================
+ * Abas em formato de pílula. A aba ativa fica laranja.
+ */
+
+.blog-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  padding: 0 var(--spacing-lg) var(--spacing-lg);
+}
+
+.blog-tab {
+  background: var(--primary-cyan);
+  color: var(--text-black);
+  font-size: 15px;
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: var(--radius-md);
+  border: 2px solid transparent;
+}
+
+.blog-tab:hover {
+  border-color: var(--primary-orange);
+}
+
+.blog-tab.is-active {
+  background: var(--primary-orange);
+}
+
+/* Contorno visível ao navegar pelo teclado */
+.blog-tab:focus-visible {
+  outline: 3px solid var(--text-black);
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .blog-tabs {
+    padding: 0 var(--spacing-md) var(--spacing-md);
+  }
+
+  .blog-tab {
+    font-size: 14px;
+    padding: 6px 14px;
+  }
+}

@@ -1,0 +1,110 @@
+/**
+ * ESTILOS: ContactNewsletter
+ * ==========================
+ * Caixa preta com título branco, estrela branca,
+ * campo cinza, caixa de aceite e botão verde.
+ */
+
+.contact-newsletter {
+  background: var(--text-black);
+  color: var(--white);
+  border-radius: 8px;
+  padding: var(--spacing-md);
+}
+
+.contact-newsletter-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+}
+
+.contact-newsletter-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 26px;
+  color: var(--white);
+  max-width: 220px;
+}
+
+.contact-newsletter-star {
+  width: 44px;
+  height: 44px;
+  background: var(--white);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  flex-shrink: 0;
+}
+
+.contact-newsletter-text {
+  font-size: 14px;
+  line-height: 19px;
+  margin: 8px 0 var(--spacing-sm) 0;
+}
+
+.contact-newsletter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-newsletter-input {
+  width: 100%;
+  background: var(--light-gray);
+  color: var(--text-black);
+  border: 2px solid transparent;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 15px;
+}
+
+.contact-newsletter-input:focus {
+  border-color: var(--primary-green);
+}
+
+/* Caixa de aceite (LGPD) */
+.contact-newsletter-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 16px;
+  cursor: pointer;
+}
+
+.contact-newsletter-consent input {
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+  padding: 0;
+  accent-color: var(--primary-green);
+  flex-shrink: 0;
+}
+
+.contact-newsletter-button {
+  align-self: center;
+  background: var(--primary-green);
+  color: var(--text-black);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 10px var(--spacing-md);
+  border-radius: 6px;
+  border: 2px solid transparent;
+}
+
+.contact-newsletter-button:hover {
+  transform: translateY(-3px);
+}
+
+.contact-newsletter-button:focus-visible {
+  border-color: var(--white);
+}
+
+.contact-newsletter-success {
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--primary-green);
+  margin: 0;
+}

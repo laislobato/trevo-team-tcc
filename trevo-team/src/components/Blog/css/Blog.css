@@ -1,0 +1,300 @@
+/**
+ * ESTILOS: Blog (páginas /blog e /blog/:slug)
+ * ===========================================
+ * Wrapper das páginas, banner ciano, título com folhas,
+ * linha do autor, cabeçalho e texto do post.
+ */
+
+/* ================================================
+   WRAPPER DAS PÁGINAS
+   ================================================ */
+
+.blog-page {
+  width: 100%;
+  overflow-x: hidden; /* evita rolagem horizontal no celular */
+  background: var(--white);
+}
+
+/* Texto só para leitores de tela (não aparece na tela) */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ================================================
+   BANNER CIANO (lugar da arte)
+   ================================================ */
+
+.blog-banner {
+  width: 100%;
+  height: 380px;
+  background: var(--primary-cyan);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.blog-banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ================================================
+   TÍTULO COM ENFEITE DE FOLHAS
+   ================================================ */
+
+.blog-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md);
+  text-align: center;
+}
+
+.blog-heading-ornament {
+  display: flex;
+  align-items: center;
+  width: min(260px, 70%);
+  margin-bottom: 4px;
+}
+
+/* Caule verde que liga as duas folhas */
+.blog-heading-stem {
+  flex: 1;
+  height: 3px;
+  background: var(--primary-green);
+  border-radius: 2px;
+}
+
+/* Folha: forma de gota com contorno preto */
+.blog-leaf {
+  width: 30px;
+  height: 22px;
+  border: 2px solid var(--text-black);
+  background: var(--white);
+  border-radius: 0 100% 0 100%;
+  flex-shrink: 0;
+}
+
+.blog-leaf--right {
+  transform: scaleX(-1);
+}
+
+.blog-heading-title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 38px;
+  color: var(--text-black);
+}
+
+/* ================================================
+   LISTA DE POSTS
+   ================================================ */
+
+.blog-list {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: var(--spacing-md) var(--spacing-lg) var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.blog-empty {
+  text-align: center;
+  font-size: 16px;
+  color: #666666;
+}
+
+/* Mensagem de erro ao carregar (ex.: servidor desligado) */
+.blog-error {
+  color: var(--text-black);
+  background: var(--primary-cyan);
+  border-left: 6px solid var(--primary-orange);
+  border-radius: 8px;
+  padding: var(--spacing-sm);
+}
+
+/* ================================================
+   LINHA DO AUTOR (foto • nome • data)
+   ================================================ */
+
+.post-author {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-black);
+}
+
+.post-author-photo {
+  border-radius: 50%;
+  background: var(--light-gray);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.post-author-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.post-author-dot {
+  color: var(--primary-green);
+}
+
+.post-author-date {
+  color: #666666;
+}
+
+/* Tamanho pequeno: lista do blog */
+.post-author--small .post-author-photo {
+  width: 26px;
+  height: 26px;
+}
+
+.post-author--small .post-author-name {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.post-author--small .post-author-dot,
+.post-author--small .post-author-date {
+  font-size: 13px;
+}
+
+/* Tamanho grande: página do post */
+.post-author--large .post-author-photo {
+  width: 36px;
+  height: 36px;
+}
+
+.post-author--large .post-author-name {
+  font-size: 20px;
+  letter-spacing: 0.5px;
+}
+
+.post-author--large .post-author-dot,
+.post-author--large .post-author-date {
+  font-size: 15px;
+}
+
+/* ================================================
+   PÁGINA DO POST
+   ================================================ */
+
+.post-content {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+.post-header {
+  text-align: center;
+  padding: var(--spacing-md) 0;
+}
+
+.post-type {
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--text-black);
+  margin: 0;
+}
+
+.post-title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 38px;
+  color: var(--text-black);
+  margin: 4px 0 0 0;
+}
+
+.post-meta {
+  padding: var(--spacing-sm) 0 var(--spacing-md);
+}
+
+.post-subtitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-black);
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.post-body p {
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--text-black);
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+/* Linha preta curta antes da navegação entre posts */
+.post-divider {
+  width: 130px;
+  height: 3px;
+  background: var(--text-black);
+  border-radius: 2px;
+  margin: var(--spacing-lg) auto;
+}
+
+/* Post não encontrado */
+.post-not-found {
+  text-align: center;
+  padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+.post-not-found a {
+  display: inline-block;
+  margin-top: var(--spacing-sm);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+/* ================================================
+   RESPONSIVIDADE
+   ================================================ */
+
+@media (max-width: 768px) {
+  .blog-banner {
+    height: 240px;
+  }
+
+  .blog-heading-title,
+  .post-title {
+    font-size: 26px;
+    line-height: 32px;
+  }
+
+  .post-type {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .blog-banner {
+    height: 180px;
+  }
+
+  .blog-heading,
+  .blog-list,
+  .post-content {
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+  }
+
+  .blog-heading-title,
+  .post-title {
+    font-size: 22px;
+    line-height: 28px;
+  }
+
+  .post-author--large .post-author-name {
+    font-size: 17px;
+  }
+}

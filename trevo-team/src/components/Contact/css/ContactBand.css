@@ -1,0 +1,150 @@
+/**
+ * ESTILOS: ContactBand
+ * ====================
+ * Faixa laranja com estrela cinza e título "CONTACT US",
+ * e a aba branca com cantos arredondados que "morde" a faixa por baixo.
+ */
+
+.contact-band {
+  margin-top: var(--spacing-md);
+}
+
+/* ================================================
+   FAIXA LARANJA
+   ================================================ */
+
+.contact-band-bar {
+  background: var(--primary-orange);
+  border-radius: 8px;
+  padding: var(--spacing-md) var(--spacing-lg) calc(var(--spacing-md) + 30px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+
+.contact-band-star {
+  width: 60px;
+  height: 60px;
+  background: var(--light-gray);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  flex-shrink: 0;
+  transition: transform var(--transition-normal);
+}
+
+.contact-band-bar:hover .contact-band-star {
+  transform: rotate(15deg) scale(1.1);
+}
+
+.contact-band-title {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--text-black);
+}
+
+/* ================================================
+   ABA BRANCA (E-MAIL + REDES)
+   ================================================ */
+
+.contact-band-tab {
+  position: relative;
+  width: fit-content;
+  max-width: calc(100% - 2 * var(--spacing-lg));
+  margin: -30px 0 0 var(--spacing-lg);
+  background: var(--white);
+  border-radius: 0 28px 0 0;
+  padding: var(--spacing-xs) var(--spacing-md) var(--spacing-xs) var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm) var(--spacing-lg);
+}
+
+.contact-band-email {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+.contact-band-email:hover {
+  color: var(--primary-orange);
+  opacity: 1;
+}
+
+.contact-band-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--primary-orange);
+  flex-shrink: 0;
+}
+
+.contact-band-socials {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 10px;
+}
+
+.contact-band-social {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--primary-orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  transition: transform var(--transition-normal);
+}
+
+.contact-band-social:hover {
+  transform: translateY(-4px);
+  opacity: 1;
+}
+
+.contact-band-email:focus-visible,
+.contact-band-social:focus-visible {
+  outline: 3px solid var(--text-black);
+  outline-offset: 2px;
+}
+
+/* ================================================
+   RESPONSIVIDADE
+   ================================================ */
+
+@media (max-width: 768px) {
+  .contact-band-title {
+    font-size: 26px;
+  }
+
+  .contact-band-star {
+    width: 46px;
+    height: 46px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-band-bar {
+    padding: var(--spacing-sm) var(--spacing-md) calc(var(--spacing-sm) + 30px);
+  }
+
+  .contact-band-title {
+    font-size: 22px;
+  }
+
+  .contact-band-tab {
+    margin-left: var(--spacing-md);
+    max-width: calc(100% - 2 * var(--spacing-md));
+    padding-right: var(--spacing-sm);
+  }
+
+  .contact-band-email {
+    font-size: 14px;
+  }
+}

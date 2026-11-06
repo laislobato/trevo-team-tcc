@@ -1,0 +1,199 @@
+/**
+ * ESTILOS: ContactHero
+ * ====================
+ * Banner ciano com o quadrado verde (que passa da borda de baixo),
+ * estrelas nos cantos e o título TREVO TEAM repetido três vezes.
+ *
+ * Camadas (de trás para a frente):
+ *   linhas borradas (1) -> quadrado verde (2) -> 1ª linha e frases (3)
+ */
+
+/* ================================================
+   BANNER
+   ================================================ */
+
+.contact-hero {
+  background: var(--primary-cyan);
+  border-radius: 8px;
+  padding: 0 var(--spacing-lg);
+  margin-bottom: calc(var(--spacing-lg) + 40px); /* espaço para o quadrado que passa da borda */
+}
+
+.contact-hero-inner {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  min-height: 400px;
+}
+
+/* ================================================
+   QUADRADO VERDE + ESTRELAS
+   ================================================ */
+
+.contact-hero-square {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  top: 90px;
+  width: min(32vw, 340px);
+  aspect-ratio: 1 / 1;
+  background: var(--primary-green);
+}
+
+.contact-hero-star {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  background: var(--primary-cyan);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.contact-hero-star--top {
+  top: -24px;
+  left: 30%;
+}
+
+.contact-hero-star--left {
+  top: 8%;
+  left: -22px;
+  width: 44px;
+  height: 44px;
+}
+
+.contact-hero-star--bottom {
+  bottom: -28px;
+  right: -28px;
+  background: var(--white);
+}
+
+/* ================================================
+   TÍTULO REPETIDO
+   ================================================ */
+
+.contact-hero-title {
+  position: absolute;
+  left: 16%;
+  top: 50px;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-size: clamp(44px, 7.5vw, 104px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 4px;
+  color: var(--text-black);
+  white-space: nowrap;
+}
+
+.contact-hero-line {
+  position: relative;
+  z-index: 3; /* 1ª linha fica por cima do quadrado */
+}
+
+/* 2ª e 3ª linhas: borradas e por trás do quadrado */
+.contact-hero-line--blur {
+  z-index: 1;
+  filter: blur(4px);
+  opacity: 0.85;
+}
+
+/* ================================================
+   FRASES
+   ================================================ */
+
+.contact-hero-tagline {
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  top: 150px;
+  max-width: 200px;
+  font-size: 16px;
+  line-height: 20px;
+  margin: 0;
+}
+
+.contact-hero-phrase {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  top: calc(90px + min(32vw, 340px) - 60px);
+  max-width: min(32vw, 340px);
+  padding: 0 var(--spacing-sm);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 20px;
+  color: var(--text-black);
+  margin: 0;
+}
+
+/* ================================================
+   RESPONSIVIDADE
+   No celular tudo vira uma coluna, sem sobreposições.
+   ================================================ */
+
+@media (max-width: 768px) {
+  .contact-hero {
+    padding: var(--spacing-lg) var(--spacing-lg) 0;
+    margin-bottom: calc(var(--spacing-lg) + 30px);
+  }
+
+  .contact-hero-inner {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--spacing-sm);
+  }
+
+  .contact-hero-square,
+  .contact-hero-title,
+  .contact-hero-tagline,
+  .contact-hero-phrase {
+    position: static;
+  }
+
+  .contact-hero-title {
+    order: 1;
+    font-size: clamp(36px, 10vw, 64px);
+    white-space: normal;
+  }
+
+  /* Só a 1ª linha aparece no celular */
+  .contact-hero-line--blur {
+    display: none;
+  }
+
+  .contact-hero-tagline {
+    order: 2;
+    max-width: 320px;
+  }
+
+  .contact-hero-square {
+    order: 3;
+    position: relative;
+    top: auto; /* tira o deslocamento usado no computador */
+    width: 200px;
+    margin-bottom: -30px; /* continua passando da borda de baixo */
+  }
+
+  .contact-hero-phrase {
+    order: 4;
+    display: none; /* a frase de efeito fica só no computador */
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-hero {
+    padding: var(--spacing-md) var(--spacing-md) 0;
+  }
+
+  .contact-hero-square {
+    width: 160px;
+  }
+
+  .contact-hero-star {
+    width: 40px;
+    height: 40px;
+  }
+}

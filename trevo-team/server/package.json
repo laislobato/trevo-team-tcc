@@ -1,0 +1,20 @@
+{
+  "name": "trevo-team-server",
+  "private": true,
+  "version": "1.0.0",
+  "description": "API do blog da Trevo Team: posts, desenvolvedoras, login da equipe e upload de imagens.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "dev": "node --watch --env-file-if-exists=.env --disable-warning=ExperimentalWarning src/index.js",
+    "start": "node --env-file-if-exists=.env --disable-warning=ExperimentalWarning src/index.js",
+    "test": "node --disable-warning=ExperimentalWarning --test"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "multer": "^2.0.2"
+  }
+}

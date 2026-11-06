@@ -1,0 +1,171 @@
+/**
+ * ESTILOS: PostDeveloper
+ * ======================
+ * Seção "Developed By": card cinza do estúdio à esquerda e
+ * três faixas cinza dos integrantes à direita, com a foto
+ * redonda saindo pela borda direita.
+ */
+
+.post-developer {
+  padding: var(--spacing-lg) 0 var(--spacing-sm);
+}
+
+.post-developer-heading {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+.post-developer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+  align-items: start;
+}
+
+/* ================================================
+   CARD DO ESTÚDIO
+   ================================================ */
+
+.post-developer-card {
+  position: relative;
+  background: var(--light-gray);
+  border-radius: 4px;
+  padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-md);
+}
+
+.post-developer-top {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.post-developer-logo {
+  width: 68px;
+  height: 68px;
+  border-radius: 8px;
+  background: var(--primary-orange);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.post-developer-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.post-developer-name {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.post-developer-devs {
+  font-size: 15px;
+  letter-spacing: 1px;
+  color: #666666;
+  margin: 2px 0 0 0;
+}
+
+.post-developer-text {
+  font-size: 15px;
+  line-height: 21px;
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+/* Redes sociais: bolinhas laranja saindo pela borda de baixo */
+.post-developer-socials {
+  display: flex;
+  gap: 12px;
+  margin-bottom: -53px; /* metade da bolinha sai pela borda de baixo */
+}
+
+.post-developer-social {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--primary-orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-black);
+  transition: transform var(--transition-normal);
+}
+
+.post-developer-social:hover {
+  transform: translateY(-4px);
+  opacity: 1;
+}
+
+/* ================================================
+   INTEGRANTES
+   ================================================ */
+
+.post-developer-members {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.post-developer-member {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72px;
+  background: var(--light-gray);
+  border-radius: 4px;
+  padding: var(--spacing-xs) 0 var(--spacing-xs) var(--spacing-sm);
+  margin-right: 30px; /* espaço para a foto sair pela borda */
+}
+
+.post-developer-member-name {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.post-developer-member-role {
+  font-size: 13px;
+  color: #666666;
+  margin: 0;
+}
+
+.post-developer-member-photo {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: var(--text-black);
+  overflow: hidden;
+  flex-shrink: 0;
+  margin-right: -30px;
+}
+
+.post-developer-member-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ================================================
+   RESPONSIVIDADE
+   ================================================ */
+
+@media (max-width: 768px) {
+  .post-developer-grid {
+    grid-template-columns: 1fr;
+    gap: calc(var(--spacing-md) + 40px); /* espaço para as bolinhas das redes */
+  }
+}

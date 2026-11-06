@@ -1,24 +1,51 @@
-# Logs
-logs
+# ==========================================================
+# .gitignore do projeto Trevo Team (front + server)
+# Arquivos e pastas listados aqui NÃO vão para o GitHub.
+# ==========================================================
+
+# ---------- Dependências (o npm install recria) ----------
+node_modules/
+server/node_modules/
+
+# ---------- Build do front (a Vercel gera sozinha) ----------
+dist/
+dist-ssr/
+
+# ---------- Configurações com senhas e chaves ----------
+# Os modelos .env.example CONTINUAM indo para o GitHub.
+.env
+.env.*
+!.env.example
+server/.env
+*.local
+
+# ---------- Dados do backend (ficam só no computador / no Volume) ----------
+server/data/
+server/uploads/
+*.db
+*.db-shm
+*.db-wal
+
+# ---------- Logs ----------
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
+# ---------- Editores e sistema ----------
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
+Thumbs.db
+desktop.ini
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# ---------- Vercel ----------
+.vercel/
