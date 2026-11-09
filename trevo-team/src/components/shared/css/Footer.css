@@ -1,120 +1,82 @@
 /**
  * ESTILOS: Footer
  * ===============
- * Rodapé da página com informações
- * Design limpo e organizado
+ * Rodapé compacto em duas faixas finas:
+ * - faixa de cima (cinza claro): logo à esquerda, páginas na horizontal à direita;
+ * - faixa de baixo (cinza um pouco mais escuro): copyright e contato.
  */
 
 /* ================================================
-   CONTAINER PRINCIPAL
+   CONTAINER
    ================================================ */
 
 .footer {
-  background: #f5f5f5;
-  padding: var(--spacing-xl) var(--spacing-lg);
   margin-top: var(--spacing-xl);
   border-top: 2px solid var(--light-gray);
 }
 
-/* ================================================
-   CONTEÚDO DO FOOTER
-   ================================================ */
-
-.footer-content {
-  max-width: 1280px;
+/* Conteúdo centralizado, com as duas pontas afastadas */
+.footer-inner {
+  max-width: 1100px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--spacing-xl);
-  padding-bottom: var(--spacing-xl);
-}
-
-/* ================================================
-   SEÇÕES DO FOOTER
-   ================================================ */
-
-.footer-section {
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm) var(--spacing-lg);
+  flex-wrap: wrap;
 }
 
 /* ================================================
-   SEÇÃO ABOUT (Logo + Descrição)
+   FAIXA DE CIMA: LOGO + PÁGINAS
    ================================================ */
 
-.footer-section-about {
-  align-items: flex-start;
+.footer-bar {
+  background: #f5f5f5;
+  padding: var(--spacing-sm) var(--spacing-lg);
 }
 
 .footer-logo-section {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-sm);
+  gap: 10px;
 }
 
-.footer-logo-circle {
-  width: 45px;
-  height: 45px;
-  background: var(--primary-green);
-  border-radius: 50%;
-  flex-shrink: 0;
+.footer-logo-section:hover {
+  opacity: 1;
+}
+
+.footer-logo-img {
+  height: 34px;
+  width: auto;          /* mantém a proporção da logo */
+  display: block;
+  transition: transform var(--transition-normal);
+}
+
+.footer-logo-section:hover .footer-logo-img {
+  transform: scale(1.1);
 }
 
 .footer-logo-text {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
   color: var(--text-black);
-  margin: 0;
-  line-height: 24px;
 }
 
-.footer-description {
-  font-size: 16px;
-  line-height: 24px;
-  color: #666666;
-  margin: 0;
-}
-
-/* ================================================
-   SEÇÃO LINKS
-   ================================================ */
-
-.footer-section-links,
-.footer-section-contact {
-  align-items: flex-start;
-}
-
-.footer-section-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-black);
-  margin: 0 0 var(--spacing-md) 0;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* ================================================
-   NAVEGAÇÃO DO FOOTER
-   ================================================ */
-
+/* Páginas lado a lado */
 .footer-nav {
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  gap: 6px var(--spacing-md);
 }
 
 .footer-link {
-  font-size: 16px;
-  color: var(--text-black);
-  text-decoration: none;
-  transition: color var(--transition-normal);
   position: relative;
-  padding-bottom: 4px;
+  font-size: 16px;
+  color: #555555;
+  transition: color var(--transition-normal);
 }
 
-/* Underline ao hover */
+/* Sublinhado verde que cresce no hover */
 .footer-link::after {
   content: '';
   position: absolute;
@@ -126,122 +88,112 @@
   transition: width var(--transition-normal);
 }
 
+.footer-link:hover {
+  color: var(--text-black);
+  opacity: 1;
+}
+
 .footer-link:hover::after {
   width: 100%;
 }
 
-.footer-link:hover {
-  color: var(--primary-green);
+.footer-link:focus-visible,
+.footer-logo-section:focus-visible {
+  outline: 3px solid var(--text-black);
+  outline-offset: 3px;
 }
 
 /* ================================================
-   INFORMAÇÕES DE CONTATO
+   FAIXA DE BAIXO: COPYRIGHT + CONTATO
    ================================================ */
 
-.footer-contact-info {
-  font-size: 16px;
-  line-height: 28px;
+.footer-bottom {
+  background: #ebebeb;
+  padding: 10px var(--spacing-lg);
+}
+
+.footer-copyright {
+  font-size: 13px;
   color: #666666;
   margin: 0;
 }
 
-/* ================================================
-   DIVISOR
-   ================================================ */
-
-.footer-divider {
-  width: 100%;
-  height: 1px;
-  background: var(--light-gray);
-  margin-bottom: var(--spacing-lg);
-}
-
-/* ================================================
-   COPYRIGHT
-   ================================================ */
-
-.footer-copyright {
-  text-align: center;
-}
-
-.footer-copyright p {
-  font-size: 14px;
-  color: #999999;
+.footer-contact {
+  list-style: none;
   margin: 0;
-  line-height: 20px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 0;
+  font-size: 13px;
+  color: #666666;
+}
+
+/* Pontinho separando os itens do contato */
+.footer-contact li + li::before {
+  content: '·';
+  margin: 0 10px;
+}
+
+.footer-contact a {
+  color: inherit; /* mesmo cinza do resto do contato */
+}
+
+.footer-contact a:hover {
+  color: var(--text-black);
+  opacity: 1;
 }
 
 /* ================================================
    RESPONSIVIDADE
    ================================================ */
 
-/* Tablets (768px e abaixo) */
+/* Tablets e celulares: tudo centralizado, uma parte embaixo da outra */
 @media (max-width: 768px) {
-  .footer {
-    padding: var(--spacing-lg) var(--spacing-lg);
+  .footer-inner {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
   }
 
-  .footer-content {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--spacing-lg);
-    padding-bottom: var(--spacing-lg);
+  .footer-nav,
+  .footer-contact {
+    justify-content: center;
   }
 
-  .footer-section-about {
-    grid-column: 1 / -1;
+  .footer-bar {
+    padding: var(--spacing-sm) var(--spacing-md);
   }
 
-  .footer-section-title {
-    font-size: 14px;
+  .footer-bottom {
+    padding: 10px var(--spacing-md);
   }
 
-  .footer-link {
-    font-size: 14px;
-  }
-
-  .footer-contact-info {
-    font-size: 14px;
+  /* No celular, o copyright fica por último */
+  .footer-copyright {
+    order: 2;
   }
 }
 
-/* Smartphones (480px e abaixo) */
 @media (max-width: 480px) {
   .footer {
-    padding: var(--spacing-lg) var(--spacing-md);
     margin-top: var(--spacing-lg);
   }
 
-  .footer-content {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-lg);
-    padding-bottom: var(--spacing-lg);
-  }
-
-  .footer-logo-text {
-    font-size: 18px;
-  }
-
-  .footer-description {
-    font-size: 14px;
-    line-height: 20px;
-  }
-
-  .footer-section-title {
-    font-size: 13px;
-    margin-bottom: var(--spacing-sm);
-  }
-
   .footer-link {
-    font-size: 14px;
-    padding-bottom: 2px;
+    font-size: 15px;
   }
 
-  .footer-contact-info {
-    font-size: 14px;
-    line-height: 24px;
+  .footer-nav {
+    gap: 6px var(--spacing-sm);
   }
 
-  .footer-copyright p {
-    font-size: 12px;
+  /* Contato em lista, sem os pontinhos (não sobra "·" no começo da linha) */
+  .footer-contact {
+    flex-direction: column;
+  }
+
+  .footer-contact li + li::before {
+    content: none;
   }
 }

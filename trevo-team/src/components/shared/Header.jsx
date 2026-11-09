@@ -17,6 +17,7 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import './css/Header.css'
+import logo from "../../assets/logo.png"
 
 // Itens do menu: "to" é a rota definida no App.jsx
 const navItems = [
@@ -45,7 +46,7 @@ export default function Header() {
 
           {/* 🟢 LOGO (clicar leva para a Home) */}
           <Link to="/" className="header-logo-section" onClick={closeMenu}>
-            <div className="header-logo-circle"></div>
+            <img src={logo} alt="" className="header-logo-img" />
             <h1 className="header-logo-text">Trevo Team</h1>
           </Link>
 

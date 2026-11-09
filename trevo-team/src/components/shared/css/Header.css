@@ -55,10 +55,21 @@
 .header-logo-circle {
   width: 55px;
   height: 55px;
-  background: var(--primary-green);
   border-radius: 50%;
   flex-shrink: 0;
   transition: transform 0.3s ease;
+}
+
+.header-logo-img {
+  height: 55px;
+  width: auto;          /* mantém a proporção da logo */
+  display: block;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.header-logo-section:hover .header-logo-img {
+  transform: scale(1.1);
 }
 
 .header-logo-section:hover .header-logo-circle {
