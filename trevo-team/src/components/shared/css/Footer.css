@@ -1,95 +1,130 @@
 /**
  * ESTILOS: Footer
  * ===============
- * Rodapé compacto em duas faixas finas:
- * - faixa de cima (cinza claro): logo à esquerda, páginas na horizontal à direita;
- * - faixa de baixo (cinza um pouco mais escuro): copyright e contato.
+ * Computador: faixa da paleta + faixa verde-escura (redes, páginas e estrela)
+ *             + faixa branca com Privacy e copyright.
+ * Celular (até 768px): bloco com cantos de cima arredondados, faixa verde
+ *             (PRIVACY, redes e círculo verde) e caixa branca (páginas e copyright).
+ *
+ * Partes que só aparecem num tamanho:
+ *   .footer-only-desktop  -> só no computador
+ *   .footer-only-mobile   -> só no celular
  */
 
-/* ================================================
-   CONTAINER
-   ================================================ */
-
+/* Cor da faixa do rodapé (verde-escuro da marca) */
 .footer {
+  --footer-dark: #003223;
   margin-top: var(--spacing-xl);
-  border-top: 2px solid var(--light-gray);
 }
 
-/* Conteúdo centralizado, com as duas pontas afastadas */
+/* ".footer" na frente deixa a regra mais forte que o display de cada parte */
+.footer .footer-only-mobile {
+  display: none;
+}
+
+/* Conteúdo centralizado */
 .footer-inner {
   max-width: 1100px;
   margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing-sm) var(--spacing-lg);
-  flex-wrap: wrap;
+  gap: var(--spacing-md);
 }
 
 /* ================================================
-   FAIXA DE CIMA: LOGO + PÁGINAS
+   FAIXA DA PALETA (laranja, ciano, branco, verde, verde-escuro)
+   ================================================ */
+
+.footer-stripe {
+  height: 4px;
+  background: linear-gradient(
+    to right,
+    var(--primary-orange) 0 20%,
+    var(--primary-cyan) 20% 40%,
+    var(--white) 40% 60%,
+    #8cc74f 60% 80%,
+    var(--footer-dark) 80% 100%
+  );
+}
+
+/* ================================================
+   FAIXA VERDE-ESCURA
    ================================================ */
 
 .footer-bar {
-  background: #f5f5f5;
-  padding: var(--spacing-sm) var(--spacing-lg);
+  background: var(--footer-dark);
+  padding: 12px var(--spacing-lg);
 }
 
-.footer-logo-section {
+.footer-bar .footer-inner {
+  position: relative; /* referência para a estrela */
+}
+
+/* Redes sociais: bolinhas */
+.footer-socials {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: var(--spacing-md);
+  flex-shrink: 0;
+}
+
+.footer-social {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--primary-orange);
+  color: var(--text-black);
   display: flex;
   align-items: center;
-  gap: 10px;
-}
-
-.footer-logo-section:hover {
-  opacity: 1;
-}
-
-.footer-logo-img {
-  height: 34px;
-  width: auto;          /* mantém a proporção da logo */
-  display: block;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  overflow: hidden;
   transition: transform var(--transition-normal);
 }
 
-.footer-logo-section:hover .footer-logo-img {
-  transform: scale(1.1);
+.footer-social img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.footer-logo-text {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text-black);
+.footer-social:hover {
+  transform: translateY(-3px);
+  opacity: 1;
 }
 
-/* Páginas lado a lado */
+/* Páginas (no computador, à direita da faixa) */
 .footer-nav {
+  margin-left: auto;
+  margin-right: 90px; /* espaço para a estrela */
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px var(--spacing-md);
+  gap: var(--spacing-md);
+  flex-shrink: 0; /* não quebra linha */
 }
 
 .footer-link {
   position: relative;
   font-size: 16px;
-  color: #555555;
-  transition: color var(--transition-normal);
+  font-weight: 700;
+  color: var(--white);
 }
 
-/* Sublinhado verde que cresce no hover */
+/* Sublinhado laranja que cresce no hover */
 .footer-link::after {
   content: '';
   position: absolute;
-  bottom: -4px;
   left: 0;
+  bottom: -4px;
   width: 0;
   height: 2px;
-  background: var(--primary-green);
+  background: var(--primary-orange);
   transition: width var(--transition-normal);
 }
 
 .footer-link:hover {
-  color: var(--text-black);
   opacity: 1;
 }
 
@@ -97,103 +132,175 @@
   width: 100%;
 }
 
-.footer-link:focus-visible,
-.footer-logo-section:focus-visible {
-  outline: 3px solid var(--text-black);
-  outline-offset: 3px;
+/* Estrela laranja saindo por cima e por baixo da faixa */
+.footer-star {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 72px;
+  height: 72px;
+  transform: translateY(-50%);
+  background: var(--primary-orange);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  transition: transform var(--transition-normal);
+}
+
+.footer:hover .footer-star {
+  transform: translateY(-50%) rotate(15deg);
 }
 
 /* ================================================
-   FAIXA DE BAIXO: COPYRIGHT + CONTATO
+   FAIXA BRANCA (Privacy + copyright)
    ================================================ */
 
 .footer-bottom {
-  background: #ebebeb;
+  background: var(--white);
+  border: 1px solid var(--footer-dark);
+  border-top: none;
   padding: 10px var(--spacing-lg);
 }
 
 .footer-copyright {
-  font-size: 13px;
-  color: #666666;
-  margin: 0;
-}
-
-.footer-contact {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 0;
-  font-size: 13px;
-  color: #666666;
-}
-
-/* Pontinho separando os itens do contato */
-.footer-contact li + li::before {
-  content: '·';
-  margin: 0 10px;
-}
-
-.footer-contact a {
-  color: inherit; /* mesmo cinza do resto do contato */
-}
-
-.footer-contact a:hover {
+  font-size: 14px;
   color: var(--text-black);
+  margin: 0;
+}
+
+.footer-privacy-link:hover,
+.footer-privacy:hover {
+  text-decoration: underline;
   opacity: 1;
 }
 
-/* ================================================
-   RESPONSIVIDADE
-   ================================================ */
-
-/* Tablets e celulares: tudo centralizado, uma parte embaixo da outra */
-@media (max-width: 768px) {
-  .footer-inner {
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-  }
-
-  .footer-nav,
-  .footer-contact {
-    justify-content: center;
-  }
-
-  .footer-bar {
-    padding: var(--spacing-sm) var(--spacing-md);
-  }
-
-  .footer-bottom {
-    padding: 10px var(--spacing-md);
-  }
-
-  /* No celular, o copyright fica por último */
-  .footer-copyright {
-    order: 2;
-  }
+/* Contorno do foco ao navegar pelo teclado */
+.footer-social:focus-visible,
+.footer-link:focus-visible,
+.footer-privacy:focus-visible,
+.footer-privacy-link:focus-visible {
+  outline: 3px solid var(--primary-orange);
+  outline-offset: 3px;
 }
 
-@media (max-width: 480px) {
-  .footer {
-    margin-top: var(--spacing-lg);
-  }
+/* ================================================
+   CELULAR E TABLET (até 768px)
+   ================================================ */
 
-  .footer-link {
-    font-size: 15px;
+/* Telas médias: aproxima os itens para tudo caber numa linha */
+@media (max-width: 1024px) {
+  .footer-socials {
+    gap: var(--spacing-sm);
   }
 
   .footer-nav {
-    gap: 6px var(--spacing-sm);
+    gap: 20px;
+    margin-right: 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer .footer-only-desktop {
+    display: none;
   }
 
-  /* Contato em lista, sem os pontinhos (não sobra "·" no começo da linha) */
-  .footer-contact {
+  .footer .footer-only-mobile {
+    display: block;
+  }
+
+  /* Bloco centralizado, com contorno e cantos de cima arredondados */
+  .footer {
+    max-width: 440px;
+    margin: var(--spacing-lg) auto 0;
+  }
+
+  .footer-bar {
+    padding: 8px var(--spacing-md);
+  }
+
+  /* PRIVACY | redes | círculo verde */
+  .footer-bar .footer-inner {
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+  }
+
+  .footer-privacy {
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    color: var(--white);
+  }
+
+  .footer-socials {
+    gap: 8px;
+  }
+
+  .footer-social {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+  }
+
+  /* Círculo verde-claro à direita (lugar da logo) */
+  .footer-badge {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Caixa branca: páginas e copyright centralizados */
+  .footer-bottom {
+    padding: 12px var(--spacing-xs);
+  }
+
+  .footer-bottom .footer-inner {
     flex-direction: column;
+    gap: 8px;
+    text-align: center;
   }
 
-  .footer-contact li + li::before {
-    content: none;
+  .footer .footer-nav--bottom {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    justify-content: center;
+    gap: 4px var(--spacing-sm);
+  }
+
+  .footer-nav--bottom .footer-link {
+    font-size: 15px;
+    color: var(--text-black);
+  }
+
+  .footer-copyright {
+    font-size: 13px;
+  }
+}
+
+/* Celulares bem estreitos: bolinhas e textos menores para caber */
+@media (max-width: 380px) {
+  .footer {
+    padding: 0 var(--spacing-xs);
+  }
+
+  .footer-bar {
+    padding: 10px var(--spacing-sm);
+  }
+
+  .footer-privacy {
+    font-size: 12px;
+  }
+
+  .footer-socials {
+    gap: 6px;
+  }
+
+  .footer-social {
+    width: 26px;
+    height: 26px;
+    font-size: 12px;
+  }
+
+  .footer-badge {
+    width: 32px;
+    height: 32px;
   }
 }

@@ -119,6 +119,12 @@
   height: 70px;
   border-radius: 50%;
   flex-shrink: 0;
+  transition: transform 0.3s ease
+}
+
+.team-member-circle:hover {
+  transform: scale(1.1);
+  cursor: pointer;
 }
 
 .team-member-circle--cyan {
