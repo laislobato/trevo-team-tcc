@@ -1,20 +1,17 @@
 /**
- * ARQUIVO: App.jsx
- * ================
- * Componente principal da aplicação
- * 
- * Responsabilidades:
- * - Importar e renderizar todos os componentes
- * - Estrutura geral da página
- * - Importar estilos globais
- * 
+ * PÁGINA: Home (Início)
+ * ======================
+ * Página inicial, na rota /.
+ *
  * Estrutura:
- *   Header
- *   └─ Hero
- *   └─ Services
- *   └─ [Divider]
- *   └─ Projects
- *   └─ Footer (futuro)
+ *   Bloco ciano
+ *   ├─ Header (versão "flat", sem fundo próprio)
+ *   └─ Hero (carrossel de banners)
+ *   Testimonials
+ *   Projects
+ *   [Divisor]
+ *   Newsletter
+ *   Footer
  */
 
 // ===============================================
@@ -36,11 +33,11 @@ import Footer from '../components/shared/Footer'
 export default function App() {
   return (
     <div className="app-container">
-      {/* Cabeçalho com navegação */}
-      <Header />
-
-      {/* Seção principal com frases e CTA */}
-      <Hero />
+      {/* Bloco ciano: cabeçalho (sem fundo próprio) + carrossel de banners */}
+      <div className="home-top">
+        <Header flat />
+        <Hero />
+      </div>
 
       <Testimonials />
       

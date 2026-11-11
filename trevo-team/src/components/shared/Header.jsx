@@ -4,87 +4,108 @@
  * Topo de todas as páginas.
  *
  * Computador:
- *   [Logo]  ..................................  [Games  About  Contact  Blog]
+ *   [logo_full]            GAMES | CONTACT US | ABOUT | BLOG |  (rede) (rede) (rede)
  *
  * Celular:
- *   [Logo]          [ - - - ]   <- os 3 tracinhos ficam à DIREITA do logo
- *   (ao clicar nos tracinhos, os links descem em lista logo abaixo)
+ *   [logo_full]                                   [ ☰ ]
+ *   (ao clicar nos tracinhos, as páginas e as redes descem em lista)
  *
- * "isOpen" guarda se o menu do celular está aberto ou fechado.
- * No computador o botão dos tracinhos fica escondido pelo CSS.
+ * Props:
+ * - flat: true = sem fundo, sem sombra e sem cantos arredondados.
+ *         Usado na página inicial, onde o cabeçalho fica dentro do bloco ciano do hero.
+ *
+ * Para usar as logos das redes: coloque as imagens em src/assets, importe aqui
+ * e preencha o campo "icon" (ex.: import instagramIcon from '../../assets/instagram.svg').
  */
 
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
+// ⚠️ Confira a extensão do arquivo na pasta assets (.png, .svg ou .webp)
+import logoFull from '../../assets/logo_full.png'
 import './css/Header.css'
-import logo from "../../assets/logo.png"
 
-// Itens do menu: "to" é a rota definida no App.jsx
+// Páginas do menu: "to" é a rota definida no App.jsx
 const navItems = [
   { label: 'Games', to: '/jogo', end: true },
+  { label: 'Contact Us', to: '/contato' },
   { label: 'About', to: '/sobre' },
-  { label: 'Contact', to: '/contato' },
   { label: 'Blog', to: '/blog' },
 ]
 
-export default function Header() {
+// Redes sociais (troque "#" pelos links reais e preencha "icon" com a logo)
+const socials = [
+  { label: 'Instagram', url: '#', icon: '' },
+  { label: 'X', url: '#', icon: '' },
+  { label: 'Discord', url: '#', icon: '' },
+]
+
+export default function Header({ flat = false }) {
   // false = menu fechado | true = menu aberto (só faz efeito no celular)
   const [isOpen, setIsOpen] = useState(false)
-
-  // Abre ou fecha o menu ao clicar nos tracinhos
   const toggleMenu = () => setIsOpen((open) => !open)
-
-  // Fecha o menu (usado ao clicar em um link ou no logo)
   const closeMenu = () => setIsOpen(false)
 
   return (
-    <header className="header">
+    <header className={`header ${flat ? 'header--flat' : ''}`}>
       <div className="header-wrapper">
 
-        {/* 🔝 GRUPO ESQUERDO: tracinhos (celular) + logo */}
+        {/* 🔝 LOGO (leva para a Home) + TRACINHOS (só no celular) */}
         <div className="header-brand">
-
-          {/* 🟢 LOGO (clicar leva para a Home) */}
-          <Link to="/" className="header-logo-section" onClick={closeMenu}>
-            <img src={logo} alt="" className="header-logo-img" />
-            <h1 className="header-logo-text">Trevo Team</h1>
+          <Link to="/" className="header-logo" onClick={closeMenu} aria-label="Trevo Team: página inicial">
+            <img src={logoFull} alt="Trevo Team" className="header-logo-img" />
           </Link>
 
-                    {/* ☰ OS 3 TRACINHOS (só aparecem no celular) */}
           <button
             type="button"
             className={`header-menu-toggle ${isOpen ? 'is-open' : ''}`}
             onClick={toggleMenu}
             aria-label={isOpen ? 'Fechar menu' : 'Abrir menu'}
             aria-expanded={isOpen}
-            aria-controls="header-nav"
+            aria-controls="header-menu"
           >
             <span className="header-menu-bar"></span>
             <span className="header-menu-bar"></span>
             <span className="header-menu-bar"></span>
           </button>
-
         </div>
 
-        {/* 🔗 MENU DE NAVEGAÇÃO
+        {/* 🔗 PÁGINAS + REDES
             - Computador: sempre visível, em linha
             - Celular: só aparece quando "is-open" está ativo */}
-        <nav
-          id="header-nav"
-          className={`header-nav ${isOpen ? 'is-open' : ''}`}
-        >
-          {navItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.end}
-              className="header-nav-link"
-              onClick={closeMenu}
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </nav>
+        <div id="header-menu" className={`header-menu ${isOpen ? 'is-open' : ''}`}>
+          <nav className="header-nav" aria-label="Menu principal">
+            {navItems.map((item) => (
+              <Fragment key={item.to}>
+                <NavLink
+                  to={item.to}
+                  end={item.end}
+                  className="header-nav-link"
+                  onClick={closeMenu}
+                >
+                  {item.label}
+                </NavLink>
+                {/* Tracinho vertical "|" depois de cada página */}
+                <span className="header-nav-separator" aria-hidden="true"></span>
+              </Fragment>
+            ))}
+          </nav>
+
+          <ul className="header-socials" aria-label="Redes sociais">
+            {socials.map((social) => (
+              <li key={social.label}>
+                <a
+                  href={social.url}
+                  className="header-social"
+                  aria-label={`Trevo Team no ${social.label}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {social.icon && <img src={social.icon} alt="" />}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
 
       </div>
     </header>
