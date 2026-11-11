@@ -15,6 +15,8 @@
  * - subtitle: frase curta abaixo do título
  * - text:     parágrafo descritivo
  * - info:     array de { label, value }
+ * - color:    cor da barra ('cyan' | 'green' | 'orange'), a mesma cor do
+ *             personagem do jogo na vitrine. Padrão: ciano.
  */
 
 import './css/GameHero.css'
@@ -24,13 +26,14 @@ export default function GameHero({
   subtitle = '',
   text = '',
   info = [],
+  color = 'cyan',
 }) {
   return (
     <section className="game-hero">
       <div className="game-hero-inner">
 
-        {/* 🟦 BARRA CIANO COM A ESTRELA */}
-        <div className="game-hero-bar">
+        {/* 🟦 BARRA COLORIDA COM A ESTRELA */}
+        <div className={`game-hero-bar game-hero-bar--${color}`}>
           <span className="game-hero-star"></span>
         </div>
 

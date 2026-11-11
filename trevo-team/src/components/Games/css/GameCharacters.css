@@ -44,6 +44,14 @@
   flex-shrink: 0;
 }
 
+/* Imagem do personagem (quando tiver): ocupa a silhueta toda */
+.game-character-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
 /* Cabeça laranja */
 .game-character-head {
   position: absolute;

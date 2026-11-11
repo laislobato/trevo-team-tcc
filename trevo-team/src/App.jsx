@@ -5,7 +5,8 @@
  *
  * Site:
  * - /            -> Home (Início)
- * - /jogo        -> Games (página de um jogo)
+ * - /jogo        -> Games (página inicial dos jogos, com a vitrine)
+ * - /jogo/:slug  -> GamePage (página de um jogo, modelo para todos)
  * - /sobre       -> About
  * - /blog        -> Blog (lista de posts, com abas e FAQ)
  * - /blog/:slug  -> BlogPost (página de um post)
@@ -34,6 +35,7 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import Games from './pages/Games'
+import GamePage from './pages/GamePage'
 import Blog from './pages/Blog/Blog'
 import BlogPost from './pages/Blog/BlogPost'
 
@@ -56,6 +58,7 @@ export default function App() {
           {/* ---------- Site ---------- */}
           <Route path="/" element={<Home />} />
           <Route path="/jogo" element={<Games />} />
+          <Route path="/jogo/:slug" element={<GamePage />} />
           <Route path="/sobre" element={<About />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />

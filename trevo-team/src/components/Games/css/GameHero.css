@@ -37,6 +37,16 @@
   padding-top: 100px;
 }
 
+/* Cor da barra de cada jogo (a mesma do personagem na vitrine) */
+.game-hero-bar--cyan { background: var(--primary-cyan); }
+.game-hero-bar--green { background: #8cc74f; }
+.game-hero-bar--orange { background: var(--primary-orange); }
+
+/* Na barra laranja, a estrela fica ciano para continuar aparecendo */
+.game-hero-bar--orange .game-hero-star {
+  background: var(--primary-cyan);
+}
+
 .game-hero-star {
   width: 170px;
   height: 170px;

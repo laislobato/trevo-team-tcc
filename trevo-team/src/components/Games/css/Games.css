@@ -75,6 +75,49 @@
   margin: 0;
 }
 
+/* "Desenvolvido por ..." */
+.games-about-developer {
+  font-size: 14px;
+  color: #555555;
+  margin: var(--spacing-sm) 0 0 0;
+}
+
+/* ================================================
+   CARREGANDO / JOGO NÃO ENCONTRADO
+   ================================================ */
+
+.games-status {
+  max-width: 600px;
+  min-height: 50vh;
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.games-status h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.games-status p {
+  font-size: 15px;
+  margin: 0;
+}
+
+.games-status a {
+  margin-top: var(--spacing-sm);
+  font-weight: 700;
+  background: var(--primary-orange);
+  border-radius: 8px;
+  padding: 8px 16px;
+}
+
 /* ================================================
    RESPONSIVIDADE
    ================================================ */

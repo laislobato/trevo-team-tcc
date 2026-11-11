@@ -1,0 +1,459 @@
+/**
+ * ESTILOS: GameShowcase
+ * =====================
+ * Todos os cards ficam empilhados no MESMO lugar (centro do palco) e cada um
+ * é empurrado para o lado pelo seu --offset (0 = meio, -1 = esquerda, 1 = direita):
+ *
+ *   transform: translateX( offset × --step )
+ *
+ * O card do meio (.is-center) é largo e mostra a descrição; os das laterais
+ * (.is-side) mostram só o personagem. Trocar de jogo anima as duas coisas
+ * ao mesmo tempo: o card desliza e abre (ou fecha).
+ *
+ * Tamanhos (mude aqui para ajustar):
+ *   --center-width: largura do card do meio
+ *   --side-width:   largura dos cards das laterais
+ *   --gap:          espaço entre o card do meio e os laterais (onde ficam as setas)
+ *   --stage-height: altura FIXA do palco (= altura do card do meio). Ela não
+ *                   muda durante a troca, assim o que está embaixo não "pula".
+ */
+
+.showcase {
+  --center-width: 600px;
+  --side-width: 170px;
+  --gap: 80px;
+  --stage-height: 380px;
+  --step: calc(var(--center-width) / 2 + var(--gap) + var(--side-width) / 2);
+  --speed: 0.5s;
+
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-lg);
+}
+
+.showcase-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Palco: área onde os cards deslizam */
+.showcase-stage {
+  position: relative;
+  overflow: hidden; /* corta o que passar das bordas */
+  padding: var(--spacing-sm) 0 44px; /* espaço para a sombra do card */
+}
+
+/* Grade de uma célula só: todos os cards ocupam a mesma célula,
+   e a altura do palco se ajusta sozinha ao card mais alto */
+.showcase-track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  height: var(--stage-height); /* fixa: não muda enquanto os cards se mexem */
+}
+
+/* ================================================
+   CARD
+   ================================================ */
+
+.showcase-card {
+  grid-area: 1 / 1; /* todos na mesma célula */
+  display: flex;
+  width: var(--side-width);
+  height: 320px;
+  background: var(--light-gray);
+  border-radius: 85px 85px 12px 12px; /* arco no topo, como os cards do site */
+  overflow: hidden;
+  transform: translateX(calc(var(--offset) * var(--step)));
+  transition:
+    transform var(--speed) ease,
+    width var(--speed) ease,
+    height var(--speed) ease,
+    padding var(--speed) ease,
+    border-radius var(--speed) ease,
+    opacity var(--speed) ease,
+    box-shadow var(--speed) ease;
+}
+
+/* Laterais: clicáveis, um pouco apagadas */
+.showcase-card.is-side {
+  cursor: pointer;
+  opacity: 0.75;
+}
+
+.showcase-card.is-side:hover {
+  opacity: 1;
+}
+
+/* Meio: largo, com fundo cinza em volta do personagem (como no protótipo) */
+.showcase-card.is-center {
+  width: var(--center-width);
+  height: var(--stage-height);
+  padding: 12px;
+  border-radius: 16px;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+  z-index: 1;
+}
+
+/* Jogos além dos vizinhos (se um dia tiver mais de 3): escondidos */
+.showcase-card.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Card que pula de uma ponta para a outra: sem deslizar, só aparece */
+.showcase-card.is-jumping {
+  transition: none;
+  animation: showcaseFadeIn var(--speed) ease;
+}
+
+@keyframes showcaseFadeIn {
+  from { opacity: 0; }
+}
+
+/* ---------- Personagem ---------- */
+
+.showcase-character {
+  position: relative;
+  width: var(--side-width);
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 85px 85px 0 0;
+  transition: width var(--speed) ease, border-radius var(--speed) ease;
+}
+
+.showcase-card.is-center .showcase-character {
+  width: 220px;
+  border-radius: 100px 100px 8px 8px;
+}
+
+.showcase-character img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.showcase-character--orange { background: var(--primary-orange); }
+.showcase-character--cyan { background: var(--primary-cyan); }
+.showcase-character--green { background: #8cc74f; }
+
+/* Desenho padrão: silhueta preta com cabeça e corpo (como na página do jogo) */
+.showcase-silhouette {
+  position: relative;
+  flex-shrink: 0;
+  width: 110px;
+  height: 210px;
+  background: var(--text-black);
+  border-radius: 55px 55px 0 0;
+}
+
+.showcase-silhouette-head,
+.showcase-silhouette-body {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--white);
+}
+
+.showcase-silhouette-head {
+  top: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+}
+
+.showcase-silhouette-body {
+  bottom: 0;
+  width: 76px;
+  height: 100px;
+  border-radius: 38px 38px 0 0;
+}
+
+/* ---------- Descrição (abre ao lado do personagem) ---------- */
+
+/* Ocupa o resto do card; nos cards das laterais não sobra espaço e ela some */
+.showcase-info {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Largura mínima por dentro: o texto não "espreme" enquanto o card abre */
+.showcase-info-inner {
+  min-width: 330px;
+  height: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: opacity 0.2s ease, transform 0.4s ease;
+}
+
+/* Texto aparece depois que o card começou a abrir */
+.showcase-card.is-center .showcase-info-inner {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.35s ease 0.25s, transform 0.45s ease 0.15s;
+}
+
+.showcase-genre {
+  align-self: flex-start;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 3px 10px;
+  margin: 0;
+}
+
+.showcase-game {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 30px;
+  margin: 4px 0 0;
+}
+
+.showcase-character-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555555;
+  margin: 0;
+}
+
+.showcase-text {
+  font-size: 15px;
+  line-height: 21px;
+  margin: 6px 0 0;
+  flex: 1;
+}
+
+.showcase-platforms {
+  font-size: 12px;
+  font-weight: 600;
+  color: #555555;
+  margin: 0;
+}
+
+.showcase-link {
+  align-self: flex-end; /* "Ver mais" embaixo, à direita (como no protótipo) */
+  font-size: 15px;
+  font-weight: 700;
+  background: var(--primary-orange);
+  border-radius: 8px;
+  padding: 8px 16px;
+  margin-top: 6px;
+  transition: transform var(--transition-normal);
+}
+
+.showcase-link:hover {
+  transform: translateY(-2px);
+  opacity: 1;
+}
+
+/* ================================================
+   SETAS (no meio do espaço entre o card central e os laterais)
+   ================================================ */
+
+.showcase-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: none;
+  background: var(--primary-cyan);
+  color: var(--text-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition: background var(--transition-normal), transform var(--transition-normal);
+}
+
+.showcase-arrow svg {
+  width: 22px;
+  height: 22px;
+}
+
+.showcase-arrow--prev {
+  left: calc(50% - var(--center-width) / 2 - var(--gap) / 2);
+}
+
+.showcase-arrow--next {
+  left: calc(50% + var(--center-width) / 2 + var(--gap) / 2);
+}
+
+.showcase-arrow:hover {
+  background: var(--primary-orange);
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.showcase-arrow:focus-visible,
+.showcase-dot:focus-visible,
+.showcase-link:focus-visible {
+  outline: 3px solid var(--text-black);
+  outline-offset: 2px;
+}
+
+/* ================================================
+   BOLINHAS
+   ================================================ */
+
+.showcase-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.showcase-dot {
+  width: 36px;
+  height: 6px;
+  border: none;
+  border-radius: 3px;
+  background: var(--light-gray);
+  cursor: pointer;
+  padding: 0;
+  transition: background var(--transition-normal);
+}
+
+.showcase-dot.is-active {
+  background: #8cc74f;
+}
+
+/* ================================================
+   REDUZIR MOVIMENTO: troca sem deslizar
+   ================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .showcase-card,
+  .showcase-character,
+  .showcase-info-inner,
+  .showcase-card.is-center .showcase-info-inner {
+    transition: none;
+  }
+}
+
+/* ================================================
+   RESPONSIVIDADE
+   ================================================ */
+
+/* Notebook pequeno / tablet deitado: cards um pouco menores */
+@media (max-width: 1100px) {
+  .showcase {
+    --center-width: 540px;
+    --side-width: 130px;
+    --gap: 70px;
+  }
+
+  .showcase-card.is-center .showcase-character {
+    width: 190px;
+  }
+
+  .showcase-info-inner {
+    min-width: 310px;
+  }
+}
+
+/* Tablet em pé e celular: card do meio em coluna (personagem em cima,
+   descrição embaixo) e só a pontinha dos vizinhos aparece nas bordas */
+@media (max-width: 860px) {
+  .showcase {
+    --center-width: min(72vw, 420px);
+    --side-width: 120px;
+    --gap: 14px;
+    --stage-height: 560px; /* card do meio com altura fixa também no celular */
+    padding: var(--spacing-lg) 0;
+  }
+
+  .showcase-title {
+    font-size: 22px;
+    padding: 0 var(--spacing-md);
+  }
+
+  .showcase-arrow {
+    display: none; /* arrasta-se com o dedo ou toca no vizinho */
+  }
+
+  .showcase-card {
+    height: 300px;
+    flex-direction: column;
+  }
+
+  .showcase-card.is-center {
+    padding: 10px;
+    border-radius: 85px 85px 16px 16px;
+  }
+
+  .showcase-character {
+    width: 100%;
+    height: 100%;
+  }
+
+  .showcase-card.is-center .showcase-character {
+    width: 100%;
+    height: 220px;
+    border-radius: 75px 75px 8px 8px;
+  }
+
+  .showcase-info {
+    flex: none;
+    height: 0;
+  }
+
+  .showcase-card.is-center .showcase-info {
+    flex: 1;
+    height: auto;
+  }
+
+  /* Descrição longa: corta na 6ª linha com "..." para caber no card */
+  .showcase-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .showcase-info-inner {
+    min-width: 0;
+    padding: var(--spacing-sm) 6px 4px;
+  }
+
+  .showcase-game {
+    font-size: 22px;
+    line-height: 26px;
+  }
+
+  .showcase-link {
+    align-self: flex-start;
+  }
+}
+
+/* Texto só para leitores de tela */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

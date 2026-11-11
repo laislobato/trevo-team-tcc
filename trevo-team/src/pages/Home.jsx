@@ -25,6 +25,9 @@ import Projects from '../components/Home/Projects'
 import Testimonials from '../components/Home/Testimonials'
 import Newsletter from '../components/shared/Newsletter'
 import Footer from '../components/shared/Footer'
+import GameShowcase from '../components/shared/GameShowcase'
+
+import { games } from '../data/games'
 
 // ===============================================
 // COMPONENTE PRINCIPAL
@@ -41,7 +44,9 @@ export default function App() {
 
       <Testimonials />
       
-      <Projects/>
+      {/* <Projects/> */}
+      
+      <GameShowcase title="Nossos Projetos" games={games} />
       
       <div className="section-divider"></div>
       

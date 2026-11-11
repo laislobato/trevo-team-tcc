@@ -6,7 +6,8 @@
  *
  * Props:
  * - title:      título da seção (com linha ciano)
- * - characters: array de { id, name, text }
+ * - characters: array de { id, name, text, image }
+ *               "image" vazio = silhueta padrão
  */
 
 import './css/Games.css'
@@ -26,10 +27,16 @@ export default function GameCharacters({ title = '', characters = [] }) {
         {characters.map((character) => (
           <article key={character.id} className="game-character">
 
-            {/* Silhueta: fundo preto, cabeça e corpo laranja */}
+            {/* Imagem do personagem ou silhueta (fundo preto, cabeça e corpo laranja) */}
             <div className="game-character-figure">
-              <span className="game-character-head"></span>
-              <span className="game-character-body"></span>
+              {character.image ? (
+                <img className="game-character-image" src={character.image} alt={character.name} />
+              ) : (
+                <>
+                  <span className="game-character-head"></span>
+                  <span className="game-character-body"></span>
+                </>
+              )}
             </div>
 
             {/* Nome em cima, caixa cinza embaixo */}

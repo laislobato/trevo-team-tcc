@@ -1,0 +1,151 @@
+/**
+ * ESTILOS: GameReviews
+ * ====================
+ * Faixa infinita: os cards andam para a esquerda com uma animação (marquee).
+ * A lista aparece duas vezes; quando a primeira metade sai da tela,
+ * a animação recomeça do zero sem dar para perceber.
+ */
+
+.reviews {
+  padding: var(--spacing-lg) 0 var(--spacing-xl);
+}
+
+.reviews-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: var(--spacing-md);
+  padding: 0 var(--spacing-md);
+}
+
+/* Faixa ciano de ponta a ponta, com as bordas esfumadas */
+.reviews-viewport {
+  overflow: hidden;
+  background: var(--primary-cyan);
+  padding: var(--spacing-md) 0;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+
+.reviews-track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: var(--spacing-md);
+  width: max-content;
+  animation: reviewsScroll var(--reviews-duration, 48s) linear infinite;
+}
+
+/* Mouse em cima: para a faixa */
+.reviews-viewport:hover .reviews-track {
+  animation-play-state: paused;
+}
+
+@keyframes reviewsScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* metade da faixa + metade do espaço entre os cards */
+    transform: translateX(calc(-50% - var(--spacing-md) / 2));
+  }
+}
+
+/* ================================================
+   CARD DO COMENTÁRIO
+   ================================================ */
+
+.review {
+  width: 320px;
+  flex-shrink: 0;
+  background: var(--white);
+  border-radius: 12px;
+  border-left: 6px solid var(--primary-orange);
+  padding: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.review-text {
+  font-size: 15px;
+  line-height: 21px;
+  margin: 0;
+  flex: 1; /* empurra o usuário para o fim do card */
+}
+
+.review-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.review-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--light-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.review-user {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.review-game {
+  font-size: 12px;
+  color: #666666;
+  margin: 0;
+}
+
+/* Etiqueta da plataforma, com a cor de cada uma */
+.review-platform {
+  align-self: flex-start;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--white);
+  border-radius: var(--radius-md);
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+
+.review-platform--steam { background: #1b2838; }
+.review-platform--xbox { background: #107c10; }
+.review-platform--playstation { background: #0070d1; }
+.review-platform--switch { background: #e60012; }
+
+/* ================================================
+   REDUZIR MOVIMENTO: faixa parada, com rolagem
+   ================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .reviews-viewport {
+    overflow-x: auto;
+  }
+
+  .reviews-track {
+    animation: none;
+  }
+}
+
+/* ================================================
+   RESPONSIVIDADE
+   ================================================ */
+
+@media (max-width: 768px) {
+  .reviews-title {
+    font-size: 22px;
+  }
+
+  .review {
+    width: 260px;
+  }
+}
