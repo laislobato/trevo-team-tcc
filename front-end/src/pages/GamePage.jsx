@@ -126,6 +126,8 @@ export default function GamePage() {
         text={game.description}
         info={gameInfo}
         color={game.color}
+        art={game.characterImage}
+        artAlt={game.character}
       />
 
       {/* ========== IMAGENS COM FRASE ========== */}

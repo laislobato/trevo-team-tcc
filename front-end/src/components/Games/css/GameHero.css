@@ -1,8 +1,15 @@
 /**
  * ESTILOS: GameHero
  * =================
- * Barra ciano estreita à esquerda com uma estrela laranja
- * que atravessa a barra, e o conteúdo do jogo à direita.
+ * Barra colorida à esquerda, que começa colada no header, com a arte do
+ * jogo (ou uma estrela) maior que a barra, saindo para os dois lados.
+ * O conteúdo do jogo fica à direita.
+ *
+ * Medidas (mude aqui para ajustar):
+ *   --bar-width: largura da barra
+ *   --art-width: largura da arte (maior que a barra = sai para fora)
+ *   --bar-pull:  quanto a barra "sobe" para encostar no header
+ *                (= espaço do header até o começo da seção)
  */
 
 /* ================================================
@@ -10,6 +17,9 @@
    ================================================ */
 
 .game-hero {
+  --bar-width: 170px;
+  --art-width: 250px;
+  --bar-pull: calc(var(--spacing-lg) + var(--spacing-xs)); /* padding da seção + margem do header */
   padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-xl);
 }
 
@@ -17,7 +27,7 @@
   max-width: 1000px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 180px 1fr;
+  grid-template-columns: var(--art-width) 1fr;
   gap: var(--spacing-xl);
   align-items: start;
 }
@@ -27,14 +37,15 @@
    ================================================ */
 
 .game-hero-bar {
-  width: 130px;
-  height: 430px;
+  width: var(--bar-width);
+  height: calc(460px + var(--bar-pull));
+  margin-top: calc(-1 * var(--bar-pull)); /* sobe até encostar no header */
   background: var(--primary-cyan);
   justify-self: center;
   display: flex;
-  justify-content: center;
+  justify-content: center; /* arte maior que a barra: sai igual dos dois lados */
   align-items: flex-start;
-  padding-top: 100px;
+  padding-top: calc(110px + var(--bar-pull));
 }
 
 /* Cor da barra de cada jogo (a mesma do personagem na vitrine) */
@@ -47,9 +58,24 @@
   background: var(--primary-cyan);
 }
 
+.game-hero-star,
+.game-hero-art {
+  flex-shrink: 0; /* sem isto o navegador encolhe a arte até caber na barra */
+  width: var(--art-width);
+}
+
+/* Arte do jogo (imagem do personagem) */
+.game-hero-art {
+  max-width: none; /* o globals.css limita imagens à largura da barra; aqui ela precisa sair */
+  height: auto;
+  max-height: 320px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.18));
+}
+
+/* Estrela (quando o jogo ainda não tem imagem) */
 .game-hero-star {
-  width: 170px;
-  height: 170px;
+  height: var(--art-width);
   background: var(--primary-orange);
   clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
 }
@@ -113,15 +139,18 @@
     gap: var(--spacing-lg);
   }
 
-  .game-hero-bar {
-    width: 120px;
-    height: 200px;
-    padding-top: 40px;
+  .game-hero {
+    --bar-width: 140px;
+    --art-width: 200px;
   }
 
-  .game-hero-star {
-    width: 120px;
-    height: 120px;
+  .game-hero-bar {
+    height: calc(260px + var(--bar-pull));
+    padding-top: calc(30px + var(--bar-pull));
+  }
+
+  .game-hero-art {
+    max-height: 220px;
   }
 
   .game-hero-title {
