@@ -5,23 +5,25 @@
  *
  * Mapa da API:
  *   GET  /api/health                 -> servidor no ar?
- *   POST /api/auth/login             -> login da equipe
- *   GET  /api/auth/me                -> confere o login
+ *   POST /api/auth/login             -> login (admin da Trevo ou estúdio)
+ *   GET  /api/auth/me                -> confere o login (com o tipo e o estúdio)
  *   POST /api/auth/password          -> troca a senha
  *   GET  /api/posts                  -> posts publicados (site)
  *   GET  /api/posts/:slug            -> um post (site)
- *   /api/admin/posts                 -> criar, editar e apagar posts (login)
- *   /api/admin/developers            -> criar, editar e apagar desenvolvedoras (login)
+ *   /api/admin/posts                 -> criar, editar e apagar posts (login; estúdio só os dele)
+ *   /api/admin/developers            -> desenvolvedoras (login; estúdio só a dele)
+ *   /api/admin/accounts              -> logins dos estúdios (só admin)
  *   POST /api/admin/uploads          -> enviar imagem (login)
  *   GET  /uploads/<arquivo>          -> imagens enviadas
  */
 
 import express from 'express'
 import cors from 'cors'
-import { requireAuth } from './middleware/auth.js'
+import { requireAuth, requireAdmin } from './middleware/auth.js'
 import { authRoutes } from './routes/auth.js'
 import { publicPostRoutes, adminPostRoutes } from './routes/posts.js'
 import { adminDeveloperRoutes } from './routes/developers.js'
+import { adminAccountRoutes } from './routes/accounts.js'
 import { uploadRoutes } from './routes/uploads.js'
 
 export function createApp({ db, config }) {
@@ -58,6 +60,7 @@ export function createApp({ db, config }) {
   app.use('/api/posts', publicPostRoutes({ db }))
   app.use('/api/admin/posts', requireLogin, adminPostRoutes({ db }))
   app.use('/api/admin/developers', requireLogin, adminDeveloperRoutes({ db }))
+  app.use('/api/admin/accounts', requireLogin, requireAdmin, adminAccountRoutes({ db }))
   app.use('/api/admin/uploads', requireLogin, uploadRoutes({ config }))
 
   // Rota da API que não existe

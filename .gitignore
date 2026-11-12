@@ -1,27 +1,30 @@
 # ==========================================================
-# .gitignore do projeto Trevo Team (front + server)
+# .gitignore do projeto Trevo Team
+# Fica na RAIZ do repositório e vale para as duas pastas:
+#   front-end/  -> site (React + Vite)
+#   back-end/   -> API (Node + Express + SQLite)
 # Arquivos e pastas listados aqui NÃO vão para o GitHub.
 # ==========================================================
 
 # ---------- Dependências (o npm install recria) ----------
+# Sem barra no começo: vale para front-end/, back-end/ e qualquer outra pasta
 node_modules/
-server/node_modules/
 
 # ---------- Build do front (a Vercel gera sozinha) ----------
-dist/
-dist-ssr/
+front-end/dist/
+front-end/dist-ssr/
 
 # ---------- Configurações com senhas e chaves ----------
 # Os modelos .env.example CONTINUAM indo para o GitHub.
 .env
 .env.*
 !.env.example
-server/.env
 *.local
 
-# ---------- Dados do backend (ficam só no computador / no Volume) ----------
-server/data/
-server/uploads/
+# ---------- Dados do back-end (ficam só no computador / no Volume da Railway) ----------
+# Banco de dados e imagens enviadas pelo painel
+back-end/data/
+back-end/uploads/
 *.db
 *.db-shm
 *.db-wal
@@ -50,6 +53,5 @@ desktop.ini
 # ---------- Vercel ----------
 .vercel/
 
-# ---------- o tal do drive ----------
-.tmp.drivedownload
-.tmp.driveupload
+# ---------- Drive ----------
+.tmp.*

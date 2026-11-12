@@ -82,7 +82,10 @@ export function updateDeveloper(db, id, input) {
   return getDeveloper(db, id)
 }
 
-/** Apaga a desenvolvedora. Os posts dela continuam, só ficam sem "Developed By". */
+/**
+ * Apaga a desenvolvedora. Os posts dela continuam, só ficam sem "Developed By".
+ * Os logins do estúdio são apagados junto (ON DELETE CASCADE no banco).
+ */
 export function deleteDeveloper(db, id) {
   const { changes } = db.prepare('DELETE FROM developers WHERE id = ?').run(Number(id))
   if (!changes) throw new HttpError(404, 'Desenvolvedora não encontrada.')

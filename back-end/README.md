@@ -1,7 +1,8 @@
 # API da Trevo Team (backend do blog)
 
 Backend em **Node.js + Express** com banco **SQLite** (o que já vem no Node).
-Guarda os posts do blog, as desenvolvedoras e as imagens, e cuida do login da equipe.
+Guarda os posts do blog, as desenvolvedoras e as imagens, e cuida dos logins do painel
+(a equipe da Trevo e os estúdios).
 
 ## Requisitos
 
@@ -46,13 +47,35 @@ server/
 │   ├── config.js         lê o .env
 │   ├── db.js             banco e tabelas
 │   ├── seed.js           posts de exemplo (fictícios)
-│   ├── middleware/auth.js  protege as rotas do painel
-│   ├── routes/           auth, posts, developers, uploads
-│   └── services/         regras: posts, desenvolvedoras, senha, token, validação
+│   ├── middleware/auth.js  protege as rotas do painel (login e só admin)
+│   ├── routes/           auth, posts, developers, accounts, uploads
+│   └── services/         regras: posts, desenvolvedoras, logins, permissões, senha, token, validação
 ├── test/                 testes automáticos (npm test)
 ├── data/                 banco (criado sozinho; não vai para o GitHub)
 └── uploads/              imagens enviadas (não vão para o GitHub)
 ```
+
+## Logins e permissões
+
+Existem dois tipos de login:
+
+| | Admin (equipe da Trevo) | Estúdio |
+| --- | --- | --- |
+| Quem cria | o `.env` (primeira vez que a API liga) | o admin, no painel |
+| Posts | todos | só os do estúdio dele |
+| Desenvolvedoras | criar, editar e apagar todas | só editar a dele |
+| Logins dos estúdios | criar, trocar senha e apagar | não |
+
+- Um post é "do estúdio" quando o **Developed By** dele é aquele estúdio.
+- Quando um estúdio cria ou edita um post, o Developed By é sempre o dele.
+- Apagar uma desenvolvedora apaga os logins dela (os posts continuam, sem Developed By).
+- As regras ficam em `src/services/permissions.js`.
+
+Rotas dos logins de estúdio (só admin): `GET/POST /api/admin/accounts`,
+`PUT/DELETE /api/admin/accounts/:id`.
+
+Bancos criados antes dos logins de estúdio são atualizados sozinhos quando a API liga:
+a conta que já existia vira admin e nada se perde.
 
 ## Segurança
 

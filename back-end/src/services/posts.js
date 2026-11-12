@@ -149,12 +149,16 @@ export function getPublicPost(db, slug) {
   }
 }
 
-/** Todos os posts (inclusive rascunhos e agendados), para o painel. */
-export function listAllPosts(db) {
-  return db
-    .prepare(`SELECT * FROM posts ORDER BY COALESCE(published_at, created_at) DESC, id DESC`)
-    .all()
-    .map((row) => toApi(db, row))
+/**
+ * Todos os posts (inclusive rascunhos e agendados), para o painel.
+ * Com { developerId }: só os posts desse estúdio (login de estúdio).
+ */
+export function listAllPosts(db, { developerId } = {}) {
+  const order = 'ORDER BY COALESCE(published_at, created_at) DESC, id DESC'
+  const rows = developerId
+    ? db.prepare(`SELECT * FROM posts WHERE developer_id = ? ${order}`).all(Number(developerId))
+    : db.prepare(`SELECT * FROM posts ${order}`).all()
+  return rows.map((row) => toApi(db, row))
 }
 
 export function getPost(db, id) {

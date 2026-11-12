@@ -4,16 +4,23 @@
  * Rodar:  npm test
  *
  * Usam um banco na memória (não mexem no banco de verdade) e conferem
- * senha, token, limite de tentativas, posts e desenvolvedoras.
+ * senha, token, limite de tentativas, posts, desenvolvedoras, logins dos
+ * estúdios e permissões.
  */
 
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
+import { DatabaseSync } from 'node:sqlite'
+import { mkdtempSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { openDatabase, ensureAdmin, seedExamples } from '../src/db.js'
 import { hashPassword, verifyPassword } from '../src/services/passwords.js'
 import { createToken, verifyToken } from '../src/services/tokens.js'
 import { createLimiter } from '../src/services/rateLimit.js'
+import * as users from '../src/services/users.js'
 import { checkLogin, changePassword } from '../src/services/users.js'
+import { isAdmin, canManage, scopeFor, ownerFor, assertCanManage } from '../src/services/permissions.js'
 import * as posts from '../src/services/posts.js'
 import * as devs from '../src/services/developers.js'
 
@@ -71,7 +78,13 @@ test('limite de tentativas bloqueia depois de 5 erros e zera no acerto', () => {
 test('login da equipe e troca de senha', () => {
   const db = freshDb()
   assert.equal(ensureAdmin(db, 'outro@x.com', 'abc'), false, 'só cria a conta uma vez')
-  assert.deepEqual(checkLogin(db, ' EQUIPE@trevo.com ', 'senha-forte-123'), { id: 1, email: 'equipe@trevo.com' })
+  assert.deepEqual(checkLogin(db, ' EQUIPE@trevo.com ', 'senha-forte-123'), {
+    id: 1,
+    email: 'equipe@trevo.com',
+    role: 'admin',
+    developerId: null,
+    developer: null,
+  })
   assert.equal(checkLogin(db, 'equipe@trevo.com', 'errada'), null)
   assert.equal(checkLogin(db, 'ninguem@trevo.com', 'senha-forte-123'), null)
 
@@ -176,4 +189,118 @@ test('desenvolvedora: criar, validar, editar e apagar sem perder os posts', () =
   devs.deleteDeveloper(db, dev.id)
   const after = posts.getPost(db, post.id)
   assert.equal(after.developer, null, 'o post continua, sem desenvolvedora')
+})
+
+// ------------------------------------------------------------------
+// LOGINS DOS ESTÚDIOS E PERMISSÕES
+// ------------------------------------------------------------------
+
+/** Banco com o admin, um estúdio "Orvalho" e um estúdio "Lume", cada um com login */
+function studioDb() {
+  const db = freshDb()
+  const orvalho = devs.createDeveloper(db, { name: 'Estúdio Orvalho' })
+  const lume = devs.createDeveloper(db, { name: 'Coletivo Lume' })
+  users.createStudioAccount(db, { email: 'orvalho@teste.com', password: 'senha-do-orvalho', developerId: orvalho.id })
+  users.createStudioAccount(db, { email: 'lume@teste.com', password: 'senha-do-lume-1', developerId: lume.id })
+  return {
+    db,
+    orvalho,
+    lume,
+    admin: checkLogin(db, 'equipe@trevo.com', 'senha-forte-123'),
+    orvalhoUser: checkLogin(db, 'orvalho@teste.com', 'senha-do-orvalho'),
+    lumeUser: checkLogin(db, 'lume@teste.com', 'senha-do-lume-1'),
+  }
+}
+
+test('banco antigo (sem tipo de login) é atualizado e a conta vira admin', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'trevo-'))
+  const path = join(dir, 'antigo.db')
+  // Cria um banco no formato antigo, como o que já está na hospedagem
+  const old = new DatabaseSync(path)
+  old.exec(`CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL UNIQUE,
+            password_hash TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)`)
+  old.prepare('INSERT INTO users (email, password_hash) VALUES (?, ?)').run('equipe@trevo.com', hashPassword('senha-forte-123'))
+  old.close()
+
+  const db = openDatabase(path)
+  const user = checkLogin(db, 'equipe@trevo.com', 'senha-forte-123')
+  assert.equal(user.role, 'admin', 'a conta antiga continua entrando e é admin')
+  assert.equal(ensureAdmin(db, 'outro@x.com', 'outra-senha-123'), false, 'não cria outro admin')
+  db.close()
+  openDatabase(path).close() // abrir de novo não quebra (a atualização só roda uma vez)
+  rmSync(dir, { recursive: true, force: true })
+})
+
+test('login de estúdio: criar, entrar, validar, editar e apagar', () => {
+  const { db, orvalho, orvalhoUser } = studioDb()
+  assert.equal(orvalhoUser.role, 'studio')
+  assert.equal(orvalhoUser.developerId, orvalho.id)
+  assert.deepEqual(orvalhoUser.developer, { id: orvalho.id, name: 'Estúdio Orvalho' })
+  assert.equal(users.listStudioAccounts(db).length, 2)
+  assert.equal(users.listStudioAccounts(db, orvalho.id).length, 1)
+
+  const errorsOf = (input) => {
+    try {
+      users.createStudioAccount(db, input)
+      return {}
+    } catch (e) {
+      assert.equal(e.status, 400)
+      return e.details
+    }
+  }
+  assert.ok(errorsOf({ email: 'orvalho@teste.com', password: 'senha-longa-123', developerId: orvalho.id }).email, 'e-mail repetido')
+  assert.ok(errorsOf({ email: 'EQUIPE@trevo.com', password: 'senha-longa-123', developerId: orvalho.id }).email, 'e-mail do admin')
+  assert.ok(errorsOf({ email: 'sem-arroba', password: 'senha-longa-123', developerId: orvalho.id }).email)
+  assert.ok(errorsOf({ email: 'novo@teste.com', password: 'curta', developerId: orvalho.id }).password)
+  assert.ok(errorsOf({ email: 'novo@teste.com', password: 'senha-longa-123', developerId: 999 }).developerId)
+
+  // Editar: senha vazia mantém a senha; senha preenchida troca
+  users.updateStudioAccount(db, orvalhoUser.id, { email: 'contato@orvalho.com', password: '' })
+  assert.ok(checkLogin(db, 'contato@orvalho.com', 'senha-do-orvalho'))
+  users.updateStudioAccount(db, orvalhoUser.id, { email: 'contato@orvalho.com', password: 'senha-nova-orvalho' })
+  assert.equal(checkLogin(db, 'contato@orvalho.com', 'senha-do-orvalho'), null)
+  assert.ok(checkLogin(db, 'contato@orvalho.com', 'senha-nova-orvalho'))
+
+  // As rotas de logins de estúdio não mexem na conta de admin
+  assert.throws(() => users.updateStudioAccount(db, 1, { email: 'x@x.com' }), /não encontrado/)
+  assert.throws(() => users.deleteStudioAccount(db, 1), /não encontrado/)
+
+  users.deleteStudioAccount(db, orvalhoUser.id)
+  assert.equal(checkLogin(db, 'contato@orvalho.com', 'senha-nova-orvalho'), null)
+  assert.equal(users.getUser(db, orvalhoUser.id), null, 'login apagado perde o acesso na hora')
+})
+
+test('apagar a desenvolvedora apaga os logins dela', () => {
+  const { db, lume, lumeUser } = studioDb()
+  devs.deleteDeveloper(db, lume.id)
+  assert.equal(users.getUser(db, lumeUser.id), null)
+  assert.equal(users.listStudioAccounts(db).length, 1)
+})
+
+test('permissões: admin mexe em tudo; estúdio só no que é dele', () => {
+  const { orvalho, lume, admin, orvalhoUser } = studioDb()
+  assert.equal(isAdmin(admin), true)
+  assert.equal(isAdmin(orvalhoUser), false)
+
+  assert.equal(canManage(admin, lume.id), true)
+  assert.equal(canManage(admin, null), true)
+  assert.equal(canManage(orvalhoUser, orvalho.id), true)
+  assert.equal(canManage(orvalhoUser, String(orvalho.id)), true, 'id vindo do endereço (texto)')
+  assert.equal(canManage(orvalhoUser, lume.id), false)
+  assert.equal(canManage(orvalhoUser, null), false, 'post sem estúdio é só do admin')
+  assert.throws(() => assertCanManage(orvalhoUser, lume.id), (e) => e.status === 403)
+
+  assert.deepEqual(scopeFor(admin), {})
+  assert.deepEqual(scopeFor(orvalhoUser), { developerId: orvalho.id })
+  assert.equal(ownerFor(admin, lume.id), lume.id, 'admin escolhe o estúdio')
+  assert.equal(ownerFor(orvalhoUser, lume.id), orvalho.id, 'estúdio não passa o post para outro')
+})
+
+test('painel do estúdio lista só os posts dele', () => {
+  const { db, orvalho, lume, orvalhoUser } = studioDb()
+  posts.createPost(db, validPost({ title: 'Post do Orvalho', developerId: orvalho.id }))
+  posts.createPost(db, validPost({ title: 'Post do Lume', developerId: lume.id }))
+  posts.createPost(db, validPost({ title: 'Post da Trevo' }))
+  assert.equal(posts.listAllPosts(db).length, 3)
+  assert.deepEqual(posts.listAllPosts(db, scopeFor(orvalhoUser)).map((p) => p.title), ['Post do Orvalho'])
 })

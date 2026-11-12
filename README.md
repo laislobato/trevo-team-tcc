@@ -1,208 +1,134 @@
-# 🚀 Guia de Setup - Trevo Team TCC
+# 🍀 Trevo Team
 
-## 📋 Pré-requisitos
-- **Node.js** 16+ instalado ([baixar](https://nodejs.org/))
-- **Git** (opcional, mas recomendado)
+Site da **Trevo Team**, uma publisher fictícia que divulga e financia jogos indie.
+Projeto de TCC do curso **Técnico em Informática para Internet** da
+**Etec "Comendador João Rays"** (Barra Bonita – SP).
 
-## 1️⃣ Criar o Projeto
+> Todos os jogos, estúdios, posts e comentários do site são **ficticios**.
+> O site foi feito como um projeto de tcc para demonstação
 
-```bash
-# Cria um novo projeto Vite com React
-npm create vite@latest seu-tcc -- --template react
+O projeto tem duas partes:
 
-# Entra na pasta
-cd seu-tcc
-
-# Instala as dependências
-npm install
-```
-
-## 2️⃣ Estrutura de Pastas
-
-Crie essa estrutura dentro de `src/`:
-
-```
-seu-tcc/
-├── src/
-│   ├── components/
-│   │   ├── Header.jsx
-│   │   ├── Hero.jsx
-│   │   ├── Services.jsx
-│   │   ├── Projects.jsx
-│   │   └── Footer.jsx
-│   ├── pages/
-│   │   └── Home.jsx
-│   ├── styles/
-│   │   └── globals.css
-│   ├── App.jsx
-│   └── main.jsx
-├── public/
-├── index.html
-├── vite.config.js
-├── package.json
-└── .gitignore
-```
-
-## 3️⃣ Instalação de Dependências Adicionais
-
-### Opção A: Sem extras (recomendado para começar)
-```bash
-npm install
-```
-
-### Opção B: Com Tailwind (se quiser)
-```bash
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
-```
-
-### Opção C: Com React Router (para múltiplas páginas)
-```bash
-npm install react-router-dom
-```
-
-## 4️⃣ Copiar os Arquivos
-
-1. Crie `src/pages/Home.jsx` e copie o conteúdo que passei
-2. Crie `src/pages/Home.css` e copie o CSS refatorado
-
-## 5️⃣ Atualizar App.jsx
-
-```jsx
-import Home from './pages/Home'
-import './styles/globals.css'
-
-function App() {
-  return (
-    <div className="app">
-      <Home />
-    </div>
-  )
-}
-
-export default App
-```
-
-## 6️⃣ Reset Global CSS
-
-Crie `src/styles/globals.css`:
-
-```css
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body, #root {
-  height: 100%;
-  width: 100%;
-}
-
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-}
-```
-
-## 7️⃣ Executar o Projeto
-
-```bash
-# Inicia o servidor de desenvolvimento
-npm run dev
-```
-
-Abrirá em `http://localhost:5173`
-
-## 📦 Estrutura de Componentes (Próximo Passo)
-
-Para deixar bem modular, quebra `Home.jsx` em componentes:
-
-```jsx
-// src/pages/Home.jsx
-import Header from '../components/Header'
-import Hero from '../components/Hero'
-import Services from '../components/Services'
-import Projects from '../components/Projects'
-import './Home.css'
-
-export default function Home() {
-  return (
-    <div className="home-container">
-      <Header />
-      <Hero />
-      <Services />
-      <Projects />
-    </div>
-  )
-}
-```
-
-## 🔧 Comandos Úteis
-
-```bash
-npm run dev      # Inicia servidor (development)
-npm run build    # Build para produção
-npm run preview  # Preview do build
-npm run lint     # Lint do código (se instalado)
-```
-
-## 📝 Alterações Feitas no CSS
-
-✅ Removido `position: absolute` (quebrava responsividade)
-✅ Adicionado `flexbox` e `grid` (dinâmico)
-✅ Criadas variáveis CSS (`:root`)
-✅ Media queries mobile-first
-✅ Hover effects nos cards
-✅ Shadows e transições
-
-## 🎨 Personalizações Rápidas
-
-### Mudar cores
-No `Home.css`, edite as cores em `:root`:
-```css
-:root {
-  --primary-cyan: #D0FFFB;
-  --primary-orange: #F8906A;
-  /* etc */
-}
-```
-
-### Adicionar fontes customizadas
-No `index.html`, adicione:
-```html
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-```
-
-### Ajustar spacing
-As medidas estão em variáveis, fácil de mudar:
-```css
---spacing-lg: 4rem;  /* Mude aqui */
-```
-
-## ⚡ Próximos Passos Recomendados
-
-1. **Componentizar** (quebrar em Header, Hero, Services, etc)
-2. **Adicionar rotas** (React Router para outras páginas)
-3. **Criar backend** (.NET conforme disse, ou Node.js)
-4. **Adicionar animações** (Framer Motion é leve)
-5. **Deploy** (Vercel, Netlify ou GitHub Pages)
-
-## 🆘 Troubleshooting
-
-### Porta 5173 já está em uso
-```bash
-npm run dev -- --port 3000
-```
-
-### Importações não funcionam
-Certifique-se de que está usando `import` (não `require`)
-
-### Erro de módulo
-Delete `node_modules` e `package-lock.json`, depois:
-```bash
-npm install
-```
+| Parte | Pasta | O que faz |
+| --- | --- | --- |
+| **Front** (site) | raiz do projeto (`src/`) | As páginas que o público vê + o painel da equipe |
+| **Back** (API) | `server/` | Guarda os posts do blog, as desenvolvedoras e as imagens, e cuida do login |
 
 ---
 
-**Dúvidas?** Eu tô por aqui! Boa sorte no TCC! 🚀
+
+## 🧰 Tecnologias
+
+- **React 19**: monta as páginas a partir de componentes
+- **Vite 8**: roda o projeto no computador e gera a versão final
+- **React Router 7**: troca de página sem recarregar o site
+- **CSS puro**: um arquivo de estilo para cada componente
+
+---
+
+## 🚀 Como iniciar o projeto
+
+**Requisitos:** Node.js 22 ou mais novo e Git.
+
+```bash
+git clone <endereço-do-repositório>
+cd trevo-team
+npm install       # instala as dependências (só na primeira vez)
+npm run dev       # abre o site em http://localhost:5173
+```
+
+### Comandos
+
+| Comando | Para quê |
+| --- | --- |
+| `npm run dev` | Liga o site em modo desenvolvimento (atualiza sozinho ao salvar) |
+| `npm run build` | Gera a versão final do site na pasta `dist/` |
+| `npm run preview` | Abre a versão do `dist/` para conferir |
+| `npm run lint` | Procura erros no código |
+
+---
+
+## 🗺️ Páginas do site
+
+| Endereço | Página | Arquivo |
+| --- | --- | --- |
+| `/` | Início | `src/pages/Home.jsx` |
+| `/jogo` | Página inicial dos jogos (banners, vitrine e comentários) | `src/pages/Games.jsx` |
+| `/jogo/:slug` | Página de um jogo (modelo usado por todos) | `src/pages/GamePage.jsx` |
+| `/sobre` | Sobre a Trevo Team | `src/pages/About.jsx` |
+| `/blog` | Blog (abas e FAQ) | `src/pages/Blog/Blog.jsx` |
+| `/blog/:slug` | Um post do blog | `src/pages/Blog/BlogPost.jsx` |
+| `/contato` | Contact Us e suporte | `src/pages/Contact.jsx` |
+
+As rotas ficam em `src/App.jsx`. Qualquer endereço que não existe volta para o Início.
+
+---
+
+## ⚙️ Como o projeto funciona
+
+### Estrutura de pastas
+
+```
+src/
+├── main.jsx            liga o React no index.html
+├── App.jsx             rotas: qual página aparece em cada endereço
+├── pages/              uma página por arquivo (monta a página juntando componentes)
+├── components/         pedaços das páginas, separados por área
+│   ├── shared/         Header, Footer e Newsletter (usados em várias páginas)
+│   ├── Home/           Hero (carrossel de banners), Projects, Testimonials
+│   ├── GamesHome/      GameShowcase (vitrine) e GameReviews (comentários)
+│   ├── Games/          blocos da página de um jogo
+│   ├── Blog/  Contact/  About/
+│   └── <Área>/css/     o CSS de cada componente fica na pasta css/ da área
+├── data/               conteúdo do site: jogos, FAQ, tipos de post
+├── services/
+│   └── games.js        onde as páginas de jogos buscam os dados
+├── styles/
+│   └── globals.css     cores, espaçamentos e estilos gerais
+└── assets/             imagens (logo, banners...)
+```
+
+### Como uma página é montada
+
+A página (`pages/`) junta vários componentes (`components/`) e passa para eles o
+conteúdo por *props*. Cada componente tem o seu próprio CSS.
+
+Exemplo: `pages/Games.jsx` usa `Header`, `Hero`, `GameShowcase`, `GameReviews` e `Footer`.
+
+### Cores
+
+Ficam em `src/styles/globals.css`, como variáveis do CSS:
+
+| Variável | Cor |
+| --- | --- |
+| `--primary-cyan` | `#D0FFFB` (ciano) |
+| `--primary-orange` | `#F8906A` (laranja) |
+| `--primary-green` | `#3ECA22` (verde) |
+| `--light-gray` | `#D9D9D9` (cinza dos blocos) |
+| cores da marca | `#8CC74F` (verde-trevo) e `#003223` (verde-escuro do rodapé) |
+
+Os espaçamentos (`--spacing-*`), os cantos (`--radius-*`) e as animações
+(`--transition-*`) também ficam ali.
+
+### Jogos
+
+Os jogos ficam em `src/data/games.js`. A página inicial dos jogos (`/jogo`) mostra
+todos na vitrine, e cada jogo tem a sua página em `/jogo/<slug>`, montada pelo mesmo
+modelo (`GamePage.jsx`).
+
+**Para adicionar um jogo:** copie um bloco da lista `games` em `src/data/games.js`
+e mude os campos (o significado de cada um está explicado no começo do arquivo).
+O endereço vem do `slug`: `slug: 'meu-jogo'` vira `/jogo/meu-jogo`.
+A vitrine e a página do jogo se ajustam sozinhas.
+
+### Onde mudar cada conteúdo
+
+| Conteúdo | Arquivo |
+| --- | --- |
+| Jogos, banners da página de jogos e comentários | `src/data/games.js` |
+| Perguntas do FAQ | `src/data/faq.js` |
+| Banners da Home | `src/components/Home/Hero.jsx` |
+| Menu e redes sociais | `src/components/shared/Header.jsx` |
+| Links do rodapé | `src/components/shared/Footer.jsx` |
+
+---
