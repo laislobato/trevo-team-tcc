@@ -1,42 +1,36 @@
 /**
  * SERVIÇO: jogos
  * ==============
- * Única porta de entrada dos dados de jogos para as páginas.
+ * Única porta de entrada dos dados de jogos para as páginas
+ * (pages/Games.jsx e pages/GamePage.jsx).
  *
- * HOJE:     lê a lista local (src/data/games.js).
- * FUTURO:   quando os jogos estiverem no painel, troque o corpo destas
- *           funções por chamadas ao backend (igual aos posts do blog), ex.:
- *             getGame: (slug) => api.getGame(slug)
- *           As páginas não precisam mudar, porque já recebem uma Promise
- *           e já tratam "carregando", "não encontrado" e "erro".
+ * - Jogos: vêm da API (back-end), cadastrados pelo painel.
+ * - Comentários de jogadores: ainda são uma lista fixa (src/data/games.js).
  *
- * Formato das respostas (o mesmo que o backend deve devolver):
- *   getGames()     -> [ jogo, jogo, ... ]
- *   getGame(slug)  -> { game, others }   (others = os outros jogos)
+ * Formato das respostas:
+ *   getGames()     -> [ jogo, jogo, ... ]     (só os publicados)
+ *   getGame(slug)  -> { game, others }        (others = os outros jogos)
  *   getReviews()   -> [ comentário, ... ]
+ *
+ * Se o jogo não existir (ou for rascunho), getGame lança um erro com
+ * status 404 e a página mostra "Jogo não encontrado".
  */
 
-import { games, reviews } from '../data/games'
-import { ApiError } from './api'
+import { api } from './api'
+import { reviews } from '../data/games'
 
 // ===============================================
 // FUNÇÕES
 // ===============================================
 
-/** Todos os jogos (vitrine da página /jogo) */
-export async function getGames() {
-  return games
+/** Jogos publicados (vitrine e banners da página /jogo) */
+export function getGames() {
+  return api.getGames()
 }
 
 /** Um jogo pelo slug + os outros jogos ("Outros projetos") */
-export async function getGame(slug) {
-  const game = games.find((g) => g.slug === slug)
-
-  // Mesmo erro que a API devolve, para a página mostrar "Jogo não encontrado"
-  if (!game) throw new ApiError('Jogo não encontrado.', 404)
-
-  const others = games.filter((g) => g.slug !== slug)
-  return { game, others }
+export function getGame(slug) {
+  return api.getGame(slug)
 }
 
 /** Comentários de jogadores (faixa da página /jogo) */

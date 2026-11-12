@@ -6,8 +6,7 @@
  *   ex.: /jogo/raizes-de-vidro, /jogo/mare-alta, /jogo/lumen-drift
  *
  * A página lê o slug do endereço e pede os dados do jogo para
- * src/services/games.js. Hoje esses dados vêm de src/data/games.js;
- * no futuro virão do painel (backend), sem precisar mexer aqui.
+ * src/services/games.js, que busca na API (jogos cadastrados pelo painel).
  *
  * Estrutura (de cima para baixo):
  * - Header
@@ -136,9 +135,11 @@ export default function GamePage() {
       <section className="games-about">
         <h3 className="games-about-title">SOBRE O JOGO</h3>
         <p className="games-about-text">{game.about}</p>
-        <p className="games-about-developer">
-          Desenvolvido por <strong>{game.developer}</strong>
-        </p>
+        {game.developer && (
+          <p className="games-about-developer">
+            Desenvolvido por <strong>{game.developer.name}</strong>
+          </p>
+        )}
       </section>
 
       {/* ========== PERSONAGENS ========== */}

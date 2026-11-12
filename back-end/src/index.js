@@ -23,7 +23,7 @@ if (ensureAdmin(db, config.adminEmail, config.adminPassword)) {
   console.log(`👤 Conta da equipe criada: ${config.adminEmail}`)
 }
 if (config.seedExamples && seedExamples(db)) {
-  console.log('🌱 Posts e desenvolvedoras de exemplo criados.')
+  console.log('🌱 Conteúdo de exemplo criado (posts, desenvolvedoras e/ou jogos).')
 }
 
 const app = createApp({ db, config })

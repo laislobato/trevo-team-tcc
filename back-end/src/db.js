@@ -10,6 +10,8 @@
  *                  role 'studio' = um estúdio (developer_id diz qual; só mexe no que é dele)
  * - developers  -> estúdios exibidos em "Developed By"
  * - posts       -> posts do blog (developer_id = estúdio dono do post)
+ * - games       -> jogos (developer_id = estúdio dono do jogo)
+ * - meta        -> anotações internas (ex.: se os exemplos já foram criados)
  *
  * Bancos criados antes dos logins de estúdio são atualizados sozinhos
  * (ver migrate): a conta que já existia vira 'admin' e nada se perde.
@@ -19,7 +21,7 @@ import { DatabaseSync } from 'node:sqlite'
 import { mkdirSync } from 'node:fs'
 import { dirname } from 'node:path'
 import { hashPassword } from './services/passwords.js'
-import { EXAMPLE_DEVELOPERS, EXAMPLE_POSTS } from './seed.js'
+import { EXAMPLE_DEVELOPERS, EXAMPLE_POSTS, EXAMPLE_GAMES } from './seed.js'
 
 const SCHEMA = `
   CREATE TABLE IF NOT EXISTS developers (
@@ -63,6 +65,40 @@ const SCHEMA = `
     -- estúdio do login; apagar o estúdio apaga os logins dele junto
     developer_id  INTEGER REFERENCES developers(id) ON DELETE CASCADE,
     created_at    TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+  );
+
+  CREATE TABLE IF NOT EXISTS games (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    slug            TEXT NOT NULL UNIQUE,        -- endereço: /jogo/<slug>
+    title           TEXT NOT NULL,
+    subtitle        TEXT NOT NULL DEFAULT '',
+    developer_id    INTEGER REFERENCES developers(id) ON DELETE SET NULL,
+    -- vitrine e banner da página /jogo
+    character       TEXT NOT NULL DEFAULT '',    -- personagem da vitrine
+    character_image TEXT NOT NULL DEFAULT '',
+    color           TEXT NOT NULL DEFAULT 'green' CHECK (color IN ('green', 'cyan', 'orange')),
+    banner          TEXT NOT NULL DEFAULT '',    -- imagem do banner no topo da página /jogo
+    description     TEXT NOT NULL DEFAULT '',    -- texto curto (vitrine e topo da página do jogo)
+    -- quadro de informações
+    genre           TEXT NOT NULL DEFAULT '',
+    rating          TEXT NOT NULL DEFAULT 'Livre', -- classificação indicativa
+    theme           TEXT NOT NULL DEFAULT '',
+    platforms       TEXT NOT NULL DEFAULT '[]',  -- lista JSON ["PC", "Xbox", ...]
+    -- resto da página do jogo
+    quote           TEXT NOT NULL DEFAULT '',
+    screenshots     TEXT NOT NULL DEFAULT '[]',  -- lista JSON com até 3 imagens
+    about           TEXT NOT NULL DEFAULT '',
+    characters      TEXT NOT NULL DEFAULT '[]',  -- lista JSON [{ name, text, image }]
+    status          TEXT NOT NULL DEFAULT 'rascunho' CHECK (status IN ('rascunho', 'publicado')),
+    created_at      TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+  );
+
+  CREATE INDEX IF NOT EXISTS games_developer ON games (developer_id);
+
+  CREATE TABLE IF NOT EXISTS meta (
+    key   TEXT PRIMARY KEY,
+    value TEXT NOT NULL
   );
 `
 
@@ -108,11 +144,47 @@ export function ensureAdmin(db, email, password) {
   return true
 }
 
-/** Coloca os posts e desenvolvedoras de exemplo (fictícios) num banco vazio. */
-export function seedExamples(db) {
-  const { total } = db.prepare('SELECT COUNT(*) AS total FROM posts').get()
-  if (total > 0) return false
+// ===============================================
+// EXEMPLOS
+// ===============================================
 
+const getMeta = (db, key) => db.prepare('SELECT value FROM meta WHERE key = ?').get(key)?.value
+const setMeta = (db, key, value) =>
+  db.prepare('INSERT INTO meta (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value').run(key, value)
+const count = (db, table) => db.prepare(`SELECT COUNT(*) AS total FROM ${table}`).get().total
+
+/**
+ * Coloca o conteúdo de exemplo (fictício) no banco, UMA vez só:
+ * - posts e desenvolvedoras: se ainda não houver nenhum post;
+ * - jogos: se ainda não houver nenhum jogo (bancos antigos ganham os 3 jogos
+ *   que antes ficavam fixos no site).
+ * Cada parte é anotada na tabela "meta". Assim, se a equipe apagar todos os
+ * exemplos pelo painel, eles não voltam quando o servidor reinicia.
+ * Devolve true se criou alguma coisa.
+ */
+export function seedExamples(db) {
+  let created = false
+
+  if (!getMeta(db, 'seed_posts')) {
+    if (count(db, 'posts') === 0) {
+      seedPosts(db)
+      created = true
+    }
+    setMeta(db, 'seed_posts', 'ok')
+  }
+
+  if (!getMeta(db, 'seed_games')) {
+    if (count(db, 'games') === 0) {
+      seedGames(db)
+      created = true
+    }
+    setMeta(db, 'seed_games', 'ok')
+  }
+
+  return created
+}
+
+function seedPosts(db) {
   const insertDev = db.prepare(`
     INSERT INTO developers (name, description, active_devs, socials, members)
     VALUES (:name, :description, :activeDevs, :socials, :members)`)
@@ -134,5 +206,22 @@ export function seedExamples(db) {
   for (const { developerKey, ...post } of EXAMPLE_POSTS) {
     insertPost.run({ ...post, developerId: devIds[developerKey] })
   }
-  return true
+}
+
+/** Jogos de exemplo, ligados às desenvolvedoras de exemplo pelo nome (se existirem) */
+function seedGames(db) {
+  const findDev = db.prepare('SELECT id FROM developers WHERE name = ?')
+  const insertGame = db.prepare(`
+    INSERT INTO games (slug, title, subtitle, developer_id, character, color, description, genre, rating,
+      theme, platforms, quote, screenshots, about, characters, status)
+    VALUES (:slug, :title, :subtitle, :developerId, :character, :color, :description, :genre, :rating,
+      :theme, :platforms, :quote, '[]', :about, :characters, 'publicado')`)
+  for (const { developerName, platforms, characters, ...game } of EXAMPLE_GAMES) {
+    insertGame.run({
+      ...game,
+      developerId: findDev.get(developerName)?.id ?? null,
+      platforms: JSON.stringify(platforms),
+      characters: JSON.stringify(characters),
+    })
+  }
 }

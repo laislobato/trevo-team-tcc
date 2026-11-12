@@ -23,6 +23,7 @@ import { checkLogin, changePassword } from '../src/services/users.js'
 import { isAdmin, canManage, scopeFor, ownerFor, assertCanManage } from '../src/services/permissions.js'
 import * as posts from '../src/services/posts.js'
 import * as devs from '../src/services/developers.js'
+import * as games from '../src/services/games.js'
 
 const SECRET = 'segredo-de-teste-com-mais-de-32-caracteres!!'
 
@@ -303,4 +304,122 @@ test('painel do estúdio lista só os posts dele', () => {
   posts.createPost(db, validPost({ title: 'Post da Trevo' }))
   assert.equal(posts.listAllPosts(db).length, 3)
   assert.deepEqual(posts.listAllPosts(db, scopeFor(orvalhoUser)).map((p) => p.title), ['Post do Orvalho'])
+})
+
+// ------------------------------------------------------------------
+// JOGOS
+// ------------------------------------------------------------------
+
+const validGame = (extra = {}) => ({
+  title: 'Jogo de Teste',
+  subtitle: 'Sub',
+  character: 'Herói',
+  color: 'orange',
+  description: 'Descrição curta',
+  genre: 'Aventura',
+  rating: '12 anos',
+  theme: 'Fantasia',
+  platforms: ['PC', 'Xbox'],
+  quote: 'Uma frase',
+  screenshots: ['', '/uploads/abc.webp', ''],
+  about: 'Sobre o jogo',
+  characters: [{ name: 'HERÓI', text: 'O herói', image: '' }],
+  status: 'publicado',
+  ...extra,
+})
+
+test('exemplos: 3 jogos ligados às desenvolvedoras, só uma vez', () => {
+  const db = freshDb()
+  seedExamples(db)
+  const list = games.listPublicGames(db)
+  assert.deepEqual(list.map((g) => g.slug), ['raizes-de-vidro', 'mare-alta', 'lumen-drift'])
+  assert.equal(list[0].developer.name, 'Estúdio Orvalho')
+  assert.equal(list[2].developer.name, 'Coletivo Lume')
+  assert.deepEqual(list[2].platforms, ['PC', 'Xbox', 'PlayStation'])
+  assert.equal(list[0].characters.length, 3)
+
+  // apagou todos os exemplos: eles não voltam quando o servidor reinicia
+  for (const g of list) games.deleteGame(db, g.id)
+  assert.equal(seedExamples(db), false)
+  assert.equal(games.listAllGames(db).length, 0)
+})
+
+test('banco antigo com posts ganha os jogos de exemplo, sem repetir os posts', () => {
+  const db = freshDb()
+  devs.createDeveloper(db, { name: 'Estúdio Orvalho' })
+  posts.createPost(db, validPost())
+  assert.equal(seedExamples(db), true, 'criou os jogos')
+  assert.equal(posts.listAllPosts(db).length, 1, 'não colocou os posts de exemplo')
+  assert.equal(games.listAllGames(db).length, 3)
+  assert.equal(games.getPublicGame(db, 'raizes-de-vidro').game.developer.name, 'Estúdio Orvalho')
+  assert.equal(games.getPublicGame(db, 'lumen-drift').game.developer, null, 'Coletivo Lume não existe nesse banco')
+})
+
+test('jogo: criar, slug, rascunho fora do site e outros projetos', () => {
+  const db = freshDb()
+  const a = games.createGame(db, validGame({ title: 'Raízes de Vidro' }))
+  const b = games.createGame(db, validGame({ title: 'Raízes de Vidro' }))
+  games.createGame(db, validGame({ title: 'Rascunho secreto', status: 'rascunho' }))
+  assert.equal(a.slug, 'raizes-de-vidro')
+  assert.equal(b.slug, 'raizes-de-vidro-2')
+  assert.equal(a.rating, '12 anos')
+  assert.deepEqual(a.screenshots, ['', '/uploads/abc.webp', ''])
+
+  assert.equal(games.listPublicGames(db).length, 2, 'rascunho não aparece no site')
+  assert.equal(games.listAllGames(db).length, 3, 'o painel vê todos')
+  assert.throws(() => games.getPublicGame(db, 'rascunho-secreto'), /não encontrado/)
+
+  const { game, others } = games.getPublicGame(db, 'raizes-de-vidro')
+  assert.equal(game.id, a.id)
+  assert.deepEqual(others.map((o) => o.slug), ['raizes-de-vidro-2'])
+})
+
+test('jogo: validação recusa dados ruins', () => {
+  const db = freshDb()
+  const errorsOf = (input) => {
+    try {
+      games.createGame(db, input)
+      return {}
+    } catch (e) {
+      assert.equal(e.status, 400)
+      return e.details
+    }
+  }
+  assert.ok(errorsOf(validGame({ title: 'a' })).title)
+  assert.ok(errorsOf(validGame({ color: 'roxo' })).color)
+  assert.ok(errorsOf(validGame({ rating: '13 anos' })).rating)
+  assert.ok(errorsOf(validGame({ status: 'x' })).status)
+  assert.ok(errorsOf(validGame({ platforms: ['PC', 'Atari'] }))['platforms.1'])
+  assert.ok(errorsOf(validGame({ screenshots: ['', '', '', ''] })).screenshots)
+  assert.ok(errorsOf(validGame({ banner: 'javascript:alert(1)' })).banner)
+  assert.ok(errorsOf(validGame({ characters: [{ name: '', text: 'x' }] }))['characters.0.name'])
+  assert.ok(errorsOf(validGame({ description: 'x'.repeat(301) })).description)
+  assert.ok(errorsOf(validGame({ developerId: 999 })).developerId)
+  assert.deepEqual(errorsOf(validGame()), {})
+  assert.deepEqual(games.createGame(db, validGame({ platforms: ['PC', 'PC'] })).platforms, ['PC'], 'sem repetir')
+})
+
+test('jogo: editar mantém o slug; apagar some; apagar o estúdio deixa o jogo sem estúdio', () => {
+  const db = freshDb()
+  const dev = devs.createDeveloper(db, { name: 'Estúdio Teste' })
+  const game = games.createGame(db, validGame({ developerId: dev.id }))
+  const edited = games.updateGame(db, game.id, validGame({ title: 'Nome novo', developerId: dev.id }))
+  assert.equal(edited.slug, game.slug)
+  assert.equal(edited.title, 'Nome novo')
+  assert.equal(edited.developer.name, 'Estúdio Teste')
+
+  devs.deleteDeveloper(db, dev.id)
+  assert.equal(games.getGame(db, game.id).developer, null)
+
+  games.deleteGame(db, game.id)
+  assert.equal(games.getGame(db, game.id), null)
+  assert.throws(() => games.deleteGame(db, game.id), /não encontrado/)
+})
+
+test('painel do estúdio lista só os jogos dele', () => {
+  const { db, orvalho, lume, orvalhoUser } = studioDb()
+  games.createGame(db, validGame({ title: 'Jogo do Orvalho', developerId: orvalho.id }))
+  games.createGame(db, validGame({ title: 'Jogo do Lume', developerId: lume.id }))
+  assert.equal(games.listAllGames(db).length, 2)
+  assert.deepEqual(games.listAllGames(db, scopeFor(orvalhoUser)).map((g) => g.title), ['Jogo do Orvalho'])
 })

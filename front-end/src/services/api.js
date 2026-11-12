@@ -107,6 +107,23 @@ export function normalizePost(post) {
 const normalizeSummary = (s) => (s ? { ...s, cover: imageUrl(s.cover) } : null)
 
 // ------------------------------------------------------------------
+// Converte o jogo da API para o formato que as páginas de jogos usam
+// (os caminhos das imagens viram endereços completos)
+// ------------------------------------------------------------------
+export function normalizeGame(game) {
+  return {
+    ...game,
+    characterImage: imageUrl(game.characterImage),
+    banner: imageUrl(game.banner),
+    screenshots: [0, 1, 2].map((i) => imageUrl(game.screenshots?.[i] || '')),
+    characters: (game.characters || []).map((c) => ({ ...c, image: imageUrl(c.image) })),
+    developer: game.developer ? { ...game.developer, logo: imageUrl(game.developer.logo) } : null,
+  }
+}
+
+const normalizeGameSummary = (g) => ({ ...g, characterImage: imageUrl(g.characterImage) })
+
+// ------------------------------------------------------------------
 // Site público
 // ------------------------------------------------------------------
 export const api = {
@@ -126,6 +143,18 @@ export const api = {
     }
   },
 
+  /** Jogos publicados (vitrine da página /jogo) */
+  async getGames() {
+    const data = await request('/api/games')
+    return data.games.map(normalizeGame)
+  },
+
+  /** Um jogo + os outros jogos ("Outros projetos") */
+  async getGame(slug) {
+    const data = await request(`/api/games/${encodeURIComponent(slug)}`)
+    return { game: normalizeGame(data.game), others: data.others.map(normalizeGameSummary) }
+  },
+
   // ----------------------------------------------------------------
   // Login
   // ----------------------------------------------------------------
@@ -143,6 +172,12 @@ export const api = {
     createPost: (token, data) => request('/api/admin/posts', { method: 'POST', token, body: data }).then((d) => d.post),
     updatePost: (token, id, data) => request(`/api/admin/posts/${id}`, { method: 'PUT', token, body: data }).then((d) => d.post),
     deletePost: (token, id) => request(`/api/admin/posts/${id}`, { method: 'DELETE', token }),
+
+    listGames: (token) => request('/api/admin/games', { token }).then((d) => d.games),
+    getGame: (token, id) => request(`/api/admin/games/${id}`, { token }).then((d) => d.game),
+    createGame: (token, data) => request('/api/admin/games', { method: 'POST', token, body: data }).then((d) => d.game),
+    updateGame: (token, id, data) => request(`/api/admin/games/${id}`, { method: 'PUT', token, body: data }).then((d) => d.game),
+    deleteGame: (token, id) => request(`/api/admin/games/${id}`, { method: 'DELETE', token }),
 
     listDevelopers: (token) => request('/api/admin/developers', { token }).then((d) => d.developers),
     getDeveloper: (token, id) => request(`/api/admin/developers/${id}`, { token }).then((d) => d.developer),

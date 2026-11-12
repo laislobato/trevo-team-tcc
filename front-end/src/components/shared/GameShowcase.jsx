@@ -20,7 +20,7 @@
  *
  * Props:
  * - title: título da seção
- * - games: lista de jogos (ver src/data/games.js)
+ * - games: lista de jogos (vem da API, via src/services/games.js)
  */
 
 import { useEffect, useRef, useState } from 'react'

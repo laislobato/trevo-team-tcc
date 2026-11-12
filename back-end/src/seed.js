@@ -96,3 +96,75 @@ export const EXAMPLE_POSTS = [
     publishedAt: '2026-10-20 12:00:00',
   },
 ]
+
+/**
+ * Jogos de exemplo (os mesmos que antes ficavam fixos no site).
+ * "developerName" liga o jogo à desenvolvedora de exemplo com esse nome.
+ */
+export const EXAMPLE_GAMES = [
+  {
+    slug: 'raizes-de-vidro',
+    title: 'Raízes de Vidro',
+    subtitle: 'Uma floresta de cristal precisa de cuidado',
+    developerName: 'Estúdio Orvalho',
+    character: 'Mira, a jardineira',
+    color: 'green',
+    genre: 'Aventura',
+    rating: 'Livre',
+    theme: 'Natureza e mistério',
+    platforms: ['PC', 'Nintendo Switch'],
+    description:
+      'Mira cuida de uma floresta de cristal que começou a rachar. Explore portas trancadas, resolva quebra-cabeças com plantas e descubra o que está quebrando o vidro.',
+    quote: '“Toda raiz guarda um segredo.”',
+    about:
+      'Raízes de Vidro é uma aventura em pixel art com quebra-cabeças que usam plantas: cada semente cresce de um jeito e abre um caminho diferente. São seis áreas da floresta para explorar, cada uma com um guardião e uma música própria.',
+    characters: [
+      { name: 'MIRA', text: 'A jardineira da floresta. Curiosa e teimosa, carrega um regador que faz qualquer semente brotar.', image: '' },
+      { name: 'TICO', text: 'Um besouro de vidro que vive no chapéu da Mira e conhece todos os atalhos da floresta.', image: '' },
+      { name: 'O GUARDIÃO', text: 'A árvore mais antiga da floresta. Ninguém sabe se ele quer ajudar ou atrapalhar.', image: '' },
+    ],
+  },
+  {
+    slug: 'mare-alta',
+    title: 'Maré Alta',
+    subtitle: 'Cuide do farol, conheça quem passa pela ilha',
+    developerName: 'Estúdio Orvalho',
+    character: 'Seu Tomé, o faroleiro',
+    color: 'cyan',
+    genre: 'Exploração',
+    rating: 'Livre',
+    theme: 'Vida no mar',
+    platforms: ['PC'],
+    description:
+      'Um jogo calmo sobre cuidar de um farol e das pessoas que passam pela ilha. Cada visitante traz uma história, e a maré muda tudo a cada dia.',
+    quote: '“O mar sempre traz alguém de volta.”',
+    about:
+      'Em Maré Alta você vive os dias de um faroleiro: consertar a lâmpada, pescar, cozinhar e conversar com os visitantes. A maré sobe e desce de verdade, abrindo e fechando caminhos pela ilha ao longo do dia.',
+    characters: [
+      { name: 'SEU TOMÉ', text: 'O faroleiro da ilha há quarenta anos. Sabe a previsão do tempo só de olhar para as nuvens.', image: '' },
+      { name: 'MARINA', text: 'Uma viajante que chegou num barco furado e decidiu ficar até descobrir de onde veio.', image: '' },
+    ],
+  },
+  {
+    slug: 'lumen-drift',
+    title: 'Lumen Drift',
+    subtitle: 'Corridas de luz para jogar com os amigos',
+    developerName: 'Coletivo Lume',
+    character: 'Faísca',
+    color: 'orange',
+    genre: 'Corrida cooperativa',
+    rating: '10 anos',
+    theme: 'Neon e velocidade',
+    platforms: ['PC', 'Xbox', 'PlayStation'],
+    description:
+      'Corridas rápidas para até quatro pessoas na mesma tela. Faísca e seus amigos atravessam pistas de luz que mudam de forma a cada volta.',
+    quote: '“Mais rápido que a própria luz!”',
+    about:
+      'Lumen Drift mistura corrida e cooperação: a equipe só vence se todos cruzarem a linha de chegada. As pistas são montadas na hora e mudam a cada volta, então nenhuma corrida é igual à outra.',
+    characters: [
+      { name: 'FAÍSCA', text: 'A piloto mais rápida da cidade de neon. Nunca freia, nem nas curvas.', image: '' },
+      { name: 'VOLT', text: 'O mecânico da equipe. Monta peças novas no meio da corrida.', image: '' },
+      { name: 'PRISMA', text: 'Uma rival misteriosa que muda de cor conforme a velocidade.', image: '' },
+    ],
+  },
+]

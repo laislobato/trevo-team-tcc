@@ -10,7 +10,10 @@
  *   POST /api/auth/password          -> troca a senha
  *   GET  /api/posts                  -> posts publicados (site)
  *   GET  /api/posts/:slug            -> um post (site)
+ *   GET  /api/games                  -> jogos publicados (site)
+ *   GET  /api/games/:slug            -> um jogo + os outros (site)
  *   /api/admin/posts                 -> criar, editar e apagar posts (login; estúdio só os dele)
+ *   /api/admin/games                 -> criar, editar e apagar jogos (login; estúdio só os dele)
  *   /api/admin/developers            -> desenvolvedoras (login; estúdio só a dele)
  *   /api/admin/accounts              -> logins dos estúdios (só admin)
  *   POST /api/admin/uploads          -> enviar imagem (login)
@@ -22,6 +25,7 @@ import cors from 'cors'
 import { requireAuth, requireAdmin } from './middleware/auth.js'
 import { authRoutes } from './routes/auth.js'
 import { publicPostRoutes, adminPostRoutes } from './routes/posts.js'
+import { publicGameRoutes, adminGameRoutes } from './routes/games.js'
 import { adminDeveloperRoutes } from './routes/developers.js'
 import { adminAccountRoutes } from './routes/accounts.js'
 import { uploadRoutes } from './routes/uploads.js'
@@ -58,7 +62,9 @@ export function createApp({ db, config }) {
   app.get('/api/health', (req, res) => res.json({ ok: true }))
   app.use('/api/auth', authRoutes({ db, config, requireLogin }))
   app.use('/api/posts', publicPostRoutes({ db }))
+  app.use('/api/games', publicGameRoutes({ db }))
   app.use('/api/admin/posts', requireLogin, adminPostRoutes({ db }))
+  app.use('/api/admin/games', requireLogin, adminGameRoutes({ db }))
   app.use('/api/admin/developers', requireLogin, adminDeveloperRoutes({ db }))
   app.use('/api/admin/accounts', requireLogin, requireAdmin, adminAccountRoutes({ db }))
   app.use('/api/admin/uploads', requireLogin, uploadRoutes({ config }))
