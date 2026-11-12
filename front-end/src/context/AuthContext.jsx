@@ -1,13 +1,19 @@
 /**
  * CONTEXTO: AuthContext
  * =====================
- * Guarda o login da equipe e o deixa disponível em qualquer página:
+ * Guarda o login do painel e o deixa disponível em qualquer página:
  *
- *   const { user, token, login, logout, run } = useAuth()
+ *   const { user, isAdmin, token, login, logout, run, refreshUser } = useAuth()
+ *
+ * - user = { id, email, role, developerId, developer }
+ *     role 'admin'  = equipe da Trevo (isAdmin = true)
+ *     role 'studio' = login de um estúdio (developer = { id, name })
  *
  * - O token fica no sessionStorage: some quando a aba do navegador é fechada.
  * - run(fn): chama a API do painel com o token; se o login vencer (401),
  *   sai automaticamente e o ProtectedRoute leva de volta para /login.
+ * - refreshUser(): busca o login de novo (ex.: depois que o estúdio muda o
+ *   próprio nome, para o menu mostrar o nome novo).
  */
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
@@ -66,6 +72,12 @@ export function AuthProvider({ children }) {
     setUser(data.user)
   }, [])
 
+  const refreshUser = useCallback(async () => {
+    if (!token) return
+    const data = await api.me(token)
+    setUser(data.user)
+  }, [token])
+
   const run = useCallback(
     async (fn) => {
       try {
@@ -79,8 +91,18 @@ export function AuthProvider({ children }) {
   )
 
   const value = useMemo(
-    () => ({ token, user, checking, isLoggedIn: Boolean(user), login, logout, run }),
-    [token, user, checking, login, logout, run],
+    () => ({
+      token,
+      user,
+      checking,
+      isLoggedIn: Boolean(user),
+      isAdmin: user?.role === 'admin',
+      login,
+      logout,
+      run,
+      refreshUser,
+    }),
+    [token, user, checking, login, logout, run, refreshUser],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

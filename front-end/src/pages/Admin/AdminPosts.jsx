@@ -1,8 +1,11 @@
 /**
  * PÁGINA: AdminPosts
  * ==================
- * Início do painel (/painel): lista de todos os posts, inclusive rascunhos
+ * Início do painel (/painel): lista dos posts, inclusive rascunhos
  * e agendados, com os botões de editar, ver no site e apagar.
+ *
+ * - Admin: vê os posts de todos os estúdios.
+ * - Estúdio: a API devolve só os posts do estúdio dele.
  */
 
 import { useEffect, useState } from 'react'
@@ -21,7 +24,7 @@ function postStatus(post) {
 }
 
 export default function AdminPosts() {
-  const { run } = useAuth()
+  const { run, isAdmin, user } = useAuth()
   const location = useLocation()
   const [posts, setPosts] = useState([])
   const [status, setStatus] = useState('loading')
@@ -57,6 +60,11 @@ export default function AdminPosts() {
       actions={<Link to="/painel/posts/novo" className="admin-button admin-button--primary">+ Novo post</Link>}
     >
       {message && <p className="admin-alert" role="status">{message}</p>}
+      {!isAdmin && (
+        <p className="admin-hint admin-scope">
+          Aqui aparecem só os posts do <strong>{user?.developer?.name}</strong>.
+        </p>
+      )}
 
       {status === 'loading' && <p className="admin-loading">Carregando posts...</p>}
 
@@ -71,6 +79,7 @@ export default function AdminPosts() {
               <tr>
                 <th scope="col">Título</th>
                 <th scope="col">Tipo</th>
+                <th scope="col">Estúdio</th>
                 <th scope="col">Situação</th>
                 <th scope="col">Data</th>
                 <th scope="col"><span className="visually-hidden">Ações</span></th>
@@ -85,6 +94,7 @@ export default function AdminPosts() {
                       <Link to={`/painel/posts/${post.id}`} className="admin-table-title">{post.title}</Link>
                     </td>
                     <td data-label="Tipo">{POST_TYPES[post.type]}</td>
+                    <td data-label="Estúdio">{post.developer?.name || '—'}</td>
                     <td data-label="Situação">
                       <span className={`admin-badge admin-badge--${s.tone}`}>{s.label}</span>
                     </td>

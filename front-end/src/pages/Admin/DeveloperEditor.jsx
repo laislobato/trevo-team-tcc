@@ -4,12 +4,17 @@
  * Criar (/painel/desenvolvedoras/nova) ou editar (/painel/desenvolvedoras/:id)
  * uma desenvolvedora: nome, logotipo, descrição, devs ativos,
  * redes sociais (até 6) e integrantes (até 12, com foto).
+ *
+ * - Admin: edita qualquer desenvolvedora e, embaixo, cria os logins do
+ *   estúdio (componente StudioAccounts).
+ * - Estúdio: esta página vira "Meu estúdio" e só abre o estúdio dele.
  */
 
 import { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import AdminLayout from '../../components/Admin/AdminLayout'
 import ImageUpload from '../../components/Admin/ImageUpload'
+import StudioAccounts from '../../components/Admin/StudioAccounts'
 import { useAuth } from '../../context/AuthContext'
 import { api } from '../../services/api'
 import '../../styles/globals.css'
@@ -19,14 +24,22 @@ const EMPTY = { name: '', logo: '', description: '', activeDevs: 0, socials: [],
 export default function DeveloperEditor() {
   const { id } = useParams()
   const isNew = !id
-  const { run } = useAuth()
+  const { run, isAdmin, refreshUser } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+  const backTo = isAdmin ? '/painel/desenvolvedoras' : '/painel' // para onde o "Cancelar" volta
 
   const [form, setForm] = useState(EMPTY)
   const [loading, setLoading] = useState(!isNew)
   const [saving, setSaving] = useState(false)
   const [errors, setErrors] = useState({})
   const [message, setMessage] = useState('')
+  const [notice, setNotice] = useState('') // aviso de "salvo" (estúdio fica na página)
+
+  // Aviso que veio junto com a navegação (ex.: "Desenvolvedora criada...")
+  useEffect(() => {
+    if (location.state?.message) setNotice(location.state.message)
+  }, [location.state])
 
   useEffect(() => {
     if (isNew) return
@@ -48,13 +61,27 @@ export default function DeveloperEditor() {
     e.preventDefault()
     setErrors({})
     setMessage('')
+    setNotice('')
     setSaving(true)
     const payload = { ...form, activeDevs: Number(form.activeDevs) }
     try {
-      await run((token) =>
+      const saved = await run((token) =>
         isNew ? api.admin.createDeveloper(token, payload) : api.admin.updateDeveloper(token, id, payload),
       )
-      navigate('/painel/desenvolvedoras', { state: { message: isNew ? 'Desenvolvedora criada.' : 'Desenvolvedora salva.' } })
+      if (!isAdmin) {
+        // Estúdio: continua na página e atualiza o nome no menu
+        setNotice('Perfil do estúdio salvo.')
+        refreshUser().catch(() => {})
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      } else if (isNew) {
+        // Admin criou: abre a página dela para já criar os logins
+        navigate(`/painel/desenvolvedoras/${saved.id}`, {
+          replace: true,
+          state: { message: 'Desenvolvedora criada. Agora você pode criar os logins do estúdio lá embaixo.' },
+        })
+      } else {
+        navigate('/painel/desenvolvedoras', { state: { message: 'Desenvolvedora salva.' } })
+      }
     } catch (err) {
       setErrors(err.details || {})
       setMessage(err.message)
@@ -64,7 +91,7 @@ export default function DeveloperEditor() {
     }
   }
 
-  const title = isNew ? 'Nova desenvolvedora' : 'Editar desenvolvedora'
+  const title = !isAdmin ? 'Meu estúdio' : isNew ? 'Nova desenvolvedora' : 'Editar desenvolvedora'
   if (loading) {
     return (
       <AdminLayout title={title}>
@@ -79,6 +106,7 @@ export default function DeveloperEditor() {
   return (
     <AdminLayout title={title}>
       {message && <p className="admin-alert admin-alert--error" role="alert">{message}</p>}
+      {notice && <p className="admin-alert" role="status">{notice}</p>}
 
       <form className="admin-form" onSubmit={handleSubmit} noValidate>
         <fieldset className="admin-card">
@@ -164,12 +192,24 @@ export default function DeveloperEditor() {
         </fieldset>
 
         <div className="admin-form-actions">
-          <Link to="/painel/desenvolvedoras" className="admin-button admin-button--ghost">Cancelar</Link>
+          <Link to={backTo} className="admin-button admin-button--ghost">{isAdmin ? 'Cancelar' : 'Voltar'}</Link>
           <button type="submit" className="admin-button admin-button--primary" disabled={saving}>
             {saving ? 'Salvando...' : isNew ? 'Criar desenvolvedora' : 'Salvar alterações'}
           </button>
         </div>
       </form>
+
+      {/* ========== LOGINS DO ESTÚDIO (só admin) ========== */}
+      {isAdmin && !isNew && (
+        <div className="admin-form admin-after-form">
+          <StudioAccounts developerId={Number(id)} />
+        </div>
+      )}
+      {isAdmin && isNew && (
+        <p className="admin-hint admin-after-form">
+          Depois de criar a desenvolvedora, os logins do estúdio aparecem aqui embaixo.
+        </p>
+      )}
     </AdminLayout>
   )
 }

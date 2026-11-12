@@ -1,7 +1,8 @@
 /**
  * PÁGINA: AdminAccount
  * ====================
- * Troca de senha da conta da equipe (/painel/conta).
+ * Dados do login e troca de senha (/painel/conta).
+ * Serve para os dois tipos de login: admin da Trevo e estúdio.
  */
 
 import { useState } from 'react'
@@ -11,7 +12,7 @@ import { api } from '../../services/api'
 import '../../styles/globals.css'
 
 export default function AdminAccount() {
-  const { run } = useAuth()
+  const { run, user, isAdmin } = useAuth()
   const [current, setCurrent] = useState('')
   const [next, setNext] = useState('')
   const [confirm, setConfirm] = useState('')
@@ -41,6 +42,21 @@ export default function AdminAccount() {
   return (
     <AdminLayout title="Conta">
       <form className="admin-form admin-form--narrow" onSubmit={handleSubmit}>
+        {/* ---------- Dados do login ---------- */}
+        <section className="admin-card" aria-labelledby="account-info-title">
+          <h2 id="account-info-title" className="admin-card-title">Seu login</h2>
+          <p><strong>E-mail:</strong> {user?.email}</p>
+          <p>
+            <strong>Tipo:</strong>{' '}
+            {isAdmin
+              ? 'Admin da Trevo (mexe em tudo)'
+              : `Login de estúdio · ${user?.developer?.name || ''} (mexe só no que é do estúdio)`}
+          </p>
+          {!isAdmin && (
+            <p className="admin-hint">Para trocar o e-mail do login, fale com a equipe da Trevo.</p>
+          )}
+        </section>
+
         <fieldset className="admin-card">
           <legend className="admin-card-title">Trocar senha</legend>
 

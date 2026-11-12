@@ -17,10 +17,16 @@
  * - /painel                         -> lista de posts
  * - /painel/posts/novo              -> criar post
  * - /painel/posts/:id               -> editar post
- * - /painel/desenvolvedoras         -> lista de desenvolvedoras
- * - /painel/desenvolvedoras/nova    -> criar desenvolvedora
- * - /painel/desenvolvedoras/:id     -> editar desenvolvedora
- * - /painel/conta                   -> trocar senha
+ * - /painel/jogos                   -> lista de jogos
+ * - /painel/jogos/novo              -> criar jogo
+ * - /painel/jogos/:id               -> editar jogo
+ * - /painel/desenvolvedoras         -> lista de desenvolvedoras (só admin)
+ * - /painel/desenvolvedoras/nova    -> criar desenvolvedora (só admin)
+ * - /painel/desenvolvedoras/:id     -> editar desenvolvedora + logins do estúdio
+ *                                      (estúdio: "Meu estúdio", só a dele)
+ * - /painel/conta                   -> dados do login e trocar senha
+ *
+ * Estúdio só vê os posts e jogos dele: quem garante isso é a API.
  *
  * Qualquer outro endereço -> volta para a Home
  */
@@ -43,12 +49,17 @@ import BlogPost from './pages/Blog/BlogPost'
 import Login from './pages/Admin/Login'
 import AdminPosts from './pages/Admin/AdminPosts'
 import PostEditor from './pages/Admin/PostEditor'
+import AdminGames from './pages/Admin/AdminGames'
+import GameEditor from './pages/Admin/GameEditor'
 import AdminDevelopers from './pages/Admin/AdminDevelopers'
 import DeveloperEditor from './pages/Admin/DeveloperEditor'
 import AdminAccount from './pages/Admin/AdminAccount'
 
-// Atalho: página do painel protegida pelo login
+// Atalhos: página do painel protegida pelo login
+// - admin(...):     qualquer login (admin da Trevo ou estúdio)
+// - adminOnly(...): só a equipe da Trevo (estúdio volta para /painel)
 const admin = (page) => <ProtectedRoute>{page}</ProtectedRoute>
+const adminOnly = (page) => <ProtectedRoute adminOnly>{page}</ProtectedRoute>
 
 export default function App() {
   return (
@@ -69,8 +80,11 @@ export default function App() {
           <Route path="/painel" element={admin(<AdminPosts />)} />
           <Route path="/painel/posts/novo" element={admin(<PostEditor />)} />
           <Route path="/painel/posts/:id" element={admin(<PostEditor />)} />
-          <Route path="/painel/desenvolvedoras" element={admin(<AdminDevelopers />)} />
-          <Route path="/painel/desenvolvedoras/nova" element={admin(<DeveloperEditor />)} />
+          <Route path="/painel/jogos" element={admin(<AdminGames />)} />
+          <Route path="/painel/jogos/novo" element={admin(<GameEditor />)} />
+          <Route path="/painel/jogos/:id" element={admin(<GameEditor />)} />
+          <Route path="/painel/desenvolvedoras" element={adminOnly(<AdminDevelopers />)} />
+          <Route path="/painel/desenvolvedoras/nova" element={adminOnly(<DeveloperEditor />)} />
           <Route path="/painel/desenvolvedoras/:id" element={admin(<DeveloperEditor />)} />
           <Route path="/painel/conta" element={admin(<AdminAccount />)} />
 

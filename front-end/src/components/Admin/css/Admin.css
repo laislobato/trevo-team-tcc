@@ -534,6 +534,180 @@
 }
 
 /* ================================================
+   TIPO DE LOGIN (admin ou estúdio)
+   ================================================ */
+
+.admin-role {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-black);
+  border-radius: var(--radius-md);
+  padding: 1px 8px;
+}
+
+.admin-role--admin {
+  background: var(--primary-orange);
+}
+
+.admin-role--studio {
+  background: #8cc74f;
+}
+
+/* "Aqui aparecem só os posts do Estúdio X" */
+.admin-scope {
+  margin: 0 0 var(--spacing-sm);
+}
+
+/* Valor fixo no lugar de um seletor (estúdio do login) */
+.admin-fixed {
+  font-size: 15px;
+  font-weight: 600;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #f0f0f0;
+  margin: 0;
+}
+
+/* ================================================
+   JOGOS
+   ================================================ */
+
+/* Miniatura na tabela de jogos */
+.admin-game-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-game-thumb {
+  width: 36px;
+  height: 36px;
+  border-radius: 18px 18px 6px 6px; /* arco, como os cards da vitrine */
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.admin-game-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Escolha da cor: bolinhas */
+.admin-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.admin-swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 2px solid var(--light-gray);
+  border-radius: var(--radius-md);
+  padding: 6px 12px 6px 8px;
+  cursor: pointer;
+}
+
+.admin-swatch.is-selected {
+  border-color: var(--text-black);
+}
+
+/* O botão de rádio fica escondido (a bolinha é o que aparece).
+   Sem isto, a regra ".admin-field input" esticava o rádio e alargava a página. */
+.admin-swatch input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+}
+
+.admin-swatch:focus-within {
+  outline: 3px solid var(--primary-orange);
+  outline-offset: 2px;
+}
+
+.admin-swatch-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+/* Plataformas: caixinhas de marcar */
+.admin-checks {
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs) var(--spacing-sm);
+}
+
+.admin-checks legend {
+  width: 100%;
+  margin-bottom: 6px;
+}
+
+.admin-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.admin-check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary-green);
+}
+
+/* ================================================
+   LOGINS DO ESTÚDIO
+   ================================================ */
+
+/* Bloco que fica depois do formulário da desenvolvedora */
+.admin-after-form {
+  margin-top: var(--spacing-md);
+}
+
+.admin-accounts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.admin-account {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.admin-account-email {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.admin-account-new {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* ================================================
    RESPONSIVIDADE
    ================================================ */
 
@@ -585,6 +759,10 @@
   }
 
   .admin-dev {
+    flex-wrap: wrap;
+  }
+
+  .admin-account {
     flex-wrap: wrap;
   }
 }

@@ -187,6 +187,15 @@ export const api = {
       request(`/api/admin/developers/${id}`, { method: 'PUT', token, body: data }).then((d) => d.developer),
     deleteDeveloper: (token, id) => request(`/api/admin/developers/${id}`, { method: 'DELETE', token }),
 
+    // Logins dos estúdios (só admin). developerId opcional: só os logins de um estúdio
+    listAccounts: (token, developerId) =>
+      request(`/api/admin/accounts${developerId ? `?developerId=${developerId}` : ''}`, { token }).then((d) => d.accounts),
+    createAccount: (token, data) =>
+      request('/api/admin/accounts', { method: 'POST', token, body: data }).then((d) => d.account),
+    updateAccount: (token, id, data) =>
+      request(`/api/admin/accounts/${id}`, { method: 'PUT', token, body: data }).then((d) => d.account),
+    deleteAccount: (token, id) => request(`/api/admin/accounts/${id}`, { method: 'DELETE', token }),
+
     /** Envia uma imagem e devolve o caminho dela ("/uploads/...") */
     async uploadImage(token, file) {
       const form = new FormData()
