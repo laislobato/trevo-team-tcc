@@ -14,7 +14,8 @@
  * - GameCards       -> três imagens, o card do meio com a frase acima
  * - Sobre o jogo    -> bloco de texto centralizado
  * - GameCharacters  -> personagens (silhueta ou imagem + caixa cinza)
- * - GameProjects    -> outros jogos da Trevo Team (levam para a página deles)
+ * - GameShowcase    -> "OUTROS PROJETOS": a mesma vitrine da página /jogo,
+ *                      com todos os jogos menos o que está aberto
  * - Footer
  */
 
@@ -28,9 +29,9 @@ import Header from '../components/shared/Header'
 import GameHero from '../components/Games/Gamehero'
 import GameCards from '../components/Games/GameCards'
 import GameCharacters from '../components/Games/GameCharacters'
-import GameProjects from '../components/Games/GameProjects'
+import GameShowcase from '../components/shared/GameShowcase'
 import Footer from '../components/shared/Footer'
-import { getGame } from '../services/games'
+import { getGame, getGames } from '../services/games'
 import '../styles/globals.css'
 import '../components/Games/css/Games.css'
 
@@ -40,16 +41,24 @@ import '../components/Games/css/Games.css'
 
 export default function GamePage() {
   const { slug } = useParams() // lê o slug do endereço (/jogo/<slug>)
-  const [data, setData] = useState(null) // { game, others }
+  const [data, setData] = useState(null) // { game }
+  const [otherGames, setOtherGames] = useState([]) // vitrine "Outros projetos"
   const [status, setStatus] = useState('loading') // 'loading' | 'ready' | 'notfound' | 'error'
   const [error, setError] = useState('')
 
   // ---------- Busca o jogo sempre que o slug muda ----------
-  // (ex.: clicar em um jogo de "Outros projetos")
+  // (ex.: clicar em "Ver mais" na vitrine de "Outros projetos")
   useEffect(() => {
     let active = true
     setStatus('loading')
     window.scrollTo(0, 0)
+
+    // Vitrine: todos os jogos publicados, menos o que está aberto.
+    // Se falhar, a página abre normal, só sem a vitrine.
+    getGames()
+      .then((list) => active && setOtherGames(list.filter((g) => g.slug !== slug)))
+      .catch(() => active && setOtherGames([]))
+
     getGame(slug)
       .then((result) => {
         if (!active) return
@@ -89,7 +98,7 @@ export default function GamePage() {
   }
 
   // ---------- Monta as seções com os dados do jogo ----------
-  const { game, others } = data
+  const { game } = data
 
   // Quadro de informações do topo (2 colunas)
   const gameInfo = [
@@ -105,15 +114,6 @@ export default function GamePage() {
   // Personagens
   const characters = game.characters.map((character, i) => ({ id: i, ...character }))
 
-  // Outros jogos -> cards que levam para a página de cada um
-  const otherProjects = others.map((other) => ({
-    id: other.slug,
-    name: other.title,
-    text: other.subtitle,
-    image: other.characterImage,
-    link: `/jogo/${other.slug}`,
-  }))
-
   return (
     <div className="games-page">
       {/* ========== CABEÇALHO ========== */}
@@ -128,6 +128,8 @@ export default function GamePage() {
         color={game.color}
         art={game.art}
         artAlt={game.character}
+        backTo="/jogo"
+        backLabel="Todos os jogos"
       />
 
       {/* ========== IMAGENS COM FRASE ========== */}
@@ -149,10 +151,8 @@ export default function GamePage() {
         <GameCharacters title="CONHEÇA OS PERSONAGENS" characters={characters} />
       )}
 
-      {/* ========== OUTROS PROJETOS ========== */}
-      {otherProjects.length > 0 && (
-        <GameProjects title="OUTROS PROJETOS" projects={otherProjects} />
-      )}
+      {/* ========== OUTROS PROJETOS (vitrine sem o jogo aberto) ========== */}
+      {otherGames.length > 0 && <GameShowcase title="OUTROS PROJETOS" games={otherGames} />}
 
       {/* ========== RODAPÉ ========== */}
       <Footer />

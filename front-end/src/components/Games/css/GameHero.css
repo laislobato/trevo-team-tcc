@@ -78,7 +78,6 @@
 .game-hero-art {
   height: 100%;
   width: auto;
-  margin-left: var(--spacing-md);
   max-width: var(--art-max); /* imagem muito larga não invade o texto */
   object-fit: contain;
   object-position: center bottom; /* "pisa" no fim da barra */
@@ -90,6 +89,40 @@
   height: var(--art-width);
   background: var(--primary-orange);
   clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+/* ================================================
+   BOTÃO VOLTAR (em cima do título)
+   ================================================ */
+
+.game-hero-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-black);
+  background: var(--primary-cyan);
+  border-radius: var(--radius-md);
+  padding: 6px 14px 6px 10px;
+  margin-bottom: var(--spacing-sm);
+  transition: background var(--transition-normal), transform var(--transition-normal);
+}
+
+.game-hero-back svg {
+  width: 16px;
+  height: 16px;
+}
+
+.game-hero-back:hover {
+  background: var(--primary-orange);
+  transform: translateX(-3px);
+  opacity: 1;
+}
+
+.game-hero-back:focus-visible {
+  outline: 3px solid var(--text-black);
+  outline-offset: 2px;
 }
 
 /* ================================================

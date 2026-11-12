@@ -18,6 +18,15 @@
  * centro): 0 = no meio, -1 = à esquerda, 1 = à direita. O CSS usa esse número
  * para empurrar o card para o lado (transform) e para abrir ou fechar o card.
  *
+ * Usado em duas páginas:
+ * - /jogo         -> todos os jogos ("CONHEÇA NOSSOS JOGOS")
+ * - /jogo/<slug>  -> os outros jogos, sem o que está aberto ("OUTROS PROJETOS")
+ *
+ * Poucos jogos:
+ * - 2 jogos: a lista é repetida por dentro ([A, B, A, B]) para as duas
+ *   laterais terem um card; as bolinhas continuam mostrando só 2.
+ * - 1 jogo: só o card do meio, sem setas e sem bolinhas.
+ *
  * Props:
  * - title: título da seção
  * - games: lista de jogos (vem da API, via src/services/games.js)
@@ -54,12 +63,33 @@ function getOffset(index, active, total) {
 }
 
 export default function GameShowcase({ title = 'CONHEÇA NOSSOS JOGOS', games = [] }) {
-  const [active, setActive] = useState(0)
+  const [active, setActive] = useState(0) // posição do card do meio na lista "cards"
   const previousActive = useRef(0)
   const touchStartX = useRef(null)
-  const total = games.length
 
-  const goTo = (index) => setActive((index + total) % total)
+  const total = games.length // jogos de verdade
+  // Com 2 jogos, repete a lista para ter um card em cada lateral
+  const cards = total === 2 ? [...games, ...games] : games
+  const count = cards.length // cards desenhados
+  const hasControls = total > 1 // setas, bolinhas, arrastar e teclado
+  const current = active % Math.max(total, 1) // jogo de verdade que está no meio
+
+  const goTo = (index) => setActive(((index % count) + count) % count)
+
+  /** Bolinha clicada: vai para a cópia do jogo que está mais perto do meio */
+  const goToGame = (gameIndex) => {
+    const copies = cards.map((_, i) => i).filter((i) => i % total === gameIndex)
+    const nearest = copies.reduce((best, i) =>
+      Math.abs(getOffset(i, active, count)) < Math.abs(getOffset(best, active, count)) ? i : best,
+    )
+    goTo(nearest)
+  }
+
+  // Lista de jogos nova (ex.: abriu outro jogo): volta para o primeiro
+  useEffect(() => {
+    setActive(0)
+    previousActive.current = 0
+  }, [games])
 
   // Lembra qual era o jogo anterior (usado para detectar o card que "dá a volta")
   useEffect(() => {
@@ -68,6 +98,7 @@ export default function GameShowcase({ title = 'CONHEÇA NOSSOS JOGOS', games = 
 
   // Setas do teclado quando o foco está dentro do carrossel
   const handleKeyDown = (e) => {
+    if (!hasControls) return
     if (e.key === 'ArrowLeft') goTo(active - 1)
     if (e.key === 'ArrowRight') goTo(active + 1)
   }
@@ -77,7 +108,7 @@ export default function GameShowcase({ title = 'CONHEÇA NOSSOS JOGOS', games = 
     touchStartX.current = e.touches[0].clientX
   }
   const handleTouchEnd = (e) => {
-    if (touchStartX.current === null) return
+    if (touchStartX.current === null || !hasControls) return
     const distance = e.changedTouches[0].clientX - touchStartX.current
     if (Math.abs(distance) > 50) goTo(active + (distance < 0 ? 1 : -1))
     touchStartX.current = null
@@ -96,9 +127,9 @@ export default function GameShowcase({ title = 'CONHEÇA NOSSOS JOGOS', games = 
 
       <div className="showcase-stage" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
         <ul className="showcase-track">
-          {games.map((game, index) => {
-            const offset = getOffset(index, active, total)
-            const previousOffset = getOffset(index, previousActive.current, total)
+          {cards.map((game, index) => {
+            const offset = getOffset(index, active, count)
+            const previousOffset = getOffset(index, previousActive.current, count)
             const isCenter = offset === 0
             const isVisible = Math.abs(offset) <= 1
             // Card que pula de uma ponta para a outra: troca de lugar sem animação
@@ -114,7 +145,7 @@ export default function GameShowcase({ title = 'CONHEÇA NOSSOS JOGOS', games = 
 
             return (
               <li
-                key={game.slug}
+                key={`${game.slug}-${index}`}
                 className={classes}
                 style={{ '--offset': offset }}
                 onClick={() => !isCenter && goTo(index)}
@@ -143,39 +174,45 @@ export default function GameShowcase({ title = 'CONHEÇA NOSSOS JOGOS', games = 
 
         {/* Setas: ficam entre o card do meio e os das laterais.
             O ícone é desenhado em SVG, com pontas arredondadas */}
-        <button type="button" className="showcase-arrow showcase-arrow--prev" onClick={() => goTo(active - 1)}
-          aria-label="Jogo anterior">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" strokeWidth="2.6"
-              strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
-        <button type="button" className="showcase-arrow showcase-arrow--next" onClick={() => goTo(active + 1)}
-          aria-label="Próximo jogo">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2.6"
-              strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
+        {hasControls && (
+          <>
+            <button type="button" className="showcase-arrow showcase-arrow--prev" onClick={() => goTo(active - 1)}
+              aria-label="Jogo anterior">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" strokeWidth="2.6"
+                  strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+            <button type="button" className="showcase-arrow showcase-arrow--next" onClick={() => goTo(active + 1)}
+              aria-label="Próximo jogo">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2.6"
+                  strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </>
+        )}
       </div>
 
-      {/* Bolinhas: mostram qual jogo está no meio */}
-      <div className="showcase-dots">
-        {games.map((game, index) => (
-          <button
-            key={game.slug}
-            type="button"
-            className={`showcase-dot ${index === active ? 'is-active' : ''}`}
-            onClick={() => goTo(index)}
-            aria-label={`Mostrar ${game.title}`}
-            aria-current={index === active}
-          />
-        ))}
-      </div>
+      {/* Bolinhas: mostram qual jogo está no meio (uma por jogo de verdade) */}
+      {hasControls && (
+        <div className="showcase-dots">
+          {games.map((game, index) => (
+            <button
+              key={game.slug}
+              type="button"
+              className={`showcase-dot ${index === current ? 'is-active' : ''}`}
+              onClick={() => goToGame(index)}
+              aria-label={`Mostrar ${game.title}`}
+              aria-current={index === current}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Aviso para leitores de tela quando o jogo muda */}
       <p className="visually-hidden" aria-live="polite">
-        {`Jogo ${active + 1} de ${total}: ${games[active].title}`}
+        {`Jogo ${current + 1} de ${total}: ${games[current]?.title || ''}`}
       </p>
     </section>
   )

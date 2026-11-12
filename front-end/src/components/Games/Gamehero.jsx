@@ -27,8 +27,11 @@
  * - art:      imagem da arte do jogo (vazio = estrela). Fica melhor com PNG
  *             de fundo transparente, para a arte "sair" da barra.
  * - artAlt:   descrição da arte (ex.: nome do personagem)
+ * - backTo:   endereço do botão "voltar" em cima do título (vazio = sem botão)
+ * - backLabel: texto do botão "voltar"
  */
 
+import { Link } from 'react-router-dom'
 import './css/GameHero.css'
 
 export default function GameHero({
@@ -39,6 +42,8 @@ export default function GameHero({
   color = 'cyan',
   art = '',
   artAlt = '',
+  backTo = '',
+  backLabel = 'Voltar',
 }) {
   return (
     <section className="game-hero">
@@ -55,6 +60,16 @@ export default function GameHero({
 
         {/* 📝 CONTEÚDO */}
         <div className="game-hero-content">
+          {/* ⬅ Voltar (ex.: para a página inicial dos jogos) */}
+          {backTo && (
+            <Link to={backTo} className="game-hero-back">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" strokeWidth="2.6"
+                  strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              {backLabel}
+            </Link>
+          )}
           <h1 className="game-hero-title">{title}</h1>
           <p className="game-hero-subtitle">{subtitle}</p>
           <p className="game-hero-text">{text}</p>
