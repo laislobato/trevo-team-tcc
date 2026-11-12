@@ -28,6 +28,7 @@ import Footer from '../components/shared/Footer'
 import { useEffect, useState } from 'react'
 import GameShowcase from '../components/shared/GameShowcase'
 import { getGames } from '../services/games'
+import '../styles/globals.css'
 
 // ===============================================
 // COMPONENTE PRINCIPAL
@@ -39,16 +40,20 @@ export default function App() {
   // JOGOS DA VITRINE (vêm da API)
   // ===============================================
   const [games, setGames] = useState([])
+  const [error, setError] = useState('')
 
   useEffect(() => {
     let active = true
     getGames()
       .then((list) => active && setGames(list))
       .catch(() => {}) // se a API falhar, a Home abre normal, só sem a vitrine
+      .catch((err) => active && setError(err.message))
     return () => {
       active = false
     }
   }, [])
+
+  
   
   return (
     <div className="app-container">
@@ -62,7 +67,7 @@ export default function App() {
       
       {/* <Projects/> */}
       
-      <GameShowcase title="Nossos Projetos" games={getGames} />
+      <GameShowcase title="Nossos Projetos" games={games} />
       
       <div className="section-divider"></div>
       
