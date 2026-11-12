@@ -24,6 +24,7 @@ import { isAdmin, canManage, scopeFor, ownerFor, assertCanManage } from '../src/
 import * as posts from '../src/services/posts.js'
 import * as devs from '../src/services/developers.js'
 import * as games from '../src/services/games.js'
+import * as banners from '../src/services/banners.js'
 
 const SECRET = 'segredo-de-teste-com-mais-de-32-caracteres!!'
 
@@ -392,7 +393,6 @@ test('jogo: validação recusa dados ruins', () => {
   assert.ok(errorsOf(validGame({ status: 'x' })).status)
   assert.ok(errorsOf(validGame({ platforms: ['PC', 'Atari'] }))['platforms.1'])
   assert.ok(errorsOf(validGame({ screenshots: ['', '', '', ''] })).screenshots)
-  assert.ok(errorsOf(validGame({ banner: 'javascript:alert(1)' })).banner)
   assert.ok(errorsOf(validGame({ art: '/uploads/../x' })).art)
   assert.ok(errorsOf(validGame({ characters: [{ name: '', text: 'x' }] }))['characters.0.name'])
   assert.ok(errorsOf(validGame({ description: 'x'.repeat(301) })).description)
@@ -449,5 +449,75 @@ test('banco da etapa 2 (jogos sem "art") ganha a coluna com a imagem da vitrine'
   assert.equal(game.characterImage, '/uploads/heroi.png')
   db2.close()
   openDatabase(path).close() // abrir de novo não quebra
+  rmSync(dir, { recursive: true, force: true })
+})
+
+// ------------------------------------------------------------------
+// BANNERS
+// ------------------------------------------------------------------
+
+test('banners: exemplos criam um banner por jogo na página /jogo; a Home começa vazia', () => {
+  const db = freshDb()
+  seedExamples(db)
+  assert.deepEqual(banners.listBanners(db, 'jogos').map((b) => b.link), [
+    '/jogo/raizes-de-vidro',
+    '/jogo/mare-alta',
+    '/jogo/lumen-drift',
+  ])
+  assert.equal(banners.listBanners(db, 'jogos')[0].alt, 'Raízes de Vidro')
+  assert.deepEqual(banners.listBanners(db, 'home'), [])
+  assert.throws(() => banners.listBanners(db, 'blog'), (e) => e.status === 404)
+})
+
+test('banners: salvar troca a lista inteira, na ordem enviada', () => {
+  const db = freshDb()
+  const saved = banners.replaceBanners(db, 'home', [
+    { image: '/uploads/b.webp', alt: 'Segundo', link: 'https://loja.exemplo.com' },
+    { image: '', alt: 'Primeiro', link: '/jogo/raizes-de-vidro' },
+  ])
+  assert.deepEqual(saved.map((b) => b.alt), ['Segundo', 'Primeiro'])
+  banners.replaceBanners(db, 'home', [{ image: '', alt: 'Só um', link: '' }])
+  assert.deepEqual(banners.listBanners(db, 'home').map((b) => b.alt), ['Só um'])
+  banners.replaceBanners(db, 'home', [])
+  assert.deepEqual(banners.listBanners(db, 'home'), [], 'pode ficar sem banner')
+})
+
+test('banners: validação recusa dados ruins e não apaga a lista antiga', () => {
+  const db = freshDb()
+  banners.replaceBanners(db, 'home', [{ image: '', alt: 'Antigo', link: '' }])
+  const errorsOf = (list) => {
+    try {
+      banners.replaceBanners(db, 'home', list)
+      return {}
+    } catch (e) {
+      assert.equal(e.status, 400)
+      return e.details
+    }
+  }
+  assert.ok(errorsOf([{ alt: '' }])['banners.0.alt'])
+  assert.ok(errorsOf([{ alt: 'Ok', image: 'javascript:alert(1)' }])['banners.0.image'])
+  assert.ok(errorsOf([{ alt: 'Ok', link: 'javascript:alert(1)' }])['banners.0.link'])
+  assert.ok(errorsOf([{ alt: 'Ok', link: '//site-estranho.com' }])['banners.0.link'])
+  assert.ok(errorsOf(Array.from({ length: 9 }, () => ({ alt: 'Ok' }))).banners)
+  assert.deepEqual(banners.listBanners(db, 'home').map((b) => b.alt), ['Antigo'])
+})
+
+test('banco da etapa 2: os banners da página /jogo vêm dos jogos publicados, uma vez só', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'trevo-'))
+  const path = join(dir, 'etapa2b.db')
+  const db1 = openDatabase(path)
+  // Simula o banco antigo: jogos com banner, sem tabela de banners preenchida e sem a anotação
+  db1.prepare(`INSERT INTO games (slug, title, banner, status) VALUES ('a', 'Jogo A', '/uploads/a.png', 'publicado')`).run()
+  db1.prepare(`INSERT INTO games (slug, title, status) VALUES ('b', 'Jogo B', 'rascunho')`).run()
+  db1.exec(`DELETE FROM meta WHERE key = 'banners_from_games'`)
+  db1.close()
+
+  const db2 = openDatabase(path)
+  assert.deepEqual(banners.listBanners(db2, 'jogos'), [{ id: 1, image: '/uploads/a.png', alt: 'Jogo A', link: '/jogo/a' }])
+  banners.replaceBanners(db2, 'jogos', [])
+  db2.close()
+  const db3 = openDatabase(path)
+  assert.deepEqual(banners.listBanners(db3, 'jogos'), [], 'apagados pelo painel não voltam')
+  db3.close()
   rmSync(dir, { recursive: true, force: true })
 })

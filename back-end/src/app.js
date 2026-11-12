@@ -12,10 +12,12 @@
  *   GET  /api/posts/:slug            -> um post (site)
  *   GET  /api/games                  -> jogos publicados (site)
  *   GET  /api/games/:slug            -> um jogo + os outros (site)
+ *   GET  /api/banners/:page          -> banners da Home ou da página /jogo (site)
  *   /api/admin/posts                 -> criar, editar e apagar posts (login; estúdio só os dele)
  *   /api/admin/games                 -> criar, editar e apagar jogos (login; estúdio só os dele)
  *   /api/admin/developers            -> desenvolvedoras (login; estúdio só a dele)
  *   /api/admin/accounts              -> logins dos estúdios (só admin)
+ *   /api/admin/banners               -> banners da Home e da página /jogo (só admin)
  *   POST /api/admin/uploads          -> enviar imagem (login)
  *   GET  /uploads/<arquivo>          -> imagens enviadas
  */
@@ -28,6 +30,7 @@ import { publicPostRoutes, adminPostRoutes } from './routes/posts.js'
 import { publicGameRoutes, adminGameRoutes } from './routes/games.js'
 import { adminDeveloperRoutes } from './routes/developers.js'
 import { adminAccountRoutes } from './routes/accounts.js'
+import { publicBannerRoutes, adminBannerRoutes } from './routes/banners.js'
 import { uploadRoutes } from './routes/uploads.js'
 
 export function createApp({ db, config }) {
@@ -63,10 +66,12 @@ export function createApp({ db, config }) {
   app.use('/api/auth', authRoutes({ db, config, requireLogin }))
   app.use('/api/posts', publicPostRoutes({ db }))
   app.use('/api/games', publicGameRoutes({ db }))
+  app.use('/api/banners', publicBannerRoutes({ db }))
   app.use('/api/admin/posts', requireLogin, adminPostRoutes({ db }))
   app.use('/api/admin/games', requireLogin, adminGameRoutes({ db }))
   app.use('/api/admin/developers', requireLogin, adminDeveloperRoutes({ db }))
   app.use('/api/admin/accounts', requireLogin, requireAdmin, adminAccountRoutes({ db }))
+  app.use('/api/admin/banners', requireLogin, requireAdmin, adminBannerRoutes({ db }))
   app.use('/api/admin/uploads', requireLogin, uploadRoutes({ config }))
 
   // Rota da API que não existe

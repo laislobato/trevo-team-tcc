@@ -15,8 +15,8 @@
  * Os jogos e os comentários vêm de src/services/games.js:
  * - jogos: da API (cadastrados pelo painel);
  * - comentários: lista fixa em src/data/games.js.
- * Os banners do topo são montados com os jogos: cada jogo publicado vira
- * um banner (imagem "banner" do jogo) que leva para a página dele.
+ * Os banners do topo são cadastrados pela Trevo no painel (Painel → Banners,
+ * lista "Página de jogos"); o Hero busca sozinho com page="jogos".
  */
 
 // ===============================================
@@ -36,7 +36,7 @@ import '../styles/globals.css'
 // COMPONENTE PRINCIPAL
 // ===============================================
 
-// Banner usado enquanto os jogos carregam (ou se não houver nenhum)
+// Banner reserva: aparece se o painel ainda não tiver banners para esta página
 const PLACEHOLDER_BANNERS = [{ image: '', alt: 'Jogos da Trevo Team', link: '' }]
 
 export default function Games() {
@@ -59,17 +59,13 @@ export default function Games() {
     }
   }, [])
 
-  // Cada jogo vira um banner que leva para a página dele
-  const banners = games.length
-    ? games.map((game) => ({ image: game.banner, alt: game.title, link: `/jogo/${game.slug}` }))
-    : PLACEHOLDER_BANNERS
 
   return (
     <div className="app-container">
       {/* ========== BLOCO CIANO: CABEÇALHO + BANNERS ========== */}
       <div className="home-top">
         <Header flat />
-        <Hero banners={banners} label="Jogos em destaque" />
+        <Hero page="jogos" banners={PLACEHOLDER_BANNERS} label="Jogos em destaque" />
       </div>
 
       {/* ========== VITRINE DE JOGOS ========== */}

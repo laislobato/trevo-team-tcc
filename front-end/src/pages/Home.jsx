@@ -60,7 +60,7 @@ export default function App() {
       {/* Bloco ciano: cabeçalho (sem fundo próprio) + carrossel de banners */}
       <div className="home-top">
         <Header flat />
-        <Hero />
+        <Hero page="home" />
       </div>
 
       <Testimonials />

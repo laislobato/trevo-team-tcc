@@ -24,6 +24,7 @@
  * - /painel/desenvolvedoras/nova    -> criar desenvolvedora (só admin)
  * - /painel/desenvolvedoras/:id     -> editar desenvolvedora + logins do estúdio
  *                                      (estúdio: "Meu estúdio", só a dele)
+ * - /painel/banners                 -> banners da Home e da página /jogo (só admin)
  * - /painel/conta                   -> dados do login e trocar senha
  *
  * Estúdio só vê os posts e jogos dele: quem garante isso é a API.
@@ -51,6 +52,7 @@ import AdminPosts from './pages/Admin/AdminPosts'
 import PostEditor from './pages/Admin/PostEditor'
 import AdminGames from './pages/Admin/AdminGames'
 import GameEditor from './pages/Admin/GameEditor'
+import AdminBanners from './pages/Admin/AdminBanners'
 import AdminDevelopers from './pages/Admin/AdminDevelopers'
 import DeveloperEditor from './pages/Admin/DeveloperEditor'
 import AdminAccount from './pages/Admin/AdminAccount'
@@ -85,6 +87,7 @@ export default function App() {
           <Route path="/painel/jogos/:id" element={admin(<GameEditor />)} />
           <Route path="/painel/desenvolvedoras" element={adminOnly(<AdminDevelopers />)} />
           <Route path="/painel/desenvolvedoras/nova" element={adminOnly(<DeveloperEditor />)} />
+          <Route path="/painel/banners" element={adminOnly(<AdminBanners />)} />
           <Route path="/painel/desenvolvedoras/:id" element={admin(<DeveloperEditor />)} />
           <Route path="/painel/conta" element={admin(<AdminAccount />)} />
 

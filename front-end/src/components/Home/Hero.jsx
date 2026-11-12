@@ -13,16 +13,29 @@
  * - No celular, dá para arrastar o dedo para o lado.
  * - Quem ativa "reduzir movimento" no sistema não tem troca automática.
  *
- * Para colocar as artes: importe as imagens de src/assets e preencha
- * "image" em cada banner (ex.: import banner1 from '../../assets/banner1.png').
- * "link" é opcional (para onde o banner leva ao ser clicado).
+ * De onde vêm os banners:
+ * - Com a prop "page" ('home' ou 'jogos'), o carrossel busca os banners
+ *   cadastrados pela Trevo no painel (Painel → Banners).
+ * - Se o painel ainda não tiver banners para a página (ou a API falhar),
+ *   usa a prop "banners"; sem ela, usa DEFAULT_BANNERS abaixo.
+ *
+ * Props:
+ * - page:    'home' | 'jogos' -> qual lista do painel usar
+ * - banners: lista reserva [{ image, alt, link }]
+ * - label:   nome do carrossel lido pelos leitores de tela
+ *   ex.: <Hero page="home" />                                (página inicial)
+ *        <Hero page="jogos" label="Jogos em destaque" />      (página /jogo)
+ *
+ * "link" é opcional: página do site (/jogo/...) ou endereço completo (https://...,
+ * abre em outra aba).
  */
 
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { api } from '../../services/api'
 import './css/Hero.css'
 
-const banners = [
+const DEFAULT_BANNERS = [
   { image: '', alt: 'Banner 1', link: '' },
   { image: '', alt: 'Banner 2', link: '' },
   { image: '', alt: 'Banner 3', link: '' },
@@ -31,17 +44,42 @@ const banners = [
   { image: '', alt: 'Banner 6', link: '' },
 ]
 
+// Mostrado enquanto os banners do painel carregam (bloco ciano vazio)
+const LOADING_BANNERS = [{ image: '', alt: 'Carregando banners', link: '' }]
+
 const AUTOPLAY_MS = 6000
 
 // true se a pessoa pediu para reduzir animações no sistema
 const prefersReducedMotion = () =>
   typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
-export default function Hero() {
+export default function Hero({ page, banners: fallback = DEFAULT_BANNERS, label = 'Destaques da Trevo Team' }) {
+  // Banners do painel: null = carregando | [] = nenhum (usa a lista reserva)
+  const [remote, setRemote] = useState(page ? null : [])
   const [current, setCurrent] = useState(0)
   const [paused, setPaused] = useState(false)
   const touchStartX = useRef(null)
+
+  // ---------- Busca os banners do painel ----------
+  useEffect(() => {
+    if (!page) return
+    let active = true
+    api
+      .getBanners(page)
+      .then((list) => active && setRemote(list))
+      .catch(() => active && setRemote([])) // API fora do ar: usa a lista reserva
+    return () => {
+      active = false
+    }
+  }, [page])
+
+  const banners = remote === null ? LOADING_BANNERS : remote.length ? remote : fallback
   const total = banners.length
+
+  // Lista mudou de tamanho (ex.: chegaram os banners do painel): volta para o 1º
+  useEffect(() => {
+    setCurrent(0)
+  }, [total])
 
   const goTo = (index) => setCurrent((index + total) % total)
 
@@ -67,7 +105,7 @@ export default function Hero() {
     <section
       className="hero"
       aria-roledescription="carrossel"
-      aria-label="Destaques da Trevo Team"
+      aria-label={label}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
@@ -93,7 +131,13 @@ export default function Hero() {
                 aria-label={`${index + 1} de ${total}`}
                 aria-hidden={index !== current}
               >
-                {banner.link ? (
+                {/* Link: página do site (Link) ou site de fora (abre em outra aba) */}
+                {banner.link && /^https?:\/\//.test(banner.link) ? (
+                  <a href={banner.link} target="_blank" rel="noreferrer" className="hero-slide-link"
+                    tabIndex={index === current ? 0 : -1}>
+                    {content}
+                  </a>
+                ) : banner.link ? (
                   <Link to={banner.link} className="hero-slide-link" tabIndex={index === current ? 0 : -1}>
                     {content}
                   </Link>
@@ -106,19 +150,21 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* ▬ BARRINHAS: qual banner está na tela */}
-      <div className="hero-dots">
-        {banners.map((banner, index) => (
-          <button
-            key={index}
-            type="button"
-            className={`hero-dot ${index === current ? 'is-active' : ''}`}
-            onClick={() => goTo(index)}
-            aria-label={`Mostrar banner ${index + 1}`}
-            aria-current={index === current}
-          />
-        ))}
-      </div>
+      {/* ▬ BARRINHAS: qual banner está na tela (só com 2 ou mais) */}
+      {total > 1 && (
+        <div className="hero-dots">
+          {banners.map((banner, index) => (
+            <button
+              key={index}
+              type="button"
+              className={`hero-dot ${index === current ? 'is-active' : ''}`}
+              onClick={() => goTo(index)}
+              aria-label={`Mostrar banner ${index + 1}`}
+              aria-current={index === current}
+            />
+          ))}
+        </div>
+      )}
     </section>
   )
 }

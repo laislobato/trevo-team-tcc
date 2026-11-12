@@ -54,7 +54,6 @@ function toApi(db, row) {
     character: row.character,
     characterImage: row.character_image, // vitrine (recortada no arco)
     color: row.color,
-    banner: row.banner,
     description: row.description,
     genre: row.genre,
     rating: row.rating,
@@ -97,7 +96,6 @@ export function validateGame(db, input = {}) {
     character: v.text(input.character, 'character', errors, { max: 60, label: 'Personagem da vitrine' }),
     characterImage: v.image(input.characterImage, 'characterImage', errors),
     color: v.oneOf(input.color ?? 'green', GAME_COLORS, 'color', errors, 'Cor'),
-    banner: v.image(input.banner, 'banner', errors),
     description: v.text(input.description, 'description', errors, { max: 300, label: 'Descrição curta' }),
     genre: v.text(input.genre, 'genre', errors, { max: 40, label: 'Gênero' }),
     rating: v.oneOf(input.rating ?? 'Livre', GAME_RATINGS, 'rating', errors, 'Classificação'),
@@ -136,7 +134,6 @@ function params(data) {
     character: data.character,
     characterImage: data.characterImage,
     color: data.color,
-    banner: data.banner,
     description: data.description,
     genre: data.genre,
     rating: data.rating,
@@ -193,9 +190,9 @@ export function getGame(db, id) {
 export function createGame(db, input) {
   const data = validateGame(db, input)
   const { lastInsertRowid } = db
-    .prepare(`INSERT INTO games (slug, title, subtitle, developer_id, character, character_image, color, banner,
+    .prepare(`INSERT INTO games (slug, title, subtitle, developer_id, character, character_image, color,
                 description, genre, rating, theme, platforms, art, quote, screenshots, about, characters, status)
-              VALUES (:slug, :title, :subtitle, :developerId, :character, :characterImage, :color, :banner,
+              VALUES (:slug, :title, :subtitle, :developerId, :character, :characterImage, :color,
                 :description, :genre, :rating, :theme, :platforms, :art, :quote, :screenshots, :about, :characters, :status)`)
     .run({ ...params(data), slug: uniqueSlug(db, data.title) })
   return getGame(db, lastInsertRowid)
@@ -205,7 +202,7 @@ export function updateGame(db, id, input) {
   if (!getGame(db, id)) throw new HttpError(404, 'Jogo não encontrado.')
   const data = validateGame(db, input)
   db.prepare(`UPDATE games SET title = :title, subtitle = :subtitle, developer_id = :developerId,
-                character = :character, character_image = :characterImage, color = :color, banner = :banner,
+                character = :character, character_image = :characterImage, color = :color,
                 description = :description, genre = :genre, rating = :rating, theme = :theme,
                 platforms = :platforms, art = :art, quote = :quote, screenshots = :screenshots, about = :about,
                 characters = :characters, status = :status, updated_at = CURRENT_TIMESTAMP

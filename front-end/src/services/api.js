@@ -115,7 +115,6 @@ export function normalizeGame(game) {
     ...game,
     characterImage: imageUrl(game.characterImage), // vitrine
     art: imageUrl(game.art), // página do jogo
-    banner: imageUrl(game.banner),
     screenshots: [0, 1, 2].map((i) => imageUrl(game.screenshots?.[i] || '')),
     characters: (game.characters || []).map((c) => ({ ...c, image: imageUrl(c.image) })),
     developer: game.developer ? { ...game.developer, logo: imageUrl(game.developer.logo) } : null,
@@ -154,6 +153,12 @@ export const api = {
   async getGame(slug) {
     const data = await request(`/api/games/${encodeURIComponent(slug)}`)
     return { game: normalizeGame(data.game), others: data.others.map(normalizeGameSummary) }
+  },
+
+  /** Banners do carrossel de uma página: 'home' ou 'jogos' */
+  async getBanners(page) {
+    const data = await request(`/api/banners/${page}`)
+    return data.banners.map((b) => ({ ...b, image: imageUrl(b.image) }))
   },
 
   // ----------------------------------------------------------------
@@ -196,6 +201,11 @@ export const api = {
     updateAccount: (token, id, data) =>
       request(`/api/admin/accounts/${id}`, { method: 'PUT', token, body: data }).then((d) => d.account),
     deleteAccount: (token, id) => request(`/api/admin/accounts/${id}`, { method: 'DELETE', token }),
+
+    // Banners (só admin): { home: [...], jogos: [...] } e salvar a lista de uma página
+    getBanners: (token) => request('/api/admin/banners', { token }),
+    saveBanners: (token, page, banners) =>
+      request(`/api/admin/banners/${page}`, { method: 'PUT', token, body: { banners } }).then((d) => d.banners),
 
     /** Envia uma imagem e devolve o caminho dela ("/uploads/...") */
     async uploadImage(token, file) {

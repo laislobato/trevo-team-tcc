@@ -5,7 +5,8 @@
  * Os blocos do formulário seguem a ordem em que as coisas aparecem no site:
  *
  *   1. Jogo           -> nome, subtítulo, estúdio, situação
- *   2. Vitrine        -> personagem, cor, descrição curta e banner (página /jogo)
+ *   2. Vitrine        -> personagem, cor, descrição curta e imagem da vitrine
+ *                        (os banners do topo da página /jogo ficam em Painel → Banners)
  *   3. Informações    -> gênero, classificação, tema e plataformas
  *   4. Página do jogo -> arte do topo, frase, 3 imagens e "Sobre o jogo"
  *   5. Personagens    -> até 6 (nome, texto e imagem)
@@ -42,7 +43,6 @@ const EMPTY = {
   characterImage: '',
   color: 'green',
   description: '',
-  banner: '',
   genre: '',
   rating: 'Livre',
   theme: '',
@@ -103,7 +103,6 @@ export default function GameEditor() {
             characterImage: game.characterImage,
             color: game.color,
             description: game.description,
-            banner: game.banner,
             genre: game.genre,
             rating: game.rating,
             theme: game.theme,
@@ -237,7 +236,7 @@ export default function GameEditor() {
 
         {/* ========== 2. VITRINE E BANNER (página /jogo) ========== */}
         <fieldset className="admin-card">
-          <legend className="admin-card-title">Vitrine e banner</legend>
+          <legend className="admin-card-title">Vitrine</legend>
 
           <div className="admin-grid-2">
             <Field label="Personagem da vitrine" error={errors.character} hint="Ex.: Mira, a jardineira">
@@ -275,14 +274,9 @@ export default function GameEditor() {
             <textarea rows="3" maxLength={300} value={form.description} onChange={(e) => set('description', e.target.value)} />
           </Field>
 
-          <div className="admin-grid-2">
-            <ImageUpload label="Imagem da vitrine (recortada no arco; vazio = silhueta)" value={form.characterImage}
-              onChange={(v) => set('characterImage', v)} />
-            <ImageUpload label="Banner (topo da página /jogo)" value={form.banner} onChange={(v) => set('banner', v)} />
-          </div>
-          {(errors.characterImage || errors.banner) && (
-            <p className="admin-field-error">{errors.characterImage || errors.banner}</p>
-          )}
+          <ImageUpload label="Imagem da vitrine (recortada no arco; vazio = silhueta)" value={form.characterImage}
+            onChange={(v) => set('characterImage', v)} />
+          {errors.characterImage && <p className="admin-field-error">{errors.characterImage}</p>}
         </fieldset>
 
         {/* ========== 3. INFORMAÇÕES ========== */}

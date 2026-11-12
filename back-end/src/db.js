@@ -11,6 +11,8 @@
  * - developers  -> estúdios exibidos em "Developed By"
  * - posts       -> posts do blog (developer_id = estúdio dono do post)
  * - games       -> jogos (developer_id = estúdio dono do jogo)
+ * - banners     -> banners do topo da Home ('home') e da página /jogo ('jogos');
+ *                  só o admin da Trevo altera
  * - meta        -> anotações internas (ex.: se os exemplos já foram criados)
  *
  * Bancos criados antes dos logins de estúdio são atualizados sozinhos
@@ -77,7 +79,7 @@ const SCHEMA = `
     character       TEXT NOT NULL DEFAULT '',    -- personagem da vitrine
     character_image TEXT NOT NULL DEFAULT '',    -- imagem da vitrine (recortada no arco)
     color           TEXT NOT NULL DEFAULT 'green' CHECK (color IN ('green', 'cyan', 'orange')),
-    banner          TEXT NOT NULL DEFAULT '',    -- imagem do banner no topo da página /jogo
+    banner          TEXT NOT NULL DEFAULT '',    -- (antigo) os banners agora ficam na tabela "banners"
     description     TEXT NOT NULL DEFAULT '',    -- texto curto (vitrine e topo da página do jogo)
     -- quadro de informações
     genre           TEXT NOT NULL DEFAULT '',
@@ -96,6 +98,18 @@ const SCHEMA = `
   );
 
   CREATE INDEX IF NOT EXISTS games_developer ON games (developer_id);
+
+  CREATE TABLE IF NOT EXISTS banners (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    page       TEXT NOT NULL CHECK (page IN ('home', 'jogos')), -- página onde aparece
+    position   INTEGER NOT NULL DEFAULT 0,                      -- ordem no carrossel
+    image      TEXT NOT NULL DEFAULT '',
+    alt        TEXT NOT NULL DEFAULT '',                        -- descrição da imagem
+    link       TEXT NOT NULL DEFAULT '',                        -- para onde leva (opcional)
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+  );
+
+  CREATE INDEX IF NOT EXISTS banners_page ON banners (page, position);
 
   CREATE TABLE IF NOT EXISTS meta (
     key   TEXT PRIMARY KEY,
@@ -126,6 +140,15 @@ function migrate(db) {
     db.exec('UPDATE games SET art = character_image')
   }
 
+  // 3) Banners da página /jogo: antes eram montados com os jogos publicados
+  //    (um banner por jogo). Copia esses banners para a tabela nova, uma vez,
+  //    para o site continuar igual.
+  if (!getMeta(db, 'banners_from_games')) {
+    const { total } = db.prepare(`SELECT COUNT(*) AS total FROM banners WHERE page = 'jogos'`).get()
+    if (total === 0) copyGameBanners(db)
+    setMeta(db, 'banners_from_games', 'ok')
+  }
+
   db.exec('CREATE INDEX IF NOT EXISTS users_developer ON users (developer_id)')
   db.exec('CREATE INDEX IF NOT EXISTS posts_developer ON posts (developer_id)')
 }
@@ -151,6 +174,13 @@ export function ensureAdmin(db, email, password) {
   }
   db.prepare(`INSERT INTO users (email, password_hash, role) VALUES (?, ?, 'admin')`).run(email, hashPassword(password))
   return true
+}
+
+/** Cria um banner na página /jogo para cada jogo publicado (imagem, nome e link do jogo) */
+function copyGameBanners(db) {
+  const insert = db.prepare(`INSERT INTO banners (page, position, image, alt, link) VALUES ('jogos', ?, ?, ?, ?)`)
+  const games = db.prepare(`SELECT slug, title, banner FROM games WHERE status = 'publicado' ORDER BY created_at, id`).all()
+  games.forEach((g, i) => insert.run(i, g.banner, g.title, `/jogo/${g.slug}`))
 }
 
 // ===============================================
@@ -233,4 +263,7 @@ function seedGames(db) {
       characters: JSON.stringify(characters),
     })
   }
+  // Banners da página /jogo para os jogos de exemplo (se ainda não houver nenhum)
+  const { total } = db.prepare(`SELECT COUNT(*) AS total FROM banners WHERE page = 'jogos'`).get()
+  if (total === 0) copyGameBanners(db)
 }
