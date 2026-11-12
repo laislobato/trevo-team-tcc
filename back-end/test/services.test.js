@@ -321,6 +321,7 @@ const validGame = (extra = {}) => ({
   theme: 'Fantasia',
   platforms: ['PC', 'Xbox'],
   quote: 'Uma frase',
+  art: '/uploads/arte.png',
   screenshots: ['', '/uploads/abc.webp', ''],
   about: 'Sobre o jogo',
   characters: [{ name: 'HERÓI', text: 'O herói', image: '' }],
@@ -392,6 +393,7 @@ test('jogo: validação recusa dados ruins', () => {
   assert.ok(errorsOf(validGame({ platforms: ['PC', 'Atari'] }))['platforms.1'])
   assert.ok(errorsOf(validGame({ screenshots: ['', '', '', ''] })).screenshots)
   assert.ok(errorsOf(validGame({ banner: 'javascript:alert(1)' })).banner)
+  assert.ok(errorsOf(validGame({ art: '/uploads/../x' })).art)
   assert.ok(errorsOf(validGame({ characters: [{ name: '', text: 'x' }] }))['characters.0.name'])
   assert.ok(errorsOf(validGame({ description: 'x'.repeat(301) })).description)
   assert.ok(errorsOf(validGame({ developerId: 999 })).developerId)
@@ -422,4 +424,30 @@ test('painel do estúdio lista só os jogos dele', () => {
   games.createGame(db, validGame({ title: 'Jogo do Lume', developerId: lume.id }))
   assert.equal(games.listAllGames(db).length, 2)
   assert.deepEqual(games.listAllGames(db, scopeFor(orvalhoUser)).map((g) => g.title), ['Jogo do Orvalho'])
+})
+
+test('jogo: arte da página separada da imagem da vitrine', () => {
+  const db = freshDb()
+  const game = games.createGame(db, validGame({ characterImage: '/uploads/vitrine.png', art: '/uploads/pagina.png' }))
+  assert.equal(game.characterImage, '/uploads/vitrine.png')
+  assert.equal(game.art, '/uploads/pagina.png')
+  assert.equal(games.getPublicGame(db, game.slug).game.art, '/uploads/pagina.png')
+})
+
+test('banco da etapa 2 (jogos sem "art") ganha a coluna com a imagem da vitrine', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'trevo-'))
+  const path = join(dir, 'etapa2.db')
+  const db1 = openDatabase(path)
+  // Volta a tabela de jogos para o formato antigo, sem a coluna "art"
+  db1.exec('ALTER TABLE games DROP COLUMN art')
+  db1.prepare(`INSERT INTO games (slug, title, character_image, status) VALUES ('velho', 'Jogo velho', '/uploads/heroi.png', 'publicado')`).run()
+  db1.close()
+
+  const db2 = openDatabase(path)
+  const game = games.getPublicGame(db2, 'velho').game
+  assert.equal(game.art, '/uploads/heroi.png', 'a página continua com a mesma imagem')
+  assert.equal(game.characterImage, '/uploads/heroi.png')
+  db2.close()
+  openDatabase(path).close() // abrir de novo não quebra
+  rmSync(dir, { recursive: true, force: true })
 })

@@ -7,7 +7,7 @@
  *   1. Jogo           -> nome, subtítulo, estúdio, situação
  *   2. Vitrine        -> personagem, cor, descrição curta e banner (página /jogo)
  *   3. Informações    -> gênero, classificação, tema e plataformas
- *   4. Página do jogo -> frase, 3 imagens e "Sobre o jogo"
+ *   4. Página do jogo -> arte do topo, frase, 3 imagens e "Sobre o jogo"
  *   5. Personagens    -> até 6 (nome, texto e imagem)
  *
  * - Situação "Rascunho" não aparece no site; "Publicado" aparece na hora.
@@ -47,6 +47,7 @@ const EMPTY = {
   rating: 'Livre',
   theme: '',
   platforms: [],
+  art: '',
   quote: '',
   screenshots: ['', '', ''],
   about: '',
@@ -107,6 +108,7 @@ export default function GameEditor() {
             rating: game.rating,
             theme: game.theme,
             platforms: game.platforms,
+            art: game.art,
             quote: game.quote,
             screenshots: [0, 1, 2].map((i) => game.screenshots[i] || ''),
             about: game.about,
@@ -274,7 +276,7 @@ export default function GameEditor() {
           </Field>
 
           <div className="admin-grid-2">
-            <ImageUpload label="Imagem do personagem (vazio = silhueta)" value={form.characterImage}
+            <ImageUpload label="Imagem da vitrine (recortada no arco; vazio = silhueta)" value={form.characterImage}
               onChange={(v) => set('characterImage', v)} />
             <ImageUpload label="Banner (topo da página /jogo)" value={form.banner} onChange={(v) => set('banner', v)} />
           </div>
@@ -323,6 +325,13 @@ export default function GameEditor() {
         {/* ========== 4. PÁGINA DO JOGO ========== */}
         <fieldset className="admin-card">
           <legend className="admin-card-title">Página do jogo</legend>
+
+          <ImageUpload label="Arte do topo da página (inteira, na faixa colorida; vazio = estrela)" value={form.art}
+            onChange={(v) => set('art', v)} />
+          <p className="admin-hint">
+            Use PNG com fundo transparente e recortado rente ao desenho: a arte ocupa a faixa toda na altura e sai pelos lados.
+          </p>
+          {errors.art && <p className="admin-field-error">{errors.art}</p>}
 
           <Field label="Frase (em cima da imagem do meio)" error={errors.quote} hint="Ex.: “Toda raiz guarda um segredo.”">
             <input value={form.quote} maxLength={150} onChange={(e) => set('quote', e.target.value)} />

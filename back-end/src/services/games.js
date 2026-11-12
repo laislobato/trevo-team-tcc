@@ -52,7 +52,7 @@ function toApi(db, row) {
     developerId: row.developer_id,
     developer: developer ? { id: developer.id, name: developer.name, logo: developer.logo } : null,
     character: row.character,
-    characterImage: row.character_image,
+    characterImage: row.character_image, // vitrine (recortada no arco)
     color: row.color,
     banner: row.banner,
     description: row.description,
@@ -62,6 +62,7 @@ function toApi(db, row) {
     platforms: JSON.parse(row.platforms),
     quote: row.quote,
     screenshots: JSON.parse(row.screenshots),
+    art: row.art, // página do jogo (inteira, na faixa colorida)
     about: row.about,
     characters: JSON.parse(row.characters),
     status: row.status,
@@ -106,6 +107,7 @@ export function validateGame(db, input = {}) {
       errors[`platforms.${i}`] = 'Plataforma inválida.'
       return false
     }),
+    art: v.image(input.art, 'art', errors),
     quote: v.text(input.quote, 'quote', errors, { max: 150, label: 'Frase' }),
     screenshots: screenshots.map((img, i) => v.image(img, `screenshots.${i}`, errors)),
     about: v.text(input.about, 'about', errors, { max: 3000, label: 'Sobre o jogo' }),
@@ -140,6 +142,7 @@ function params(data) {
     rating: data.rating,
     theme: data.theme,
     platforms: JSON.stringify(data.platforms),
+    art: data.art,
     quote: data.quote,
     screenshots: JSON.stringify(data.screenshots),
     about: data.about,
@@ -191,9 +194,9 @@ export function createGame(db, input) {
   const data = validateGame(db, input)
   const { lastInsertRowid } = db
     .prepare(`INSERT INTO games (slug, title, subtitle, developer_id, character, character_image, color, banner,
-                description, genre, rating, theme, platforms, quote, screenshots, about, characters, status)
+                description, genre, rating, theme, platforms, art, quote, screenshots, about, characters, status)
               VALUES (:slug, :title, :subtitle, :developerId, :character, :characterImage, :color, :banner,
-                :description, :genre, :rating, :theme, :platforms, :quote, :screenshots, :about, :characters, :status)`)
+                :description, :genre, :rating, :theme, :platforms, :art, :quote, :screenshots, :about, :characters, :status)`)
     .run({ ...params(data), slug: uniqueSlug(db, data.title) })
   return getGame(db, lastInsertRowid)
 }
@@ -204,7 +207,7 @@ export function updateGame(db, id, input) {
   db.prepare(`UPDATE games SET title = :title, subtitle = :subtitle, developer_id = :developerId,
                 character = :character, character_image = :characterImage, color = :color, banner = :banner,
                 description = :description, genre = :genre, rating = :rating, theme = :theme,
-                platforms = :platforms, quote = :quote, screenshots = :screenshots, about = :about,
+                platforms = :platforms, art = :art, quote = :quote, screenshots = :screenshots, about = :about,
                 characters = :characters, status = :status, updated_at = CURRENT_TIMESTAMP
               WHERE id = :id`)
     .run({ ...params(data), id: Number(id) })

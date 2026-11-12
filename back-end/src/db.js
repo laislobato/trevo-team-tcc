@@ -75,7 +75,7 @@ const SCHEMA = `
     developer_id    INTEGER REFERENCES developers(id) ON DELETE SET NULL,
     -- vitrine e banner da página /jogo
     character       TEXT NOT NULL DEFAULT '',    -- personagem da vitrine
-    character_image TEXT NOT NULL DEFAULT '',
+    character_image TEXT NOT NULL DEFAULT '',    -- imagem da vitrine (recortada no arco)
     color           TEXT NOT NULL DEFAULT 'green' CHECK (color IN ('green', 'cyan', 'orange')),
     banner          TEXT NOT NULL DEFAULT '',    -- imagem do banner no topo da página /jogo
     description     TEXT NOT NULL DEFAULT '',    -- texto curto (vitrine e topo da página do jogo)
@@ -85,6 +85,7 @@ const SCHEMA = `
     theme           TEXT NOT NULL DEFAULT '',
     platforms       TEXT NOT NULL DEFAULT '[]',  -- lista JSON ["PC", "Xbox", ...]
     -- resto da página do jogo
+    art             TEXT NOT NULL DEFAULT '',    -- arte inteira na faixa colorida do topo
     quote           TEXT NOT NULL DEFAULT '',
     screenshots     TEXT NOT NULL DEFAULT '[]',  -- lista JSON com até 3 imagens
     about           TEXT NOT NULL DEFAULT '',
@@ -115,6 +116,14 @@ function migrate(db) {
   }
   if (!userColumns.includes('developer_id')) {
     db.exec('ALTER TABLE users ADD COLUMN developer_id INTEGER REFERENCES developers(id) ON DELETE CASCADE')
+  }
+
+  // 2) Jogos: imagem da página separada da imagem da vitrine (coluna "art").
+  //    Começa com a mesma imagem da vitrine, para nada mudar no site até trocar.
+  const gameColumns = db.prepare('PRAGMA table_info(games)').all().map((c) => c.name)
+  if (!gameColumns.includes('art')) {
+    db.exec(`ALTER TABLE games ADD COLUMN art TEXT NOT NULL DEFAULT ''`)
+    db.exec('UPDATE games SET art = character_image')
   }
 
   db.exec('CREATE INDEX IF NOT EXISTS users_developer ON users (developer_id)')

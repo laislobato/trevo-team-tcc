@@ -113,7 +113,8 @@ const normalizeSummary = (s) => (s ? { ...s, cover: imageUrl(s.cover) } : null)
 export function normalizeGame(game) {
   return {
     ...game,
-    characterImage: imageUrl(game.characterImage),
+    characterImage: imageUrl(game.characterImage), // vitrine
+    art: imageUrl(game.art), // página do jogo
     banner: imageUrl(game.banner),
     screenshots: [0, 1, 2].map((i) => imageUrl(game.screenshots?.[i] || '')),
     characters: (game.characters || []).map((c) => ({ ...c, image: imageUrl(c.image) })),
