@@ -7,7 +7,9 @@
  *
  * Medidas (mude aqui para ajustar):
  *   --bar-width: largura da barra
- *   --art-width: largura da arte (maior que a barra = sai para fora)
+ *   --art-width: largura da estrela (maior que a barra = sai para fora)
+ *   --art-max:   largura máxima da imagem do personagem (ela ocupa a
+ *                altura toda da barra; a largura segue a proporção da imagem)
  *   --bar-pull:  quanto a barra "sobe" para encostar no header
  *                (= espaço do header até o começo da seção)
  */
@@ -19,6 +21,7 @@
 .game-hero {
   --bar-width: 170px;
   --art-width: 250px;
+  --art-max: 380px;
   --bar-pull: calc(var(--spacing-lg) + var(--spacing-xs)); /* padding da seção + margem do header */
   padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-xl);
 }
@@ -64,12 +67,21 @@
   width: var(--art-width);
 }
 
-/* Arte do jogo (imagem do personagem) */
+/* Barra com imagem: sem o espaço de cima da estrela, a imagem ocupa tudo */
+.game-hero-bar.has-art {
+  padding-top: 0;
+  align-items: stretch;
+}
+
+/* Arte do jogo (imagem do personagem): altura da barra inteira,
+   do header até embaixo; a largura acompanha a proporção da imagem */
 .game-hero-art {
-  max-width: none; /* o globals.css limita imagens à largura da barra; aqui ela precisa sair */
-  height: auto;
-  max-height: 320px;
+  height: 100%;
+  width: auto;
+  margin-left: var(--spacing-md);
+  max-width: var(--art-max); /* imagem muito larga não invade o texto */
   object-fit: contain;
+  object-position: center bottom; /* "pisa" no fim da barra */
   filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.18));
 }
 
@@ -142,15 +154,12 @@
   .game-hero {
     --bar-width: 140px;
     --art-width: 200px;
+    --art-max: 300px;
   }
 
   .game-hero-bar {
     height: calc(260px + var(--bar-pull));
     padding-top: calc(30px + var(--bar-pull));
-  }
-
-  .game-hero-art {
-    max-height: 220px;
   }
 
   .game-hero-title {

@@ -12,8 +12,9 @@
  *    ╚═╤════╤═╝    [Genre]   [Rating]
  *      │    │      [Theme]   [Platform]
  *      └────┘
- *   A barra colorida começa colada no header e a arte do jogo
- *   (imagem do personagem) é maior que a barra: sai para os dois lados.
+ *   A barra colorida começa colada no header. A arte do jogo (imagem do
+ *   personagem) ocupa a barra de ponta a ponta na altura e, na largura,
+ *   segue a proporção da imagem, saindo para os dois lados.
  *   Sem imagem, aparece uma estrela no lugar.
  *
  * Props:
@@ -44,7 +45,7 @@ export default function GameHero({
       <div className="game-hero-inner">
 
         {/* 🟦 BARRA COLORIDA COM A ARTE DO JOGO (ou a estrela) */}
-        <div className={`game-hero-bar game-hero-bar--${color}`}>
+        <div className={`game-hero-bar game-hero-bar--${color} ${art ? 'has-art' : ''}`}>
           {art ? (
             <img className="game-hero-art" src={art} alt={artAlt} />
           ) : (
