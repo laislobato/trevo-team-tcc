@@ -226,9 +226,10 @@
   .header-wrapper {
     flex-direction: column;
     align-items: stretch;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-xs);
   }
 
+    
   .header-menu-toggle {
     display: flex;
     margin-left: auto;
@@ -239,7 +240,7 @@
     display: none;
     flex-direction: column;
     align-items: stretch;
-    gap: var(--spacing-sm);
+    gap: 0;
     animation: headerSlideDown 0.3s ease;
   }
 
@@ -255,7 +256,7 @@
 
   .header-nav-link {
     display: block;
-    padding: 14px 0;
+    padding: 12px 0;
     font-size: 16px;
     border-top: 1px solid rgba(0, 0, 0, 0.08);
   }
@@ -272,8 +273,8 @@
 
   /* Redes em linha, embaixo das páginas */
   .header-socials {
-    gap: var(--spacing-sm);
-    padding-top: var(--spacing-xs);
+    gap: var(--spacing-md);
+    padding: var(--spacing-xs) 0 var(--spacing-xs);
     border-top: 1px solid rgba(0, 0, 0, 0.08);
   }
 
@@ -296,11 +297,11 @@
 
 @media (max-width: 480px) {
   .header {
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: var(--spacing-xs) var(--spacing-md);
   }
 
   .header-logo-img {
-    height: 38px;
+    height: 50px;
   }
 
   .header-menu-toggle {
