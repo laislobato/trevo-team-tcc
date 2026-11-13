@@ -9,6 +9,8 @@
  *                  role 'admin'  = equipe da Trevo (mexe em tudo)
  *                  role 'studio' = um estúdio (developer_id diz qual; só mexe no que é dele)
  * - developers  -> estúdios exibidos em "Developed By"
+ *                  is_trevo = 1 marca a própria Trevo Team (fixa no topo do painel,
+ *                  não pode ser apagada; os integrantes dela aparecem na página About)
  * - posts       -> posts do blog (developer_id = estúdio dono do post)
  * - games       -> jogos (developer_id = estúdio dono do jogo)
  * - banners     -> banners do topo da Home ('home') e da página /jogo ('jogos');
@@ -23,7 +25,7 @@ import { DatabaseSync } from 'node:sqlite'
 import { mkdirSync } from 'node:fs'
 import { dirname } from 'node:path'
 import { hashPassword } from './services/passwords.js'
-import { EXAMPLE_DEVELOPERS, EXAMPLE_POSTS, EXAMPLE_GAMES } from './seed.js'
+import { EXAMPLE_DEVELOPERS, EXAMPLE_POSTS, EXAMPLE_GAMES, TREVO_TEAM } from './seed.js'
 
 const SCHEMA = `
   CREATE TABLE IF NOT EXISTS developers (
@@ -33,7 +35,9 @@ const SCHEMA = `
     description TEXT NOT NULL DEFAULT '',
     active_devs INTEGER NOT NULL DEFAULT 0,
     socials     TEXT NOT NULL DEFAULT '[]',  -- lista JSON [{ label, url }]
-    members     TEXT NOT NULL DEFAULT '[]',  -- lista JSON [{ name, role, photo }]
+    -- lista JSON [{ name, nickname, role, photo, description, socials: [{ label, url }] }]
+    members     TEXT NOT NULL DEFAULT '[]',
+    is_trevo    INTEGER NOT NULL DEFAULT 0,  -- 1 = a própria Trevo Team
     created_at  TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at  TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
   );
@@ -149,6 +153,13 @@ function migrate(db) {
     setMeta(db, 'banners_from_games', 'ok')
   }
 
+  // 4) Trevo Team: coluna is_trevo e a desenvolvedora da própria Trevo
+  const devColumns = db.prepare('PRAGMA table_info(developers)').all().map((c) => c.name)
+  if (!devColumns.includes('is_trevo')) {
+    db.exec('ALTER TABLE developers ADD COLUMN is_trevo INTEGER NOT NULL DEFAULT 0')
+  }
+  ensureTrevo(db)
+
   db.exec('CREATE INDEX IF NOT EXISTS users_developer ON users (developer_id)')
   db.exec('CREATE INDEX IF NOT EXISTS posts_developer ON posts (developer_id)')
 }
@@ -174,6 +185,24 @@ export function ensureAdmin(db, email, password) {
   }
   db.prepare(`INSERT INTO users (email, password_hash, role) VALUES (?, ?, 'admin')`).run(email, hashPassword(password))
   return true
+}
+
+/**
+ * Garante que existe a desenvolvedora da Trevo Team (sempre, mesmo sem exemplos):
+ * - se já houver uma marcada, não faz nada;
+ * - se houver uma chamada "Trevo Team", marca essa;
+ * - senão, cria com os integrantes que estavam fixos na página About.
+ */
+function ensureTrevo(db) {
+  if (db.prepare('SELECT 1 FROM developers WHERE is_trevo = 1').get()) return
+  const byName = db.prepare(`SELECT id FROM developers WHERE lower(name) = 'trevo team'`).get()
+  if (byName) {
+    db.prepare('UPDATE developers SET is_trevo = 1 WHERE id = ?').run(byName.id)
+    return
+  }
+  db.prepare(`INSERT INTO developers (name, description, active_devs, socials, members, is_trevo)
+              VALUES (?, ?, ?, ?, ?, 1)`)
+    .run(TREVO_TEAM.name, TREVO_TEAM.description, TREVO_TEAM.members.length, '[]', JSON.stringify(TREVO_TEAM.members))
 }
 
 /** Cria um banner na página /jogo para cada jogo publicado (imagem, nome e link do jogo) */

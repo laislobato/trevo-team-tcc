@@ -708,6 +708,61 @@
 }
 
 /* ================================================
+   TREVO TEAM E INTEGRANTES
+   ================================================ */
+
+/* Trevo Team em destaque no topo da lista de desenvolvedoras */
+.admin-dev--trevo {
+  border: 2px solid #8cc74f;
+  background: #f3faea;
+}
+
+.admin-trevo-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  background: #8cc74f;
+  border-radius: var(--radius-md);
+  padding: 2px 10px;
+  align-self: flex-start; /* sem isto a etiqueta esticava na largura toda */
+  width: fit-content;
+}
+
+.admin-alert--trevo {
+  background: #f3faea;
+  border-left-color: #8cc74f;
+}
+
+/* Um integrante: bloco com foto/nome/apelido/cargo, descrição e redes */
+.admin-member {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  background: #f7f7f7;
+  border-radius: 10px;
+  padding: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.admin-member .admin-list-row--member {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.admin-member-socials {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.admin-member-socials .admin-list-row {
+  width: 100%;
+  border-bottom: none;
+  padding: 0;
+}
+
+/* ================================================
    BANNERS
    ================================================ */
 

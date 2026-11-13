@@ -155,8 +155,7 @@
 
 .footer-bottom {
   background: var(--white);
-  border: 1px solid var(--footer-dark);
-  border-top: none;
+  border-bottom: 1px solid var(--footer-dark); /* só embaixo: nas laterais encosta na tela */
   padding: 10px var(--spacing-lg);
 }
 
@@ -206,14 +205,13 @@
     display: block;
   }
 
-  /* Bloco centralizado, com contorno e cantos de cima arredondados */
+  /* Ocupa a largura toda da tela, com os cantos de cima arredondados */
   .footer {
-    max-width: 440px;
-    margin: var(--spacing-lg) auto 0;
+    margin-top: var(--spacing-lg);
   }
 
   .footer-bar {
-    padding: 8px var(--spacing-md);
+    padding: 12px var(--spacing-md);
   }
 
   /* PRIVACY | redes | círculo verde */
@@ -248,7 +246,7 @@
 
   /* Caixa branca: páginas e copyright centralizados */
   .footer-bottom {
-    padding: 12px var(--spacing-xs);
+    padding: 12px var(--spacing-sm);
   }
 
   .footer-bottom .footer-inner {
@@ -277,10 +275,6 @@
 
 /* Celulares bem estreitos: bolinhas e textos menores para caber */
 @media (max-width: 380px) {
-  .footer {
-    padding: 0 var(--spacing-xs);
-  }
-
   .footer-bar {
     padding: 10px var(--spacing-sm);
   }

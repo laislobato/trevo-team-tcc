@@ -69,10 +69,11 @@ export default function AdminDevelopers() {
 
       <ul className="admin-dev-list">
         {developers.map((dev) => (
-          <li key={dev.id} className="admin-dev">
+          <li key={dev.id} className={`admin-dev ${dev.isTrevo ? 'admin-dev--trevo' : ''}`}>
             <span className="admin-dev-logo">{dev.logo && <img src={imageUrl(dev.logo)} alt="" />}</span>
             <div className="admin-dev-info">
               <Link to={`/painel/desenvolvedoras/${dev.id}`} className="admin-table-title">{dev.name}</Link>
+              {dev.isTrevo && <span className="admin-trevo-tag">🍀 Equipe da Trevo · página About</span>}
               <span className="admin-hint">
                 {dev.activeDevs} devs ativos · {dev.members.length} integrantes · {dev.socials.length} redes ·{' '}
                 {loginCount[dev.id] ? `${loginCount[dev.id]} login(s)` : 'sem login'}
@@ -80,9 +81,12 @@ export default function AdminDevelopers() {
             </div>
             <div className="admin-table-actions">
               <Link to={`/painel/desenvolvedoras/${dev.id}`} className="admin-button admin-button--light">Editar</Link>
-              <button type="button" className="admin-button admin-button--danger" onClick={() => handleDelete(dev)}>
-                Apagar
-              </button>
+              {/* A Trevo Team não pode ser apagada */}
+              {!dev.isTrevo && (
+                <button type="button" className="admin-button admin-button--danger" onClick={() => handleDelete(dev)}>
+                  Apagar
+                </button>
+              )}
             </div>
           </li>
         ))}

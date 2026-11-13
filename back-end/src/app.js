@@ -13,6 +13,7 @@
  *   GET  /api/games                  -> jogos publicados (site)
  *   GET  /api/games/:slug            -> um jogo + os outros (site)
  *   GET  /api/banners/:page          -> banners da Home ou da página /jogo (site)
+ *   GET  /api/team                   -> equipe da página About (site)
  *   /api/admin/posts                 -> criar, editar e apagar posts (login; estúdio só os dele)
  *   /api/admin/games                 -> criar, editar e apagar jogos (login; estúdio só os dele)
  *   /api/admin/developers            -> desenvolvedoras (login; estúdio só a dele)
@@ -28,7 +29,7 @@ import { requireAuth, requireAdmin } from './middleware/auth.js'
 import { authRoutes } from './routes/auth.js'
 import { publicPostRoutes, adminPostRoutes } from './routes/posts.js'
 import { publicGameRoutes, adminGameRoutes } from './routes/games.js'
-import { adminDeveloperRoutes } from './routes/developers.js'
+import { adminDeveloperRoutes, publicTeamRoutes } from './routes/developers.js'
 import { adminAccountRoutes } from './routes/accounts.js'
 import { publicBannerRoutes, adminBannerRoutes } from './routes/banners.js'
 import { uploadRoutes } from './routes/uploads.js'
@@ -67,6 +68,7 @@ export function createApp({ db, config }) {
   app.use('/api/posts', publicPostRoutes({ db }))
   app.use('/api/games', publicGameRoutes({ db }))
   app.use('/api/banners', publicBannerRoutes({ db }))
+  app.use('/api/team', publicTeamRoutes({ db }))
   app.use('/api/admin/posts', requireLogin, adminPostRoutes({ db }))
   app.use('/api/admin/games', requireLogin, adminGameRoutes({ db }))
   app.use('/api/admin/developers', requireLogin, adminDeveloperRoutes({ db }))

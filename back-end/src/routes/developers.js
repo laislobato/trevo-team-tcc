@@ -6,7 +6,10 @@
  *   POST   /api/admin/developers      -> cria (só admin)
  *   PUT    /api/admin/developers/:id  -> edita (estúdio: só a dele)
  *   DELETE /api/admin/developers/:id  -> apaga (só admin; os posts dela continuam,
- *                                        os logins dela são apagados)
+ *                                        os logins dela são apagados; a Trevo Team não)
+ *
+ * Pública (site):
+ *   GET /api/team                      -> equipe da página About (integrantes da Trevo Team)
  */
 
 import { Router } from 'express'
@@ -16,6 +19,16 @@ import { isAdmin, assertCanManage } from '../services/permissions.js'
 import { requireAdmin } from '../middleware/auth.js'
 
 const NOT_YOURS = 'Você só pode editar o perfil do seu estúdio.'
+
+export function publicTeamRoutes({ db }) {
+  const router = Router()
+
+  router.get('/', (req, res) => {
+    res.json({ team: devs.getTeam(db) })
+  })
+
+  return router
+}
 
 export function adminDeveloperRoutes({ db }) {
   const router = Router()

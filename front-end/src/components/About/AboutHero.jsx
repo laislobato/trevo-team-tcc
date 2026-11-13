@@ -19,7 +19,7 @@ import './css/Abouthero.css'
 
 export default function AboutHero({
   title = 'SOBRE NÓS',
-  text = '',
+  text = 'Criada no desespero da reprova, A Trevo Team nasce da angustia e sofrimento de seus fundadores, as raízes infertéis mobilizando a circulação de toda frustração diante ao seu arredor',
   buttonLabel = 'SAIBA MAIS',
   onButtonClick,
 }) {

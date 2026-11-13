@@ -15,7 +15,7 @@
 
 .header {
   background: var(--primary-cyan);
-  padding: var(--spacing-sm) var(--spacing-lg);
+  padding: var(--spacing-xs) var(--spacing-lg);
   border-radius: 0 0 13px 13px;
   margin-bottom: var(--spacing-xs);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);

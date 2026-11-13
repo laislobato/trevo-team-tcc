@@ -8,6 +8,8 @@
  * - Admin: edita qualquer desenvolvedora e, embaixo, cria os logins do
  *   estúdio (componente StudioAccounts).
  * - Estúdio: esta página vira "Meu estúdio" e só abre o estúdio dele.
+ * - Trevo Team: os integrantes dela formam a equipe da página About
+ *   (apelido, nome, cargo, foto, descrição e até 3 redes de cada um).
  */
 
 import { useEffect, useState } from 'react'
@@ -56,6 +58,18 @@ export default function DeveloperEditor() {
   const setItem = (list, index, field, value) =>
     setForm((f) => ({ ...f, [list]: f[list].map((it, i) => (i === index ? { ...it, [field]: value } : it)) }))
   const removeItem = (list, index) => setForm((f) => ({ ...f, [list]: f[list].filter((_, i) => i !== index) }))
+
+  // Redes de UM integrante (lista dentro da lista)
+  const MAX_MEMBER_SOCIALS = 3
+  const setMemberSocials = (index, fn) =>
+    setForm((f) => ({
+      ...f,
+      members: f.members.map((m, i) => (i === index ? { ...m, socials: fn(m.socials || []) } : m)),
+    }))
+  const addMemberSocial = (index) => setMemberSocials(index, (list) => [...list, { label: '', url: '' }])
+  const setMemberSocial = (index, j, field, value) =>
+    setMemberSocials(index, (list) => list.map((s, k) => (k === j ? { ...s, [field]: value } : s)))
+  const removeMemberSocial = (index, j) => setMemberSocials(index, (list) => list.filter((_, k) => k !== j))
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -107,6 +121,11 @@ export default function DeveloperEditor() {
     <AdminLayout title={title}>
       {message && <p className="admin-alert admin-alert--error" role="alert">{message}</p>}
       {notice && <p className="admin-alert" role="status">{notice}</p>}
+      {form.isTrevo && (
+        <p className="admin-alert admin-alert--trevo" role="note">
+          🍀 Esta é a <strong>Trevo Team</strong>. Os integrantes daqui aparecem na seção da equipe da página About.
+        </p>
+      )}
 
       <form className="admin-form" onSubmit={handleSubmit} noValidate>
         <fieldset className="admin-card">
@@ -164,28 +183,80 @@ export default function DeveloperEditor() {
         {/* ---------- Integrantes ---------- */}
         <fieldset className="admin-card">
           <legend className="admin-card-title">Integrantes ({form.members.length}/12)</legend>
-          {form.members.map((member, i) => (
-            <div key={i} className="admin-list-row admin-list-row--member">
-              <ImageUpload label="Foto" value={member.photo} onChange={(v) => setItem('members', i, 'photo', v)} small />
-              <label className="admin-field">
-                <span className="admin-label">Nome</span>
-                <input value={member.name} maxLength={60} onChange={(e) => setItem('members', i, 'name', e.target.value)} />
-                {itemError('members', i, 'name') && <span className="admin-field-error">{itemError('members', i, 'name')}</span>}
-              </label>
-              <label className="admin-field">
-                <span className="admin-label">Função</span>
-                <input value={member.role} maxLength={60} placeholder="Arte, programação..."
-                  onChange={(e) => setItem('members', i, 'role', e.target.value)} />
-              </label>
-              <button type="button" className="admin-button admin-button--ghost" onClick={() => removeItem('members', i)}
-                aria-label={`Remover integrante ${member.name || i + 1}`}>
-                Remover
-              </button>
-            </div>
-          ))}
+          {form.members.map((member, i) => {
+            const socials = member.socials || []
+            const socialError = (j, field) => errors[`members.${i}.socials.${j}.${field}`]
+            return (
+              <div key={i} className="admin-member">
+                {/* Linha 1: foto, nome, apelido e cargo */}
+                <div className="admin-list-row admin-list-row--member">
+                  <ImageUpload label="Foto" value={member.photo} onChange={(v) => setItem('members', i, 'photo', v)} small />
+                  <label className={`admin-field ${itemError('members', i, 'name') ? 'has-error' : ''}`}>
+                    <span className="admin-label">Nome</span>
+                    <input value={member.name} maxLength={60} onChange={(e) => setItem('members', i, 'name', e.target.value)} />
+                    {itemError('members', i, 'name') && <span className="admin-field-error">{itemError('members', i, 'name')}</span>}
+                  </label>
+                  <label className="admin-field">
+                    <span className="admin-label">Apelido</span>
+                    <input value={member.nickname || ''} maxLength={30} placeholder="Ex.: TECO"
+                      onChange={(e) => setItem('members', i, 'nickname', e.target.value)} />
+                  </label>
+                  <label className="admin-field">
+                    <span className="admin-label">Cargo e função</span>
+                    <input value={member.role} maxLength={60} placeholder="Ex.: Programador · Front-end"
+                      onChange={(e) => setItem('members', i, 'role', e.target.value)} />
+                  </label>
+                  <button type="button" className="admin-button admin-button--ghost" onClick={() => removeItem('members', i)}
+                    aria-label={`Remover integrante ${member.name || i + 1}`}>
+                    Remover
+                  </button>
+                </div>
+
+                {/* Linha 2: descrição */}
+                <label className={`admin-field ${itemError('members', i, 'description') ? 'has-error' : ''}`}>
+                  <span className="admin-label">Descrição</span>
+                  <textarea rows="2" maxLength={600} value={member.description || ''}
+                    onChange={(e) => setItem('members', i, 'description', e.target.value)} />
+                  {itemError('members', i, 'description') && (
+                    <span className="admin-field-error">{itemError('members', i, 'description')}</span>
+                  )}
+                </label>
+
+                {/* Linha 3: redes da pessoa (viram as bolinhas na página About) */}
+                <div className="admin-member-socials">
+                  <span className="admin-label">Redes ({socials.length}/{MAX_MEMBER_SOCIALS})</span>
+                  {socials.map((social, j) => (
+                    <div key={j} className="admin-list-row">
+                      <label className={`admin-field ${socialError(j, 'label') ? 'has-error' : ''}`}>
+                        <span className="visually-hidden">Nome da rede</span>
+                        <input value={social.label} maxLength={30} placeholder="Instagram"
+                          onChange={(e) => setMemberSocial(i, j, 'label', e.target.value)} />
+                        {socialError(j, 'label') && <span className="admin-field-error">{socialError(j, 'label')}</span>}
+                      </label>
+                      <label className={`admin-field admin-field--grow ${socialError(j, 'url') ? 'has-error' : ''}`}>
+                        <span className="visually-hidden">Link da rede</span>
+                        <input value={social.url} placeholder="https://..."
+                          onChange={(e) => setMemberSocial(i, j, 'url', e.target.value)} />
+                        {socialError(j, 'url') && <span className="admin-field-error">{socialError(j, 'url')}</span>}
+                      </label>
+                      <button type="button" className="admin-button admin-button--ghost" onClick={() => removeMemberSocial(i, j)}
+                        aria-label={`Remover rede ${social.label || j + 1}`}>
+                        Remover
+                      </button>
+                    </div>
+                  ))}
+                  {socials.length < MAX_MEMBER_SOCIALS && (
+                    <button type="button" className="admin-button admin-button--light" onClick={() => addMemberSocial(i)}>
+                      + Rede
+                    </button>
+                  )}
+                </div>
+              </div>
+            )
+          })}
           {form.members.length < 12 && (
             <button type="button" className="admin-button admin-button--light"
-              onClick={() => addItem('members', { name: '', role: '', photo: '' })}>
+              onClick={() => addItem('members', { name: '', nickname: '', role: '', photo: '', description: '', socials: [] })}>
               + Adicionar integrante
             </button>
           )}

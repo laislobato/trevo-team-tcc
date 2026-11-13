@@ -101,7 +101,7 @@ test('exemplos: 4 posts e 2 desenvolvedoras, só uma vez', () => {
   assert.equal(seedExamples(db), true)
   assert.equal(seedExamples(db), false)
   assert.equal(posts.listPublicPosts(db).length, 4)
-  assert.equal(devs.listDevelopers(db).length, 2)
+  assert.equal(devs.listDevelopers(db).length, 3, 'Trevo Team + 2 exemplos')
   assert.equal(posts.listPublicPosts(db, 'patch').length, 1)
   assert.throws(() => posts.listPublicPosts(db, 'invalido'), /Tipo/)
 })
@@ -519,5 +519,69 @@ test('banco da etapa 2: os banners da página /jogo vêm dos jogos publicados, u
   const db3 = openDatabase(path)
   assert.deepEqual(banners.listBanners(db3, 'jogos'), [], 'apagados pelo painel não voltam')
   db3.close()
+  rmSync(dir, { recursive: true, force: true })
+})
+
+// ------------------------------------------------------------------
+// TREVO TEAM E EQUIPE DA PÁGINA ABOUT
+// ------------------------------------------------------------------
+
+test('Trevo Team: criada sozinha, primeira da lista e não pode ser apagada', () => {
+  const db = freshDb()
+  devs.createDeveloper(db, { name: 'Aaa Estúdio' })
+  const list = devs.listDevelopers(db)
+  assert.equal(list[0].name, 'Trevo Team')
+  assert.equal(list[0].isTrevo, true)
+  assert.equal(list[1].isTrevo, false)
+  assert.throws(() => devs.deleteDeveloper(db, list[0].id), /não pode ser apagada/)
+
+  const team = devs.getTeam(db)
+  assert.equal(team.members.length, 3)
+  assert.equal(team.members[0].nickname, 'TECO')
+})
+
+test('integrante: apelido, cargo, descrição e até 3 redes', () => {
+  const db = freshDb()
+  const trevo = devs.listDevelopers(db)[0]
+  const member = {
+    name: 'Ana Lima',
+    nickname: 'NANA',
+    role: 'Programadora · Front-end',
+    photo: '',
+    description: 'Cuida do site.',
+    socials: [{ label: 'Instagram', url: 'https://instagram.com/x' }, { label: 'GitHub', url: 'https://github.com/x' }],
+  }
+  devs.updateDeveloper(db, trevo.id, { name: 'Trevo Team', members: [member] })
+  assert.deepEqual(devs.getTeam(db).members, [member])
+  assert.equal(devs.getDeveloper(db, trevo.id).isTrevo, true, 'editar não tira a marca')
+
+  const errorsOf = (m) => {
+    try {
+      devs.updateDeveloper(db, trevo.id, { name: 'Trevo Team', members: [m] })
+      return {}
+    } catch (e) {
+      return e.details
+    }
+  }
+  assert.ok(errorsOf({ ...member, socials: [{}, {}, {}, {}] })['members.0.socials'])
+  assert.ok(errorsOf({ ...member, socials: [{ label: 'X', url: 'javascript:1' }] })['members.0.socials.0.url'])
+  assert.ok(errorsOf({ ...member, nickname: 'x'.repeat(31) })['members.0.nickname'])
+})
+
+test('banco antigo: integrantes sem os campos novos e "Trevo Team" pelo nome', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'trevo-'))
+  const path = join(dir, 'antigo-devs.db')
+  const db1 = openDatabase(path)
+  db1.exec('DELETE FROM developers')
+  db1.exec('ALTER TABLE developers DROP COLUMN is_trevo')
+  db1.prepare(`INSERT INTO developers (name, members) VALUES ('Trevo Team', '[{"name":"Velho","role":"Arte","photo":""}]')`).run()
+  db1.close()
+
+  const db2 = openDatabase(path)
+  const list = devs.listDevelopers(db2)
+  assert.equal(list.length, 1, 'usou a que já existia, não criou outra')
+  assert.equal(list[0].isTrevo, true)
+  assert.deepEqual(devs.getTeam(db2).members[0], { name: 'Velho', role: 'Arte', photo: '', nickname: '', description: '', socials: [] })
+  db2.close()
   rmSync(dir, { recursive: true, force: true })
 })

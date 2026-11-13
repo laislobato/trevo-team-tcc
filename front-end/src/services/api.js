@@ -155,6 +155,16 @@ export const api = {
     return { game: normalizeGame(data.game), others: data.others.map(normalizeGameSummary) }
   },
 
+  /** Equipe da página About (integrantes da Trevo Team, cadastrados no painel) */
+  async getTeam() {
+    const data = await request('/api/team')
+    return {
+      ...data.team,
+      logo: imageUrl(data.team.logo),
+      members: data.team.members.map((m) => ({ ...m, photo: imageUrl(m.photo) })),
+    }
+  },
+
   /** Banners do carrossel de uma página: 'home' ou 'jogos' */
   async getBanners(page) {
     const data = await request(`/api/banners/${page}`)

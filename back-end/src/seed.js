@@ -168,3 +168,24 @@ export const EXAMPLE_GAMES = [
     ],
   },
 ]
+
+/**
+ * Trevo Team: criada sozinha na primeira vez que a API liga (não depende dos
+ * exemplos). Os integrantes são os que estavam fixos na página About; troque
+ * pelo painel (Desenvolvedoras → Trevo Team).
+ */
+const TEAM_LOREM =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis porttitor ullamcorper. In pretium nec est at tempus. Duis quis lacus at elit maximus mollis.'
+
+export const TREVO_TEAM = {
+  name: 'Trevo Team',
+  description: 'Publisher que divulga e financia jogos indie.',
+  members: [1, 2, 3].map(() => ({
+    name: 'Luka Antonio Lobato',
+    nickname: 'TECO',
+    role: '',
+    photo: '',
+    description: TEAM_LOREM,
+    socials: [],
+  })),
+}
