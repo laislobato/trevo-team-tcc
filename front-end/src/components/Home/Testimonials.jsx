@@ -1,69 +1,102 @@
 /**
  * COMPONENTE: Testimonials
  * ========================
- * Seção que exibe depoimentos/feedback dos clientes
- * 
- * Contém:
- * - Título e subtítulo
- * - Grid com cards de depoimentos
- * - Estrelas decorativas (posicionadas aleatoriamente)
- * 
- * Cada card contém:
- * - Ícone circular (marrom)
- * - Caixa de texto com depoimento
- * - Estrelas decorativas espalhadas
+ * Depoimentos da Home em ESCADINHA: cada card fica em cima de uma raiz
+ * (TreeRoot) da mesma cor, e cada um desce um degrau em relação ao anterior.
+ *
+ *   ★          Lorem Ipsum
+ *      (●)
+ *   [ card ciano ]
+ *         ⋎                 (●)
+ *         │        [ card verde ]        ★
+ *         │              ⋎                  (●)
+ *     ▬▬▬▬▬▬▬            │         [ card laranja ]
+ *   ★                ▬▬▬▬▬▬▬               ⋎
+ *              Nossos Projetos              │  <- a última raiz desce ao lado
+ *                                       ▬▬▬▬▬▬▬     do título da próxima seção
+ *
+ * - As 3 raízes são o MESMO desenho; o card cobre uma parte diferente do topo
+ *   de cada uma (--hide no CSS), igual à referência.
+ * - As estrelas são lugares de ARTES (componente Art): para trocar, importe a
+ *   imagem e passe em "src" (veja ARTS logo abaixo).
+ * - No celular os cards ficam um embaixo do outro, em zigue-zague.
+ *
+ * Para mudar os depoimentos: edite a lista TESTIMONIALS.
+ *   photo: foto da pessoa (vazio = bolinha preta)
+ *   color: cor do card e da raiz ('cyan' | 'green' | 'orange')
  */
 
+// ===============================================
+// IMPORTAÇÕES
+// ===============================================
+
+import Art from '../shared/Art'
+import TreeRoot from './TreeRoot'
 import './css/Testimonials.css'
 
+// ===============================================
+// CONTEÚDO (troque pelos dados reais)
+// ===============================================
+
+const TITLE = 'Lorem Ipsum'
+
+const TESTIMONIALS = [
+  { id: 1, author: 'Jogador 1', photo: '', color: 'cyan', text: 'Lorem ipsum dolor sit amet consectetur' },
+  { id: 2, author: 'Jogador 2', photo: '', color: 'green', text: 'Lorem ipsum dolor sit amet consectetur' },
+  { id: 3, author: 'Jogador 3', photo: '', color: 'orange', text: 'Lorem ipsum dolor sit amet consectetur' },
+]
+
+// ⭐ ARTES (hoje estrelas). Para trocar uma estrela pela arte:
+//   import arteTopo from '../../assets/arte-depoimentos-1.png'
+//   { id: 'a', src: arteTopo, size: 113 }
+const ARTS = [
+  { id: 'a', src: '', size: 113 }, // perto do título
+  { id: 'b', src: '', size: 142 }, // em cima do card laranja
+  { id: 'c', src: '', size: 139 }, // embaixo, à esquerda
+]
+
+// ===============================================
+// COMPONENTE PRINCIPAL
+// ===============================================
+
 export default function Testimonials() {
-  // Array com dados dos depoimentos
-  const testimonials = [
-    {
-      id: 1,
-      text: 'Lorem Ipsum Ipsone Lorem Ipsum Ipsone'
-    },
-    {
-      id: 2,
-      text: 'Lorem Ipsum Ipsone Lorem Ipsum Ipsone'
-    },
-    {
-      id: 3,
-      text: 'Lorem Ipsum Ipsone Lorem Ipsum Ipsone'
-    }
-  ]
-
   return (
-    <section className="testimonials">
-      {/* 🌟 ESTRELAS DECORATIVAS (Posição absoluta) */}
-      <div className="testimonials-star testimonials-star-1"></div>
-      <div className="testimonials-star testimonials-star-2"></div>
-      <div className="testimonials-star testimonials-star-3"></div>
-      <div className="testimonials-star testimonials-star-4"></div>
+    <section className="testimonials" aria-labelledby="testimonials-title">
+      {/* ========== ARTES (estrelas por enquanto) ========== */}
+      {ARTS.map((art) => (
+        <Art
+          key={art.id}
+          src={art.src}
+          size={art.size}
+          color="black"
+          className={`testimonials-art testimonials-art--${art.id}`}
+        />
+      ))}
 
-      {/* 📋 HEADER DA SEÇÃO */}
-      <div className="testimonials-header">
-        <h2 className="testimonials-title">LOREM IPSUM</h2>
-        <p className="testimonials-subtitle">Lorem Ipsum Ipsone Lorem Ipsum Ipsone</p>
-      </div>
+      {/* ========== TÍTULO ========== */}
+      <h2 id="testimonials-title" className="testimonials-title">{TITLE}</h2>
 
-      {/* 💬 GRID DE DEPOIMENTOS */}
-      <div className="testimonials-grid">
-        {testimonials.map((testimonial) => (
-          <div key={testimonial.id} className="testimonial-card">
-            
-            {/* Ícone circular do depoimento */}
-            <div className="testimonial-icon"></div>
+      {/* ========== DEPOIMENTOS (escadinha) ========== */}
+      <ul className="testimonials-list">
+        {TESTIMONIALS.map((item) => (
+          <li key={item.id} className={`testimonial testimonial--${item.color}`}>
+            <figure className="testimonial-card">
+              {/* Bolinha da pessoa, metade para fora do card */}
+              <span className="testimonial-avatar">
+                {item.photo && <img src={item.photo} alt="" />}
+              </span>
 
-            {/* Caixa com texto do depoimento */}
-            <div className="testimonial-box">
-              <p className="testimonial-text">
-                {testimonial.text}
-              </p>
-            </div>
-          </div>
+              <blockquote className="testimonial-text">
+                <p>{item.text}</p>
+              </blockquote>
+              <figcaption className="visually-hidden">{item.author}</figcaption>
+            </figure>
+
+            {/* Raiz embaixo do card (só enfeite) */}
+            <TreeRoot className="testimonial-root" />
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   )
 }

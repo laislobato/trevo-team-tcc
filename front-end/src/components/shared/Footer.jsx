@@ -24,7 +24,7 @@
 import { useState } from 'react'
 import Art from './Art'
 import SocialIcon from './SocialIcon'
-import logoFull from '../../assets/logo_full.png'
+import logoFull from '../../assets/logo_full_inverted.png'
 import './css/Footer.css'
 
 // ⭐ ARTE DO RODAPÉ: troque a estrela pela arte quando ela existir
