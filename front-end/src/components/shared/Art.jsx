@@ -19,7 +19,7 @@
  * - className: classe extra, para posicionar a arte em cada lugar
  */
 
-import './css/Art_Footer.css'
+import './css/Art.css'
 
 export default function Art({ src = '', alt = '', size = 80, color = 'gray', className = '' }) {
   const style = { '--art-size': `${size}px` }

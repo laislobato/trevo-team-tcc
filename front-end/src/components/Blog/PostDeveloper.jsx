@@ -11,6 +11,7 @@
  * - developer: { name, logo, activeDevs, description, socials, members }
  */
 
+import SocialIcon from '../shared/SocialIcon'
 import './css/PostDeveloper.css'
 
 export default function PostDeveloper({ developer }) {
@@ -35,18 +36,19 @@ export default function PostDeveloper({ developer }) {
 
           <p className="post-developer-text">{developer.description}</p>
 
-          {/* Redes sociais (bolinhas que ficam por cima da borda de baixo) */}
+          {/* Redes sociais (bolinhas que ficam por cima da borda de baixo).
+              O ícone vem do nome da rede ou do link cadastrado no painel. */}
           <div className="post-developer-socials">
             {developer.socials.map((social) => (
               <a
-                key={social.label}
+                key={`${social.label}-${social.url}`}
                 href={social.url}
                 className="post-developer-social"
                 aria-label={`${developer.name} no ${social.label}`}
                 target="_blank"
                 rel="noreferrer"
               >
-                {social.label.charAt(0)}
+                <SocialIcon label={social.label} url={social.url} />
               </a>
             ))}
           </div>

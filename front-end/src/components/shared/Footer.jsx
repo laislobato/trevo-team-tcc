@@ -13,11 +13,8 @@
  *
  * No celular as colunas ficam uma embaixo da outra.
  *
- * Imagens que dá para colocar depois:
- * - redes e contato: preencha "icon" (sem ícone, aparece a primeira letra)
- *     import instagramIcon from '../../assets/instagram.svg'
- *     { label: 'Instagram', url: 'https://...', icon: instagramIcon }
- * - arte do rodapé (hoje uma estrela): veja FOOTER_ART logo abaixo
+ * Ícones das redes e do contato: SocialIcon (escolhe pelo nome ou pelo link).
+ * Arte do rodapé (hoje uma estrela): veja FOOTER_ART logo abaixo
  */
 
 // ===============================================
@@ -25,7 +22,8 @@
 // ===============================================
 
 import { useState } from 'react'
-import Art from './Art_Footer'
+import Art from './Art'
+import SocialIcon from './SocialIcon'
 import logoFull from '../../assets/logo_full.png'
 import './css/Footer.css'
 
@@ -43,10 +41,10 @@ const ABOUT_TEXT =
 
 // Redes sociais da Trevo Team (troque "#" pelos links reais)
 const socials = [
-  { label: 'Instagram', url: '#', icon: '' },
-  { label: 'X', url: '#', icon: '' },
-  { label: 'YouTube', url: '#', icon: '' },
-  { label: 'Discord', url: '#', icon: '' },
+  { label: 'Instagram', url: '#' },
+  { label: 'X', url: '#' },
+  { label: 'YouTube', url: '#' },
+  { label: 'Discord', url: '#' },
 ]
 
 // Páginas do site
@@ -59,8 +57,8 @@ const quickLinks = [
 
 // Contato (EXEMPLO: troque pelo e-mail e telefone reais)
 const contacts = [
-  { label: 'E-mail', text: 'contato@gmail.com', href: 'mailto:contato@gmail.com', icon: '' },
-  { label: 'Telefone', text: '+14 99119 8597', href: 'tel:+14991198597', icon: '' },
+  { label: 'E-mail', text: 'contato@gmail.com', href: 'mailto:contato@gmail.com' },
+  { label: 'Telefone', text: '+14 99119 8597', href: 'tel:+14991198597' },
 ]
 
 // Links da linha de baixo (Privacy e Terms ainda vão ser criadas)
@@ -70,11 +68,11 @@ const legalLinks = [
   { label: 'Terms & Condition', href: '/termos' },
 ]
 
-/** Bolinha com ícone (ou a primeira letra, sem ícone) */
-function IconCircle({ icon, label }) {
+/** Bolinha laranja com o ícone na cor do rodapé */
+function IconCircle({ label, url }) {
   return (
     <span className="footer-icon" aria-hidden="true">
-      {icon ? <img src={icon} alt="" /> : label.charAt(0)}
+      <SocialIcon label={label} url={url} />
     </span>
   )
 }
@@ -113,7 +111,7 @@ export default function Footer() {
                 <li key={social.label}>
                   <a href={social.url} className="footer-social" target="_blank" rel="noreferrer"
                     aria-label={`Trevo Team no ${social.label}`}>
-                    <IconCircle icon={social.icon} label={social.label} />
+                    <IconCircle label={social.label} url={social.url} />
                   </a>
                 </li>
               ))}
@@ -139,7 +137,7 @@ export default function Footer() {
               {contacts.map((contact) => (
                 <li key={contact.label}>
                   <a href={contact.href} className="footer-link footer-contact">
-                    <IconCircle icon={contact.icon} label={contact.label} />
+                    <IconCircle label={contact.label} url={contact.href} />
                     <span className="visually-hidden">{contact.label}: </span>
                     {contact.text}
                   </a>

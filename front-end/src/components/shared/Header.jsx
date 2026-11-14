@@ -6,7 +6,7 @@
  *
  * Computador:
  *   ╭──────────────────────────────────────────────────────────────────────╮
- *   │ [logo_full]        GAMES | CONTACT US | ABOUT | BLOG |  (●) (●) (●)  │
+ *   │ [logo_full]     GAMES | CONTACT US | ABOUT | BLOG |  (Steam)(Xbox)(Nintendo) │
  *   ╰──────────────────────────────────────────────────────────────────────╯
  *
  * Celular:
@@ -17,14 +17,14 @@
  * - flat: true = a barra FLUTUA por cima do carrossel de banners (Home e /jogo).
  *         Sem ela, a barra fica no topo da página, empurrando o conteúdo.
  *
- * Para usar as logos das redes: coloque as imagens em src/assets, importe aqui
- * e preencha o campo "icon" (ex.: import instagramIcon from '../../assets/instagram.svg').
+ * Os ícones das plataformas vêm do SocialIcon (escolhe pelo nome ou pelo link).
  */
 
 import { Fragment, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 // ⚠️ Confira a extensão do arquivo na pasta assets (.png, .svg ou .webp)
 import logoFull from '../../assets/logo_full.png'
+import SocialIcon from './SocialIcon'
 import './css/Header.css'
 
 // Páginas do menu: "to" é a rota definida no App.jsx
@@ -35,11 +35,11 @@ const navItems = [
   { label: 'Blog', to: '/blog' },
 ]
 
-// Redes sociais (troque "#" pelos links reais e preencha "icon" com a logo)
+// Plataformas onde estão os jogos (troque "#" pelos links reais)
 const socials = [
-  { label: 'Instagram', url: '#', icon: '' },
-  { label: 'X', url: '#', icon: '' },
-  { label: 'Discord', url: '#', icon: '' },
+  { label: 'Steam', url: '#' },
+  { label: 'Xbox', url: '#' },
+  { label: 'Nintendo Switch', url: '#' },
 ]
 
 export default function Header({ flat = false }) {
@@ -93,17 +93,17 @@ export default function Header({ flat = false }) {
             ))}
           </nav>
 
-          <ul className="header-socials" aria-label="Redes sociais">
+          <ul className="header-socials" aria-label="Plataformas">
             {socials.map((social) => (
               <li key={social.label}>
                 <a
                   href={social.url}
                   className="header-social"
-                  aria-label={`Trevo Team no ${social.label}`}
+                  aria-label={`Trevo Team: ${social.label}`}
                   target="_blank"
                   rel="noreferrer"
                 >
-                  {social.icon && <img src={social.icon} alt="" />}
+                  <SocialIcon label={social.label} url={social.url} />
                 </a>
               </li>
             ))}

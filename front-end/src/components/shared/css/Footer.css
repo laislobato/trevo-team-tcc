@@ -106,20 +106,16 @@
   height: 28px;
   border-radius: 50%;
   background: var(--primary-orange);
-  color: var(--footer-dark);
-  font-size: 13px;
-  font-weight: 800;
+  color: var(--footer-dark); /* o ícone fica da cor do fundo do rodapé */
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  overflow: hidden;
 }
 
-.footer-icon img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.footer-icon svg {
+  width: 55%;
+  height: 55%;
 }
 
 .footer-social {

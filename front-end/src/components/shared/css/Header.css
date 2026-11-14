@@ -153,20 +153,22 @@
   gap: 8px;
 }
 
+/* Bolinha preta com o ícone na cor da barra */
 .header-social {
-  display: block;
-  width: 24px;
-  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background: var(--text-black);
-  overflow: hidden;
+  color: var(--header-bg); /* o ícone fica da cor do fundo da barra */
   transition: transform var(--transition-normal);
 }
 
-.header-social img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.header-social svg {
+  width: 55%;
+  height: 55%;
 }
 
 .header-social:hover {
