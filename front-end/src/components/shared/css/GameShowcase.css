@@ -209,8 +209,17 @@
   transition: opacity 0.35s ease 0.25s, transform 0.45s ease 0.15s;
 }
 
+/* Etiquetas de gênero (uma por gênero) */
+.showcase-genres {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
 .showcase-genre {
-  align-self: flex-start;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -443,6 +452,211 @@
 
   .showcase-link {
     align-self: flex-start;
+  }
+}
+
+/* ================================================
+   VARIANTE 'home': faixa laranja com aba embaixo
+   ================================================ */
+
+.showcase--home {
+  --band: var(--primary-orange);
+  --band-dark: #003223;
+  --tab-width: 300px; /* largura da aba que desce da faixa */
+  --tab-height: 34px;
+  --tab-curve: 24px; /* curva onde a aba encontra a faixa */
+  --cut: 96px; /* tamanho do canto cortado do card do meio */
+  max-width: none;
+  padding-left: 0;
+  padding-right: 0;
+  padding-bottom: calc(var(--spacing-lg) + var(--tab-height));
+}
+
+.showcase--home .showcase-title {
+  font-size: 28px;
+  letter-spacing: 0;
+}
+
+/* Faixa laranja de ponta a ponta (palco + bolinhas) */
+.showcase--home .showcase-body {
+  position: relative;
+  background: var(--band);
+  padding: var(--spacing-md) 0 var(--spacing-sm);
+}
+
+/* Aba: sai do meio da borda de baixo, com as curvas para dentro */
+.showcase-tab {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--tab-width);
+  height: var(--tab-height);
+  background: var(--band);
+  border-radius: 0 0 14px 14px;
+}
+
+.showcase-tab::before,
+.showcase-tab::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: var(--tab-curve);
+  height: var(--tab-curve);
+}
+
+/* Curva da esquerda: laranja com um "furo" redondo no canto de baixo */
+.showcase-tab::before {
+  right: 100%;
+  background: radial-gradient(circle at 0 100%, transparent calc(var(--tab-curve) - 0.5px), var(--band) var(--tab-curve));
+}
+
+.showcase-tab::after {
+  left: 100%;
+  background: radial-gradient(circle at 100% 100%, transparent calc(var(--tab-curve) - 0.5px), var(--band) var(--tab-curve));
+}
+
+/* ---------- Cards das laterais: só o arco do personagem ---------- */
+
+.showcase--home .showcase-card.is-side {
+  background: transparent;
+  opacity: 1;
+}
+
+.showcase--home .showcase-card.is-side:hover {
+  transform: translateX(calc(var(--offset) * var(--step))) translateY(-4px);
+}
+
+/* Personagem laranja sumiria na faixa laranja: vira verde-escuro */
+.showcase--home .showcase-character--orange {
+  background: var(--band-dark);
+}
+
+/* ---------- Card do meio: cinza com o canto de baixo cortado ---------- */
+
+.showcase--home .showcase-card.is-center {
+  position: relative;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+}
+
+/* Fundo cinza desenhado por trás, com o canto cortado (clip-path) */
+.showcase--home .showcase-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--light-gray);
+  border-radius: 16px;
+  opacity: 0;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%);
+  transition: opacity var(--speed) ease;
+}
+
+.showcase--home .showcase-card.is-center::before {
+  opacity: 1;
+}
+
+.showcase--home .showcase-card {
+  isolation: isolate; /* o fundo (z-index -1) fica dentro do card */
+}
+
+.showcase--home .showcase-info-inner {
+  gap: 4px;
+  padding-bottom: calc(var(--cut) * 0.4);
+}
+
+.showcase--home .showcase-game {
+  font-size: 24px;
+}
+
+.showcase--home .showcase-character-name {
+  font-size: 12px;
+  color: #777777;
+}
+
+.showcase--home .showcase-text {
+  font-size: 13px;
+  line-height: 18px;
+  /* texto longo não invade o canto cortado */
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.showcase--home .showcase-platforms {
+  color: #777777;
+  padding-right: var(--cut);
+}
+
+/* "+" no canto cortado: leva para a página do jogo */
+.showcase-plus {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  width: calc(var(--cut) * 0.5);
+  height: calc(var(--cut) * 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-black);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform var(--transition-normal), opacity var(--speed) ease;
+}
+
+.showcase-card.is-center .showcase-plus {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.showcase-plus svg {
+  width: 34px;
+  height: 34px;
+}
+
+.showcase-plus:hover {
+  transform: rotate(90deg) scale(1.1);
+  opacity: 1;
+}
+
+.showcase-plus:focus-visible {
+  outline: 3px solid var(--text-black);
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+
+/* ---------- Bolinhas dentro da faixa ---------- */
+
+.showcase--home .showcase-dots {
+  margin-top: 4px;
+}
+
+.showcase--home .showcase-dot {
+  width: 26px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.showcase--home .showcase-dot.is-active {
+  background: var(--white);
+}
+
+@media (max-width: 860px) {
+  .showcase--home {
+    --tab-width: 180px;
+    --cut: 70px;
+  }
+
+  .showcase--home .showcase-card::before {
+    border-radius: 85px 85px 16px 16px;
+  }
+
+  .showcase--home .showcase-platforms {
+    padding-right: calc(var(--cut) * 0.6);
   }
 }
 

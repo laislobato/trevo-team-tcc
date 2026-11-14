@@ -1,19 +1,19 @@
 /**
  * ESTILOS: Hero (carrossel de banners)
  * ====================================
- * .home-top: bloco ciano que junta o cabeçalho e o hero na página inicial.
+ * .home-top: bloco do topo da Home e de /jogo. O carrossel começa no topo
+ * da tela e o cabeçalho (Header flat) flutua por cima dele.
  * Os banners ficam lado a lado numa faixa (.hero-track) que desliza
  * para o lado; só um aparece de cada vez.
  */
 
 /* ================================================
-   BLOCO CIANO (cabeçalho + hero)
+   BLOCO DO TOPO (carrossel + cabeçalho flutuando)
    ================================================ */
 
 .home-top {
-  background: var(--primary-cyan);
-  border-radius: 0 0 13px 13px;
-  overflow: hidden;
+  position: relative; /* referência para o cabeçalho flutuante */
+  background: var(--primary-cyan); /* aparece enquanto o banner não tem imagem */
   margin-bottom: var(--spacing-lg);
 }
 
@@ -36,7 +36,7 @@
 
 .hero {
   position: relative;
-  height: 666px;
+  height: 520px; /* o cabeçalho flutua por cima dos primeiros ~75px */
 }
 
 .hero-viewport {
@@ -69,6 +69,52 @@
   height: 100%;
   object-fit: cover; /* a arte preenche o espaço sem distorcer */
   display: block;
+}
+
+/* ================================================
+   SETAS (nas laterais, no meio da altura)
+   ================================================ */
+
+.hero-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: rgba(217, 217, 217, 0.9); /* cinza claro, um pouco transparente */
+  color: var(--text-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--transition-normal), transform var(--transition-normal);
+}
+
+.hero-arrow svg {
+  width: 20px;
+  height: 20px;
+}
+
+.hero-arrow--prev {
+  left: 14px;
+}
+
+.hero-arrow--next {
+  right: 14px;
+}
+
+.hero-arrow:hover {
+  background: var(--white);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.hero-arrow:focus-visible {
+  outline: 3px solid var(--text-black);
+  outline-offset: 2px;
 }
 
 /* ================================================
@@ -114,7 +160,20 @@
 
 @media (max-width: 768px) {
   .hero {
-    height: 333px;
+    height: 380px;
+  }
+
+  .hero-arrow {
+    width: 34px;
+    height: 34px;
+  }
+
+  .hero-arrow--prev {
+    left: 8px;
+  }
+
+  .hero-arrow--next {
+    right: 8px;
   }
 
   .hero-dots {
@@ -128,7 +187,7 @@
 
 @media (max-width: 480px) {
   .hero {
-    height: 220px;
+    height: 320px;
   }
 
   .hero-dots {

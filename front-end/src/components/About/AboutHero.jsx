@@ -40,9 +40,6 @@ export default function AboutHero({
         <div className="about-hero-text">
           <h2 className="about-hero-title">{title}</h2>
           <p className="about-hero-paragraph">{text}</p>
-          <button className="about-hero-button" onClick={onButtonClick}>
-            {buttonLabel}
-          </button>
         </div>
 
       </div>

@@ -85,11 +85,11 @@ export default function BlogPost() {
 
   return (
     <div className="blog-page">
-      {/* ========== CABEÇALHO ========== */}
-      <Header />
-
-      {/* ========== BANNER (capa do post) ========== */}
-      <BlogBanner image={post.cover} alt="" />
+      {/* ========== CABEÇALHO POR CIMA DO BANNER (capa do post) ========== */}
+      <div className="page-top">
+        <Header flat />
+        <BlogBanner image={post.cover} alt="" />
+      </div>
 
       <article className="post-content">
         {/* ========== TIPO E TÍTULO ========== */}

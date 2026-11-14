@@ -40,8 +40,8 @@ export default function AdminBanners() {
   return (
     <AdminLayout title="Banners">
       <p className="admin-hint admin-scope">
-        Imagens do carrossel do topo do site. Tamanho recomendado: <strong>1600 × 400 px</strong> (no celular,
-        o meio da imagem aparece). Até 8 banners por página.
+        Imagens do carrossel do topo do site. Tamanho recomendado: <strong>1600 × 520 px</strong>. O cabeçalho fica por cima
+        da parte de cima da imagem e, no celular, só o meio aparece. Até 8 banners por página.
       </p>
 
       {error && <p className="admin-alert admin-alert--error" role="alert">{error}</p>}

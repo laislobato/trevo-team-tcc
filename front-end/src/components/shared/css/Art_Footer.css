@@ -1,0 +1,31 @@
+/**
+ * ESTILOS: Art
+ * ============
+ * Arte decorativa (imagem) ou a estrela que fica no lugar dela.
+ * O tamanho vem da variável --art-size (prop "size" do componente).
+ */
+
+.art {
+  display: inline-block;
+  flex-shrink: 0;
+  width: var(--art-size, 80px);
+}
+
+/* Imagem da arte: largura fixa, altura acompanha a proporção */
+.art--image {
+  height: auto;
+  max-width: none;
+  object-fit: contain;
+}
+
+/* Estrela de 5 pontas (recortada com clip-path) */
+.art--star {
+  height: var(--art-size, 80px);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.art--white { background: var(--white); }
+.art--gray { background: var(--light-gray); }
+.art--orange { background: var(--primary-orange); }
+.art--cyan { background: var(--primary-cyan); }
+.art--green { background: #8cc74f; }

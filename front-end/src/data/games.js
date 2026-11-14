@@ -17,12 +17,12 @@
  * game: nome do jogo, do jeito que aparece no card
  */
 export const reviews = [
-  { user: 'luana_px', platform: 'steam', game: 'Raízes de Vidro', text: 'Os quebra-cabeças com plantas são muito criativos. Terminei em uma tarde e quero mais!' },
-  { user: 'GuiNoSofa', platform: 'switch', game: 'Raízes de Vidro', text: 'Perfeito para jogar no portátil. A trilha sonora é uma delícia.' },
-  { user: 'rafa.gamer', platform: 'xbox', game: 'Lumen Drift', text: 'Joguei com meus irmãos e foi a maior bagunça. Modo cooperativo excelente.' },
-  { user: 'Bia_Farol', platform: 'steam', game: 'Maré Alta', text: 'Um jogo que dá paz. Cada visitante da ilha tem uma história bonita.' },
-  { user: 'tiago_ps', platform: 'playstation', game: 'Lumen Drift', text: 'Rindo até agora da corrida em que a pista virou de cabeça para baixo.' },
-  { user: 'mel.indie', platform: 'switch', game: 'Raízes de Vidro', text: 'A arte em pixel é linda. Dá vontade de tirar print de tudo.' },
+  { user: 'CapivaraCarioca', platform: 'gog', game: 'Deltarune', text: 'Toby Fox eu comprei esse jogo faz 6 anos e ele não tá pronto ainda' },
+  { user: 'CapivaraSupremacy', platform: 'steam', game: 'Deadlock', text: 'Tem que nerfar o Rat King no Deadlock, tá dando mais não' },
+  { user: 'CapivaraPobre', platform: 'playstation', game: 'Bloodborne', text: 'Esperando bloodborne no PC, enquanto isso comprei um PS5' },
+  { user: 'CapivaraPirata', platform: 'switch', game: 'Zelda Ocarina of Time', text: 'Emulei até as reviews' },
+  { user: 'CapivaraGamerBR', platform: 'xbox', game: 'Minecraft', text: 'Gamepass tá caro' },
+  { user: 'LuskinhaGamesBrasil', platform: 'xbox', game: 'Call of Duty: Modern Warfare 4', text: 'Actvision devolve meu dinheiro eu tenho que comprar GTA VI' },
   { user: 'Caio_Drift', platform: 'playstation', game: 'Lumen Drift', text: 'As pistas mudando a cada volta deixam toda corrida diferente.' },
   { user: 'ana_ventania', platform: 'steam', game: 'Maré Alta', text: 'Controles simples e uma história muito bem pensada. Recomendo!' },
 ]
@@ -33,4 +33,5 @@ export const PLATFORM_NAMES = {
   xbox: 'Xbox',
   playstation: 'PlayStation',
   switch: 'Nintendo Switch',
+  gog: 'GOG',
 }

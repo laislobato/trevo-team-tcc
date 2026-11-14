@@ -50,15 +50,15 @@ const socials = [
 export default function Contact() {
   return (
     <div className="contact-page">
-      {/* ========== CABEÇALHO ========== */}
-      <Header />
-
-      {/* ========== BANNER ========== */}
-      <ContactHero
-        title="TREVO TEAM"
-        tagline="Onde os indies criam raízes."
-        phrase="Fale com a gente!"
-      />
+      {/* ========== CABEÇALHO POR CIMA DO BANNER CIANO ========== */}
+      <div className="page-top page-top--cyan">
+        <Header flat />
+        <ContactHero
+          title="TREVO TEAM"
+          tagline="Onde os indies criam raízes."
+          phrase="Fale com a gente!"
+        />
+      </div>
 
       {/* ========== NOSSOS VALORES ========== */}
       <ContactValues title="OUR VALUES" values={values} />

@@ -6,31 +6,51 @@
  * Celular (até 768px): logo à esquerda e 3 tracinhos à direita;
  * as páginas e as redes descem em lista ao clicar neles.
  *
- * .header--flat: versão sem fundo próprio (página inicial, dentro do hero ciano).
+ * A barra é centralizada (até 1170px), com os cantos de baixo arredondados.
+ * .header--flat: a barra flutua por cima do carrossel (Home e /jogo).
  */
 
+ 
+
+ /* Bloco do topo: referência para a barra flutuante */
+.page-top {
+  --header-space: 74px; /* altura da barra (58px no celular, ver no fim) */
+  position: relative;
+}
+
+/* Fundo ciano + espaço da barra (o conteúdo começa logo abaixo dela) */
+.page-top--cyan {
+  background: var(--primary-cyan);
+  padding-top: var(--header-space);
+}
+
 /* ================================================
-   CONTAINER
+   BARRA
    ================================================ */
 
 .header {
-  background: var(--primary-cyan);
-  padding: var(--spacing-xs) var(--spacing-lg);
-  border-radius: 0 0 13px 13px;
-  margin-bottom: var(--spacing-xs);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --header-bg: #dae4d8; /* verde-acinzentado claro */
+  position: relative;
+  z-index: 20; /* fica por cima do carrossel e do conteúdo */
+  width: min(1170px, calc(100% - 2 * var(--spacing-md)));
+  margin: 0 auto var(--spacing-md);
+  background: var(--header-bg);
+  padding: 10px var(--spacing-md) 10px 10px;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
-/* Página inicial: o fundo ciano vem do bloco do hero */
+
+/* Flutua por cima do banner do topo, centralizada (Home, /jogo e blog) */
 .header--flat {
-  background: transparent;
-  border-radius: 0;
-  margin-bottom: 0;
-  box-shadow: none;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
 }
-
+ 
 .header-wrapper {
-  max-width: 1100px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -59,9 +79,10 @@
 
 .header-logo-img {
   display: block;
-  height: 60px;
+  height: 54px;
   width: auto; /* mantém a proporção da logo */
   transition: transform var(--transition-normal);
+  padding-left: var(--spacing-xs);
 }
 
 .header-logo:hover .header-logo-img {
@@ -81,12 +102,12 @@
 .header-nav {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: 22px;
 }
 
 .header-nav-link {
   position: relative;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -118,7 +139,7 @@
 /* Tracinho vertical "|" entre as páginas */
 .header-nav-separator {
   width: 1.5px;
-  height: 12px;
+  height: 14px;
   background: var(--text-black);
   opacity: 0.7;
 }
@@ -129,15 +150,15 @@
   margin: 0;
   padding: 0;
   display: flex;
-  gap: 6px;
+  gap: 8px;
 }
 
 .header-social {
   display: block;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background: var(--light-gray);
+  background: var(--text-black);
   overflow: hidden;
   transition: transform var(--transition-normal);
 }
@@ -207,14 +228,29 @@
    TELAS MÉDIAS: aproxima os itens
    ================================================ */
 
-@media (max-width: 960px) {
+@media (max-width: 1100px) {
+
+  .page-top {
+    --header-space: 58px;
+  }
+
+  .header {
+    width: calc(100% - 2 * var(--spacing-xs));
+    /* ...o resto continua igual */
+  }
+  
   .header-nav,
   .header-menu {
-    gap: 10px;
+    gap: 12px;
   }
 
   .header-nav-link {
-    font-size: 14px;
+    font-size: 15px;
+  }
+
+  .header-social {
+    width: 24px;
+    height: 24px;
   }
 }
 
@@ -226,10 +262,9 @@
   .header-wrapper {
     flex-direction: column;
     align-items: stretch;
-    gap: var(--spacing-xs);
+    gap: var(--spacing-sm);
   }
 
-    
   .header-menu-toggle {
     display: flex;
     margin-left: auto;
@@ -240,7 +275,7 @@
     display: none;
     flex-direction: column;
     align-items: stretch;
-    gap: 0;
+    gap: var(--spacing-sm);
     animation: headerSlideDown 0.3s ease;
   }
 
@@ -256,7 +291,7 @@
 
   .header-nav-link {
     display: block;
-    padding: 12px 0;
+    padding: 14px 0;
     font-size: 16px;
     border-top: 1px solid rgba(0, 0, 0, 0.08);
   }
@@ -273,8 +308,8 @@
 
   /* Redes em linha, embaixo das páginas */
   .header-socials {
-    gap: var(--spacing-md);
-    padding: var(--spacing-xs) 0 var(--spacing-xs);
+    gap: var(--spacing-sm);
+    padding-top: var(--spacing-xs);
     border-top: 1px solid rgba(0, 0, 0, 0.08);
   }
 
@@ -297,11 +332,12 @@
 
 @media (max-width: 480px) {
   .header {
-    padding: var(--spacing-xs) var(--spacing-md);
+    width: calc(100% - 2 * var(--spacing-xs));
+    padding: 8px var(--spacing-sm);
   }
 
   .header-logo-img {
-    height: 50px;
+    height: 38px;
   }
 
   .header-menu-toggle {

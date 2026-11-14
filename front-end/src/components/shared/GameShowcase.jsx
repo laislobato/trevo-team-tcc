@@ -27,9 +27,18 @@
  *   laterais terem um card; as bolinhas continuam mostrando só 2.
  * - 1 jogo: só o card do meio, sem setas e sem bolinhas.
  *
+ * Variantes (prop "variant"):
+ * - 'default' -> fundo branco, card com "Ver mais →" (páginas /jogo e /jogo/<slug>)
+ * - 'home'    -> faixa laranja de ponta a ponta com uma "aba" embaixo, card do meio
+ *                com o canto de baixo cortado e um "+" que leva para o jogo;
+ *                embaixo do nome aparece o estúdio (Home)
+ *
+ * Gêneros: "MOBA, Hero Shooter" (separados por vírgula ou /) viram etiquetas.
+ *
  * Props:
- * - title: título da seção
- * - games: lista de jogos (vem da API, via src/services/games.js)
+ * - title:   título da seção
+ * - games:   lista de jogos (vem da API, via src/services/games.js)
+ * - variant: 'default' | 'home'
  */
 
 import { useEffect, useRef, useState } from 'react'
@@ -62,7 +71,11 @@ function getOffset(index, active, total) {
   return offset
 }
 
-export default function GameShowcase({ title = 'CONHEÇA NOSSOS JOGOS', games = [] }) {
+/** "MOBA, Hero Shooter" -> ['MOBA', 'Hero Shooter'] */
+const splitGenres = (genre = '') => genre.split(/\s*[,/]\s*/).filter(Boolean)
+
+export default function GameShowcase({ title = 'CONHEÇA NOSSOS JOGOS', games = [], variant = 'default' }) {
+  const isHome = variant === 'home'
   const [active, setActive] = useState(0) // posição do card do meio na lista "cards"
   const previousActive = useRef(0)
   const touchStartX = useRef(null)
@@ -118,13 +131,15 @@ export default function GameShowcase({ title = 'CONHEÇA NOSSOS JOGOS', games = 
 
   return (
     <section
-      className="showcase"
+      className={`showcase showcase--${variant}`}
       aria-labelledby="showcase-title"
       aria-roledescription="carrossel"
       onKeyDown={handleKeyDown}
     >
       <h2 id="showcase-title" className="showcase-title">{title}</h2>
 
+      {/* Corpo: palco + bolinhas (na variante 'home' é a faixa laranja) */}
+      <div className="showcase-body">
       <div className="showcase-stage" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
         <ul className="showcase-track">
           {cards.map((game, index) => {
@@ -157,16 +172,36 @@ export default function GameShowcase({ title = 'CONHEÇA NOSSOS JOGOS', games = 
                 {/* Descrição: só aparece no card do meio */}
                 <div className="showcase-info">
                   <div className="showcase-info-inner">
-                    <p className="showcase-genre">{game.genre}</p>
+                    {/* Etiquetas de gênero */}
+                    <ul className="showcase-genres" aria-label="Gênero">
+                      {splitGenres(game.genre).map((genre) => (
+                        <li key={genre} className="showcase-genre">{genre}</li>
+                      ))}
+                    </ul>
                     <h3 className="showcase-game">{game.title}</h3>
-                    <p className="showcase-character-name">{game.character}</p>
+                    {/* Home: estúdio | outras páginas: personagem */}
+                    <p className="showcase-character-name">
+                      {isHome ? game.developer?.name || game.character : game.character}
+                    </p>
                     <p className="showcase-text">{game.description}</p>
                     <p className="showcase-platforms">{game.platforms.join(' · ')}</p>
-                    <Link to={`/jogo/${game.slug}`} className="showcase-link" tabIndex={isCenter ? 0 : -1}>
-                      Ver mais →
-                    </Link>
+                    {!isHome && (
+                      <Link to={`/jogo/${game.slug}`} className="showcase-link" tabIndex={isCenter ? 0 : -1}>
+                        Ver mais →
+                      </Link>
+                    )}
                   </div>
                 </div>
+
+                {/* Home: "+" no canto cortado, leva para a página do jogo */}
+                {isHome && (
+                  <Link to={`/jogo/${game.slug}`} className="showcase-plus" tabIndex={isCenter ? 0 : -1}
+                    aria-label={`Ver mais sobre ${game.title}`}>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 4v16M4 12h16" fill="none" stroke="currentColor" strokeWidth="3.4" strokeLinecap="round" />
+                    </svg>
+                  </Link>
+                )}
               </li>
             )
           })}
@@ -209,6 +244,10 @@ export default function GameShowcase({ title = 'CONHEÇA NOSSOS JOGOS', games = 
           ))}
         </div>
       )}
+
+      {/* Home: "aba" que desce da faixa laranja (só decoração) */}
+      {isHome && <span className="showcase-tab" aria-hidden="true"></span>}
+      </div>
 
       {/* Aviso para leitores de tela quando o jogo muda */}
       <p className="visually-hidden" aria-live="polite">

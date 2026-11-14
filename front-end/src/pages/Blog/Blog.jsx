@@ -37,8 +37,14 @@ const tabs = [
   { id: 'faq', label: 'FAQ' },
 ]
 
+// Aba inicial pelo endereço: /blog?aba=faq abre direto no FAQ (link do rodapé)
+function initialTab() {
+  const fromUrl = new URLSearchParams(window.location.search).get('aba')
+  return tabs.some((tab) => tab.id === fromUrl) ? fromUrl : 'todos'
+}
+
 export default function Blog() {
-  const [activeTab, setActiveTab] = useState('todos')
+  const [activeTab, setActiveTab] = useState(initialTab)
   const [posts, setPosts] = useState([])
   const [status, setStatus] = useState('loading') // 'loading' | 'ready' | 'error'
   const [error, setError] = useState('')
@@ -82,11 +88,11 @@ export default function Blog() {
 
   return (
     <div className="blog-page">
-      {/* ========== CABEÇALHO ========== */}
-      <Header />
-
-      {/* ========== BANNER ========== */}
-      <BlogBanner />
+      {/* ========== CABEÇALHO POR CIMA DO BANNER ========== */}
+      <div className="page-top">
+        <Header flat />
+        <BlogBanner />
+      </div>
 
       {/* ========== TÍTULO E ABAS ========== */}
       <BlogHeading title="Novidades das Equipes" />
@@ -98,7 +104,6 @@ export default function Blog() {
       </section>
 
       {/* ========== NEWSLETTER E RODAPÉ ========== */}
-      <Newsletter />
       <Footer />
     </div>
   )

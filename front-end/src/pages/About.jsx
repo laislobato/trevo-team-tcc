@@ -60,17 +60,20 @@ export default function About() {
 
   return (
     <div className="about-page">
-      {/* ========== CABEÇALHO (igual ao da Home) ========== */}
-      <Header />
+      {/* ========== CABEÇALHO POR CIMA DO BLOCO CIANO ========== */}
+      <div className="page-top page-top--cyan">
+        <Header flat />
 
-      {/* ========== DIVISOR CURTO ========== */}
-      <div className="about-short-divider"></div>
+        {/* ========== DIVISOR CURTO ========== */}
+        <div className="about-short-divider"></div>
 
-      {/* ========== SOBRE NÓS ========== */}
-      <AboutHero
-        title="SOBRE NÓS"
-        buttonLabel="SAIBA MAIS"
-      />
+        {/* ========== SOBRE NÓS ========== */}
+        <AboutHero
+          title="SOBRE NÓS"
+          text={LOREM}
+          buttonLabel="SAIBA MAIS"
+        />
+      </div>
 
 
       {/* ========== EQUIPE ========== */}

@@ -1,18 +1,21 @@
 /**
  * COMPONENTE: Header
  * ==================
- * Topo de todas as páginas.
+ * Topo de todas as páginas: uma barra centralizada (não vai de ponta a
+ * ponta), verde-acinzentada, com os cantos de baixo arredondados.
  *
  * Computador:
- *   [logo_full]            GAMES | CONTACT US | ABOUT | BLOG |  (rede) (rede) (rede)
+ *   ╭──────────────────────────────────────────────────────────────────────╮
+ *   │ [logo_full]        GAMES | CONTACT US | ABOUT | BLOG |  (●) (●) (●)  │
+ *   ╰──────────────────────────────────────────────────────────────────────╯
  *
  * Celular:
  *   [logo_full]                                   [ ☰ ]
  *   (ao clicar nos tracinhos, as páginas e as redes descem em lista)
  *
  * Props:
- * - flat: true = sem fundo, sem sombra e sem cantos arredondados.
- *         Usado na página inicial, onde o cabeçalho fica dentro do bloco ciano do hero.
+ * - flat: true = a barra FLUTUA por cima do carrossel de banners (Home e /jogo).
+ *         Sem ela, a barra fica no topo da página, empurrando o conteúdo.
  *
  * Para usar as logos das redes: coloque as imagens em src/assets, importe aqui
  * e preencha o campo "icon" (ex.: import instagramIcon from '../../assets/instagram.svg').

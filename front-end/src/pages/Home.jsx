@@ -23,11 +23,11 @@ import Header from '../components/shared/Header'
 import Hero from '../components/Home/Hero'
 import Projects from '../components/Home/Projects'
 import Testimonials from '../components/Home/Testimonials'
-import Newsletter from '../components/shared/Newsletter'
 import Footer from '../components/shared/Footer'
 import { useEffect, useState } from 'react'
 import GameShowcase from '../components/shared/GameShowcase'
-import { getGames } from '../services/games'
+import GameReviews from '../components/GamesHome/GameReviews'
+import { getGames, getReviews } from '../services/games'
 import '../styles/globals.css'
 
 // ===============================================
@@ -53,6 +53,22 @@ export default function App() {
     }
   }, [])
 
+  const [reviews, setReviews] = useState([])
+
+  // Busca os jogos e os comentários quando a página abre
+  useEffect(() => {
+    let active = true
+    document.title = 'Jogos | Trevo Team'
+
+    getReviews().then((list) => active && setReviews(list))
+    getGames()
+      .then((list) => active && setGames(list))
+      .catch((err) => active && setError(err.message))
+
+    return () => {
+      active = false
+    }
+  }, [])
   
   
   return (
@@ -67,11 +83,10 @@ export default function App() {
       
       {/* <Projects/> */}
       
-      <GameShowcase title="Nossos Projetos" games={games} />
+      <GameShowcase variant="home" title="Nossos Projetos" games={games} />
       
-      <div className="section-divider"></div>
       
-      <Newsletter />
+      {reviews.length > 0 && <GameReviews title="O QUE OS JOGADORES DIZEM" reviews={reviews} />}
       <Footer />
 
     </div>

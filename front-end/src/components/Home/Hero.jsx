@@ -13,6 +13,8 @@
  * - No celular, dá para arrastar o dedo para o lado.
  * - Quem ativa "reduzir movimento" no sistema não tem troca automática.
  *
+ * Controles: setas ‹ › nas laterais, barrinhas embaixo, arrastar no celular.
+ *
  * De onde vêm os banners:
  * - Com a prop "page" ('home' ou 'jogos'), o carrossel busca os banners
  *   cadastrados pela Trevo no painel (Painel → Banners).
@@ -149,6 +151,26 @@ export default function Hero({ page, banners: fallback = DEFAULT_BANNERS, label 
           })}
         </div>
       </div>
+
+      {/* ‹ › SETAS: banner anterior e próximo (só com 2 ou mais) */}
+      {total > 1 && (
+        <>
+          <button type="button" className="hero-arrow hero-arrow--prev" onClick={() => goTo(current - 1)}
+            aria-label="Banner anterior">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" strokeWidth="2.6"
+                strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+          <button type="button" className="hero-arrow hero-arrow--next" onClick={() => goTo(current + 1)}
+            aria-label="Próximo banner">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2.6"
+                strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </>
+      )}
 
       {/* ▬ BARRINHAS: qual banner está na tela (só com 2 ou mais) */}
       {total > 1 && (

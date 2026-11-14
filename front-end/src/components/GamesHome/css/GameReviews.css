@@ -22,7 +22,7 @@
 /* Faixa ciano de ponta a ponta, com as bordas esfumadas */
 .reviews-viewport {
   overflow: hidden;
-  background: var(--primary-cyan);
+  background: var(--primary-green);
   padding: var(--spacing-md) 0;
   -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
   mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
@@ -62,7 +62,7 @@
   flex-shrink: 0;
   background: var(--white);
   border-radius: 12px;
-  border-left: 6px solid var(--primary-orange);
+  border-left: 6px solid var(--primary-b-green);
   padding: var(--spacing-sm);
   display: flex;
   flex-direction: column;
@@ -121,6 +121,7 @@
 .review-platform--xbox { background: #107c10; }
 .review-platform--playstation { background: #0070d1; }
 .review-platform--switch { background: #e60012; }
+.review-platform--gog { background: #5100DC; }
 
 /* ================================================
    REDUZIR MOVIMENTO: faixa parada, com rolagem
