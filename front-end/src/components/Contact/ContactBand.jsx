@@ -10,9 +10,12 @@
  * Props:
  * - title:   texto da faixa
  * - email:   e-mail de contato
- * - socials: lista [{ label, url }]  (as bolinhas mostram a 1ª letra)
+ * - socials: lista [{ label, url }]  (as bolinhas mostram o ícone de cada rede)
+ *
+ * Os ícones vêm do SocialIcon (escolhe pelo nome da rede ou pelo link).
  */
 
+import SocialIcon from '../shared/SocialIcon'
 import './css/ContactBand.css'
 
 export default function ContactBand({ title = 'CONTACT US', email = '', socials = [] }) {
@@ -28,7 +31,9 @@ export default function ContactBand({ title = 'CONTACT US', email = '', socials 
       <div className="contact-band-tab">
         {email && (
           <a href={`mailto:${email}`} className="contact-band-email">
-            <span className="contact-band-dot" aria-hidden="true"></span>
+            <span className="contact-band-dot" aria-hidden="true">
+              <SocialIcon label="E-mail" url={`mailto:${email}`} />
+            </span>
             {email}
           </a>
         )}
@@ -43,7 +48,7 @@ export default function ContactBand({ title = 'CONTACT US', email = '', socials 
                 target="_blank"
                 rel="noreferrer"
               >
-                {social.label.charAt(0)}
+                <SocialIcon label={social.label} url={social.url} />
               </a>
             </li>
           ))}

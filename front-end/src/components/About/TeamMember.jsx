@@ -12,7 +12,8 @@
  *
  * - O cartão é um arco colorido (como a vitrine de jogos) com uma sombra
  *   sólida verde-escura deslocada; sem foto, aparece a silhueta padrão.
- * - As bolinhas são as redes da pessoa (até 3), com a primeira letra da rede.
+ * - As bolinhas são as redes da pessoa (até 3), com o ícone de cada rede
+ *   (SocialIcon: escolhe pelo nome da rede ou pelo link cadastrado no painel).
  *
  * Props:
  * - nickname: apelido em destaque (ex.: "TECO")
@@ -25,6 +26,7 @@
  * - reverse:  se true, o cartão fica à direita e o texto à esquerda
  */
 
+import SocialIcon from '../shared/SocialIcon'
 import './css/TeamMember.css'
 
 // Cores das bolinhas das redes, na ordem
@@ -81,7 +83,7 @@ export default function TeamMember({
                   aria-label={`${social.label} de ${name}`}
                   title={social.label}
                 >
-                  {social.label.charAt(0).toUpperCase()}
+                  <SocialIcon label={social.label} url={social.url} />
                 </a>
               </li>
             ))}
@@ -91,4 +93,4 @@ export default function TeamMember({
 
     </article>
   )
-}
+} 
