@@ -10,7 +10,7 @@
  *   conteúdo
  *
  * O menu muda conforme o login:
- * - admin:  Posts · Jogos · Desenvolvedoras · Banners · Conta
+ * - admin:  Posts · Jogos · Desenvolvedoras · Banners · Página About · Conta
  * - estúdio: Posts · Jogos · Meu estúdio · Conta
  *
  * Props:
@@ -47,6 +47,7 @@ export default function AdminLayout({ title, actions, children }) {
             <>
               <NavLink to="/painel/desenvolvedoras" className="admin-nav-link">Desenvolvedoras</NavLink>
               <NavLink to="/painel/banners" className="admin-nav-link">Banners</NavLink>
+              <NavLink to="/painel/sobre" className="admin-nav-link">Página About</NavLink>
             </>
           ) : (
             user?.developerId && (

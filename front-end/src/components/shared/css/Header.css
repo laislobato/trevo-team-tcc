@@ -1,57 +1,97 @@
 /**
  * ESTILOS: Header
  * ===============
- * Computador: logo à esquerda; páginas em maiúsculas separadas por "|"
- * e bolinhas das redes sociais à direita.
- * Celular (até 768px): logo à esquerda e 3 tracinhos à direita;
- * as páginas e as redes descem em lista ao clicar neles.
+ * Faixa ciano de ponta a ponta, um pouco transparente (o que está atrás
+ * aparece de leve), com:
+ * - um canto ciano em diagonal à esquerda (.header-corner);
+ * - o círculo da logo "pendurado" para fora da faixa;
+ * - as páginas em maiúsculas separadas por "|" e as bolinhas à direita.
+ * Celular (até 768px): círculo da logo e 3 tracinhos; as páginas e as
+ * redes descem numa caixa ciano ao clicar neles.
  *
- * A barra é centralizada (até 1170px), com os cantos de baixo arredondados.
- * .header--flat: a barra flutua por cima do carrossel (Home e /jogo).
+ * Medidas principais:
+ *   --bar-h:  altura da faixa
+ *   --logo-d: tamanho do círculo da logo
+ *
+ * .header--flat: a faixa flutua por cima do bloco do topo.
+ *   Usado dentro de um bloco .page-top (Blog, post, About e Contact)
+ *   ou .home-top (Home e /jogo):
+ *     <div className="page-top">
+ *       <Header flat />
+ *       <BlogBanner />
+ *     </div>
+ *
+ *   .page-top--cyan: para seções com texto logo no topo (Contact).
+ *   O bloco fica ciano e ganha um espaço do tamanho da faixa em cima,
+ *   para o título da seção não ficar escondido atrás dela.
  */
 
- 
-
- /* Bloco do topo: referência para a barra flutuante */
+/* Bloco do topo: referência para a faixa flutuante */
 .page-top {
-  --header-space: 74px; /* altura da barra (58px no celular, ver no fim) */
+  --header-space: 62px; /* altura da faixa (56px no celular, ver no fim) */
   position: relative;
 }
 
-/* Fundo ciano + espaço da barra (o conteúdo começa logo abaixo dela) */
+/* Fundo ciano + espaço da faixa (o conteúdo começa logo abaixo dela) */
 .page-top--cyan {
   background: var(--primary-cyan);
   padding-top: var(--header-space);
 }
 
 /* ================================================
-   BARRA
+   FAIXA
    ================================================ */
 
 .header {
-  --header-bg: #dae4d8; /* verde-acinzentado claro */
+  --bar-h: 62px;
+  --logo-d: 92px;
+  --header-bg: var(--primary-cyan);
   position: relative;
   z-index: 20; /* fica por cima do carrossel e do conteúdo */
-  width: min(1170px, calc(100% - 2 * var(--spacing-md)));
-  margin: 0 auto var(--spacing-md);
-  background: var(--header-bg);
-  padding: 10px var(--spacing-md) 10px 10px;
-  border-radius: 0 0 20px 20px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  height: var(--bar-h);
+  margin: 0 0 var(--spacing-xs);
 }
 
+/* A faixa em si: ciano um pouco transparente */
+/* A faixa em si: degradê ciano, forte na direita (atrás do menu)
+   e sumindo para a esquerda (o que está atrás aparece) */
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to left,
+    rgba(208, 255, 251, 1) 0%,    /* --primary-cyan */
+    rgba(208, 255, 251, 0.9) 20%,
+    rgba(208, 255, 251, 0) 85%
+  );
+}
 
-/* Flutua por cima do banner do topo, centralizada (Home, /jogo e blog) */
+/* Flutua por cima do bloco do topo (Home, /jogo, blog, About e Contact) */
 .header--flat {
   position: absolute;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
   margin: 0;
 }
- 
+
+/* Canto ciano em diagonal, atrás do círculo da logo */
+.header-corner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(var(--logo-d) + 36px);
+  height: calc(var(--logo-d) + 36px);
+  background: var(--header-bg);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  pointer-events: none;
+}
+
 .header-wrapper {
-  margin: 0 auto;
+  position: relative; /* na frente da faixa e do canto */
+  height: 100%;
+  padding: 0 48px 0 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -59,34 +99,37 @@
 }
 
 /* ================================================
-   LOGO
+   LOGO (círculo)
    ================================================ */
 
 .header-brand {
+  align-self: flex-start; /* o círculo começa no alto e passa da faixa */
+  padding-top: 14px;
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
 }
 
 .header-logo {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  width: var(--logo-d);
+  height: var(--logo-d);
+  border-radius: 50%;
+  transition: transform var(--transition-normal);
 }
 
 .header-logo:hover {
   opacity: 1;
+  transform: scale(1.05);
 }
 
 .header-logo-img {
   display: block;
-  height: 54px;
-  width: auto; /* mantém a proporção da logo */
-  transition: transform var(--transition-normal);
-  padding-left: var(--spacing-xs);
-}
-
-.header-logo:hover .header-logo-img {
-  transform: scale(1.04);
+  width: 100%; /* a logo cabe inteira dentro do círculo */
+  height: auto;
 }
 
 /* ================================================
@@ -102,7 +145,7 @@
 .header-nav {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 20px;
 }
 
 .header-nav-link {
@@ -150,19 +193,19 @@
   margin: 0;
   padding: 0;
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
-/* Bolinha preta com o ícone na cor da barra */
+/* Bolinha preta com o ícone na cor da faixa */
 .header-social {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: var(--text-black);
-  color: var(--header-bg); /* o ícone fica da cor do fundo da barra */
+  color: var(--header-bg); /* o ícone fica da cor da faixa */
   transition: transform var(--transition-normal);
 }
 
@@ -183,6 +226,10 @@
   outline: 3px solid var(--text-black);
   outline-offset: 3px;
   border-radius: 4px;
+}
+
+.header-logo:focus-visible {
+  border-radius: 50%;
 }
 
 /* ================================================
@@ -231,23 +278,21 @@
    ================================================ */
 
 @media (max-width: 1100px) {
-
-  .page-top {
-    --header-space: 58px;
-  }
-
   .header {
-    width: calc(100% - 2 * var(--spacing-xs));
-    /* ...o resto continua igual */
+    --logo-d: 80px;
   }
-  
+
+  .header-wrapper {
+    padding-right: var(--spacing-md);
+  }
+
   .header-nav,
   .header-menu {
     gap: 12px;
   }
 
   .header-nav-link {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .header-social {
@@ -261,23 +306,45 @@
    ================================================ */
 
 @media (max-width: 768px) {
-  .header-wrapper {
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--spacing-sm);
+  .page-top {
+    --header-space: 56px;
   }
 
+  .header {
+    --bar-h: 56px;
+    --logo-d: 64px;
+  }
+
+  .header-wrapper {
+    padding: 0 var(--spacing-sm) 0 10px;
+  }
+
+  .header-brand {
+    padding-top: 8px;
+  }
+
+  /* Tracinhos à direita, no meio da faixa */
   .header-menu-toggle {
     display: flex;
-    margin-left: auto;
+    position: absolute;
+    top: calc((var(--bar-h) - 44px) / 2);
+    right: var(--spacing-sm);
   }
 
-  /* Menu escondido até clicar nos tracinhos */
+  /* Caixa ciano que desce embaixo da faixa (escondida até clicar) */
   .header-menu {
     display: none;
+    position: absolute;
+    top: var(--bar-h);
+    left: 0;
+    right: 0;
+    z-index: -1; /* atrás do círculo da logo */
     flex-direction: column;
     align-items: stretch;
     gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-md) var(--spacing-md);
+    background: var(--header-bg);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
     animation: headerSlideDown 0.3s ease;
   }
 
@@ -329,21 +396,5 @@
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@media (max-width: 480px) {
-  .header {
-    width: calc(100% - 2 * var(--spacing-xs));
-    padding: 8px var(--spacing-sm);
-  }
-
-  .header-logo-img {
-    height: 38px;
-  }
-
-  .header-menu-toggle {
-    width: 40px;
-    height: 40px;
   }
 }

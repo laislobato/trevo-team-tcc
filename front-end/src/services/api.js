@@ -165,6 +165,12 @@ export const api = {
     }
   },
 
+  /** Os 2 cards do topo da página About (imagem, título, subtítulo e texto) */
+  async getAboutCards() {
+    const data = await request('/api/about')
+    return data.cards.map((c) => ({ ...c, image: imageUrl(c.image) }))
+  },
+
   /** Banners do carrossel de uma página: 'home' ou 'jogos' */
   async getBanners(page) {
     const data = await request(`/api/banners/${page}`)
@@ -216,6 +222,11 @@ export const api = {
     getBanners: (token) => request('/api/admin/banners', { token }),
     saveBanners: (token, page, banners) =>
       request(`/api/admin/banners/${page}`, { method: 'PUT', token, body: { banners } }).then((d) => d.banners),
+
+    // Cards do topo da página About (só admin)
+    getAboutCards: (token) => request('/api/admin/about', { token }).then((d) => d.cards),
+    saveAboutCards: (token, cards) =>
+      request('/api/admin/about', { method: 'PUT', token, body: { cards } }).then((d) => d.cards),
 
     /** Envia uma imagem e devolve o caminho dela ("/uploads/...") */
     async uploadImage(token, file) {

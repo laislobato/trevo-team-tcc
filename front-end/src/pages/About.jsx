@@ -4,14 +4,14 @@
  * Página "Sobre nós" da Trevo Team.
  *
  * Estrutura da página (de cima para baixo):
- * - Header (compartilhado com as outras páginas)
- * - Divisor curto
- * - AboutHero  -> bloco "SOBRE NÓS" com a imagem em quadrados rotacionados
- * - Símbolo "<>"
+ * - Header flutuando por cima da arte do topo
+ * - AboutHero  -> arte de fundo, "SOBRE NÓS", 2 cards e a divisória "<>"
  * - Equipe (TeamMember), alternando o lado da imagem
  *
- * A equipe vem do painel: Desenvolvedoras → Trevo Team → Integrantes
- * (apelido, nome, cargo e função, foto, descrição e até 3 redes de cada um).
+ * Vem do painel (só o admin da Trevo altera):
+ * - os 2 cards do topo: Painel → Página About
+ * - a equipe: Desenvolvedoras → Trevo Team → Integrantes
+ *   (apelido, nome, cargo e função, foto, descrição e até 3 redes de cada um).
  */
 
 // ===============================================
@@ -26,10 +26,6 @@ import TeamMember from '../components/About/TeamMember'
 import Footer from '../components/shared/Footer'
 import { api } from '../services/api'
 import '../styles/globals.css'
-
-// Texto de exemplo reutilizado (troque pelo texto real quando tiver)
-const LOREM =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis porttitor ullamcorper. In pretium nec est at tempus. Duis quis lacus at elit maximus mollis.'
 
 // Cores dos arcos dos cartões, alternando: verde, ciano, laranja
 const CARD_COLORS = ['green', 'cyan', 'orange']
@@ -60,19 +56,12 @@ export default function About() {
 
   return (
     <div className="about-page">
-      {/* ========== CABEÇALHO POR CIMA DO BLOCO CIANO ========== */}
-      <div className="page-top page-top--cyan">
+      {/* ========== CABEÇALHO POR CIMA DA ARTE DO TOPO ========== */}
+      <div className="page-top">
         <Header flat />
 
-        {/* ========== DIVISOR CURTO ========== */}
-        <div className="about-short-divider"></div>
-
-        {/* ========== SOBRE NÓS ========== */}
-        <AboutHero
-          title="SOBRE NÓS"
-          text={LOREM}
-          buttonLabel="SAIBA MAIS"
-        />
+        {/* ========== SOBRE NÓS (cards do painel) ========== */}
+        <AboutHero title="SOBRE NÓS" />
       </div>
 
 

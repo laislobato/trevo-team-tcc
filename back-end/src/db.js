@@ -15,6 +15,7 @@
  * - games       -> jogos (developer_id = estúdio dono do jogo)
  * - banners     -> banners do topo da Home ('home') e da página /jogo ('jogos');
  *                  só o admin da Trevo altera
+ * - about_cards -> os 2 cards do topo da página About (só o admin da Trevo altera)
  * - meta        -> anotações internas (ex.: se os exemplos já foram criados)
  *
  * Bancos criados antes dos logins de estúdio são atualizados sozinhos
@@ -26,6 +27,7 @@ import { mkdirSync } from 'node:fs'
 import { dirname } from 'node:path'
 import { hashPassword } from './services/passwords.js'
 import { EXAMPLE_DEVELOPERS, EXAMPLE_POSTS, EXAMPLE_GAMES, TREVO_TEAM } from './seed.js'
+import { DEFAULT_ABOUT_CARDS } from './services/about.js'
 
 const SCHEMA = `
   CREATE TABLE IF NOT EXISTS developers (
@@ -115,6 +117,16 @@ const SCHEMA = `
 
   CREATE INDEX IF NOT EXISTS banners_page ON banners (page, position);
 
+  CREATE TABLE IF NOT EXISTS about_cards (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    position   INTEGER NOT NULL DEFAULT 0,  -- ordem na página (0 = esquerda)
+    image      TEXT NOT NULL DEFAULT '',
+    title      TEXT NOT NULL DEFAULT '',
+    subtitle   TEXT NOT NULL DEFAULT '',    -- linha laranja embaixo do título
+    text       TEXT NOT NULL DEFAULT '',
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+  );
+
   CREATE TABLE IF NOT EXISTS meta (
     key   TEXT PRIMARY KEY,
     value TEXT NOT NULL
@@ -159,6 +171,16 @@ function migrate(db) {
     db.exec('ALTER TABLE developers ADD COLUMN is_trevo INTEGER NOT NULL DEFAULT 0')
   }
   ensureTrevo(db)
+
+  // 5) Cards do topo da página About: começam com um texto inicial, uma vez só
+  //    (se a equipe apagar pelo painel, não voltam quando o servidor reinicia)
+  if (!getMeta(db, 'about_cards')) {
+    if (count(db, 'about_cards') === 0) {
+      const insert = db.prepare('INSERT INTO about_cards (position, image, title, subtitle, text) VALUES (?, ?, ?, ?, ?)')
+      DEFAULT_ABOUT_CARDS.forEach((c, i) => insert.run(i, c.image, c.title, c.subtitle, c.text))
+    }
+    setMeta(db, 'about_cards', 'ok')
+  }
 
   db.exec('CREATE INDEX IF NOT EXISTS users_developer ON users (developer_id)')
   db.exec('CREATE INDEX IF NOT EXISTS posts_developer ON posts (developer_id)')

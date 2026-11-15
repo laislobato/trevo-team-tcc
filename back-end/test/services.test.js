@@ -25,6 +25,7 @@ import * as posts from '../src/services/posts.js'
 import * as devs from '../src/services/developers.js'
 import * as games from '../src/services/games.js'
 import * as banners from '../src/services/banners.js'
+import * as about from '../src/services/about.js'
 
 const SECRET = 'segredo-de-teste-com-mais-de-32-caracteres!!'
 
@@ -582,6 +583,60 @@ test('banco antigo: integrantes sem os campos novos e "Trevo Team" pelo nome', (
   assert.equal(list.length, 1, 'usou a que já existia, não criou outra')
   assert.equal(list[0].isTrevo, true)
   assert.deepEqual(devs.getTeam(db2).members[0], { name: 'Velho', role: 'Arte', photo: '', nickname: '', description: '', socials: [] })
+  db2.close()
+  rmSync(dir, { recursive: true, force: true })
+})
+
+// ------------------------------------------------------------------
+// CARDS DA PÁGINA ABOUT
+// ------------------------------------------------------------------
+
+test('about: banco novo já começa com os 2 cards iniciais', () => {
+  const db = freshDb()
+  const cards = about.listAboutCards(db)
+  assert.deepEqual(cards.map((c) => c.title), ['QUEM SOMOS', 'O QUE FAZEMOS'])
+  assert.ok(cards.every((c) => c.subtitle && c.text && c.image === ''))
+})
+
+test('about: salvar troca os cards, na ordem enviada', () => {
+  const db = freshDb()
+  const saved = about.replaceAboutCards(db, [
+    { image: '/uploads/b.webp', title: 'Dois', subtitle: 'Sub 2', text: 'Texto 2' },
+    { image: '', title: 'Um', subtitle: '', text: '' },
+  ])
+  assert.deepEqual(saved.map((c) => c.title), ['Dois', 'Um'])
+  assert.equal(saved[0].image, '/uploads/b.webp')
+  about.replaceAboutCards(db, [])
+  assert.deepEqual(about.listAboutCards(db), [], 'pode ficar sem card')
+})
+
+test('about: validação recusa dados ruins e não apaga os cards antigos', () => {
+  const db = freshDb()
+  const errorsOf = (list) => {
+    try {
+      about.replaceAboutCards(db, list)
+      return {}
+    } catch (e) {
+      assert.equal(e.status, 400)
+      return e.details
+    }
+  }
+  assert.ok(errorsOf([{ title: '' }])['cards.0.title'])
+  assert.ok(errorsOf([{ title: 'Ok', image: 'javascript:alert(1)' }])['cards.0.image'])
+  assert.ok(errorsOf([{ title: 'Ok', text: 'x'.repeat(401) }])['cards.0.text'])
+  assert.ok(errorsOf([{ title: 'A' }, { title: 'B' }, { title: 'C' }]).cards)
+  assert.ok(errorsOf('nao-e-lista').cards)
+  assert.deepEqual(about.listAboutCards(db).map((c) => c.title), ['QUEM SOMOS', 'O QUE FAZEMOS'])
+})
+
+test('about: cards apagados pelo painel não voltam quando o servidor reinicia', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'trevo-'))
+  const path = join(dir, 'about.db')
+  const db1 = openDatabase(path)
+  about.replaceAboutCards(db1, [])
+  db1.close()
+  const db2 = openDatabase(path)
+  assert.deepEqual(about.listAboutCards(db2), [])
   db2.close()
   rmSync(dir, { recursive: true, force: true })
 })

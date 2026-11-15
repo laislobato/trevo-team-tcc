@@ -1,21 +1,24 @@
 /**
  * COMPONENTE: Header
  * ==================
- * Topo de todas as páginas: uma barra centralizada (não vai de ponta a
- * ponta), verde-acinzentada, com os cantos de baixo arredondados.
+ * Topo de todas as páginas: faixa ciano de ponta a ponta (um pouco
+ * transparente), com um canto ciano em diagonal à esquerda e o círculo
+ * da logo "pendurado" para fora da faixa.
  *
  * Computador:
- *   ╭──────────────────────────────────────────────────────────────────────╮
- *   │ [logo_full]     GAMES | CONTACT US | ABOUT | BLOG |  (Steam)(Xbox)(Nintendo) │
- *   ╰──────────────────────────────────────────────────────────────────────╯
+ *   ┌────────╱───────────────────────────────────────────────────────────────┐
+ *   │ (logo)╱        GAMES | CONTACT US | ABOUT | BLOG |  (Steam)(Xbox)(Nintendo) │
+ *   │  ⬤  ╱─────────────────────────────────────────────────────────────────┘
+ *   └───╱    <- canto ciano atrás do círculo
  *
  * Celular:
- *   [logo_full]                                   [ ☰ ]
+ *   (logo)                                        [ ☰ ]
  *   (ao clicar nos tracinhos, as páginas e as redes descem em lista)
  *
  * Props:
- * - flat: true = a barra FLUTUA por cima do carrossel de banners (Home e /jogo).
- *         Sem ela, a barra fica no topo da página, empurrando o conteúdo.
+ * - flat: true = a faixa FLUTUA por cima do topo da página (carrossel,
+ *         banner do blog, arte do About...). Sem ela, a faixa fica no topo
+ *         da página, empurrando o conteúdo.
  *
  * Os ícones das plataformas vêm do SocialIcon (escolhe pelo nome ou pelo link).
  */
@@ -23,7 +26,7 @@
 import { Fragment, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 // ⚠️ Confira a extensão do arquivo na pasta assets (.png, .svg ou .webp)
-import logoFull from '../../assets/logo_full.png'
+import logoFull from '../../assets/logo.png'
 import SocialIcon from './SocialIcon'
 import './css/Header.css'
 
@@ -50,9 +53,12 @@ export default function Header({ flat = false }) {
 
   return (
     <header className={`header ${flat ? 'header--flat' : ''}`}>
+      {/* Canto ciano em diagonal, atrás do círculo da logo (só enfeite) */}
+      <span className="header-corner" aria-hidden="true"></span>
+
       <div className="header-wrapper">
 
-        {/* 🔝 LOGO (leva para a Home) + TRACINHOS (só no celular) */}
+        {/* 🔝 LOGO NO CÍRCULO (leva para a Home) + TRACINHOS (só no celular) */}
         <div className="header-brand">
           <Link to="/" className="header-logo" onClick={closeMenu} aria-label="Trevo Team: página inicial">
             <img src={logoFull} alt="Trevo Team" className="header-logo-img" />
