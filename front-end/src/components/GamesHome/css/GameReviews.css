@@ -54,20 +54,8 @@
   will-change: transform; /* a posição muda a cada quadro */
 }
 
-/* Mouse em cima: para a faixa */
-.reviews-viewport:hover .reviews-track {
-  animation-play-state: paused;
-}
 
-@keyframes reviewsScroll {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    /* metade da faixa + metade do espaço entre os cards */
-    transform: translateX(calc(-50% - var(--spacing-md) / 2));
-  }
-}
+
 
 /* ================================================
    CARD DO COMENTÁRIO
@@ -143,15 +131,8 @@
    REDUZIR MOVIMENTO: faixa parada, com rolagem
    ================================================ */
 
-@media (prefers-reduced-motion: reduce) {
-  .reviews-viewport {
-    overflow-x: auto;
-  }
 
-  .reviews-track {
-    animation: none;
-  }
-}
+
 
 /* ================================================
    RESPONSIVIDADE
