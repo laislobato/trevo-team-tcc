@@ -26,6 +26,21 @@
   padding: var(--spacing-md) 0;
   -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
   mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  cursor: grab;
+  touch-action: pan-y; /* no celular: arrastar para o lado move a faixa, para cima/baixo rola a página */
+  user-select: none; /* não seleciona o texto enquanto arrasta */
+  -webkit-user-select: none;
+}
+
+/* Arrastando: mãozinha fechada */
+.reviews-viewport.is-dragging {
+  cursor: grabbing;
+}
+
+/* Foco pelo teclado (Tab): contorno por dentro da faixa */
+.reviews-viewport:focus-visible {
+  outline: 3px solid var(--text-black);
+  outline-offset: -3px;
 }
 
 .reviews-track {
@@ -36,6 +51,7 @@
   gap: var(--spacing-md);
   width: max-content;
   animation: reviewsScroll var(--reviews-duration, 48s) linear infinite;
+  will-change: transform; /* a posição muda a cada quadro */
 }
 
 /* Mouse em cima: para a faixa */
