@@ -22,7 +22,7 @@ export default function BlogHeading({ title = 'Novidades das Equipes' }) {
         <span className="blog-leaf blog-leaf--right"></span>
       </div>
 
-      <h2 className="blog-heading-title">{title}</h2>
+      <h1 className="blog-heading-title">{title}</h1>
     </div>
   )
 }

@@ -76,6 +76,8 @@ export default function App() {
       {/* Bloco ciano: cabeçalho (sem fundo próprio) + carrossel de banners */}
       <div className="home-top">
         <Header flat />
+        {/* Título da página para leitor de tela (a Home não tem um título visível) */}
+        <h1 className="visually-hidden">Trevo Team: publisher de jogos indie</h1>
         <Hero page="home" />
       </div>
 

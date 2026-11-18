@@ -707,8 +707,8 @@
    a cabeça passar por cima. Navegador antigo: fica cortado como antes. */
 @supports (overflow: clip) {
   .showcase--home .showcase-stage {
-    overflow-x: visible;
-    overflow-y: visible;
+    overflow-x: clip; /* corta os cards dos lados na borda da tela (sem rolagem lateral no celular) */
+    overflow-y: visible; /* a cabeça do personagem sai por cima */
   }
 }
 

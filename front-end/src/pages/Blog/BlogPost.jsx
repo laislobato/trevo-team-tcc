@@ -95,7 +95,7 @@ export default function BlogPost() {
         {/* ========== TIPO E TÍTULO ========== */}
         <header className="post-header">
           <p className="post-type">{POST_TYPES[post.type]}</p>
-          <h2 className="post-title">{post.title}</h2>
+          <h1 className="post-title">{post.title}</h1>
         </header>
 
         {/* ========== GALERIA ========== */}

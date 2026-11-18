@@ -65,6 +65,8 @@ export default function Games() {
       {/* ========== BLOCO CIANO: CABEÇALHO + BANNERS ========== */}
       <div className="home-top">
         <Header flat />
+        {/* Título da página para leitor de tela (o topo é só o carrossel) */}
+        <h1 className="visually-hidden">Jogos da Trevo Team</h1>
         <Hero page="jogos" banners={PLACEHOLDER_BANNERS} label="Jogos em destaque" />
       </div>
 
