@@ -35,11 +35,11 @@
    ================================================ */
 
 .game-cards-quote {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 700;
-  line-height: 22px;
+  line-height: 1.375rem;
   text-align: center;
-  color: var(--text-black);
+  color: var(--color-text);
   margin: 0;
 }
 
@@ -50,7 +50,7 @@
 .game-card {
   width: 100%;
   height: 220px;
-  background: var(--light-gray);
+  background: var(--color-gray);
   border-radius: 4px;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -63,7 +63,7 @@
 
 /* Bloco do meio: mais escuro e menor */
 .game-card--dark {
-  background: #b3b3b3;
+  background: var(--color-gray);
   height: 130px;
 }
 

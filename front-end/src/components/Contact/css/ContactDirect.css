@@ -14,7 +14,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 16px 24px;
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 600;
 }
 
@@ -28,12 +28,12 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  color: var(--text-black);
+  color: var(--color-text);
 }
 
 .contact-direct-link svg,
 .contact-direct-text svg {
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 .contact-direct-link:hover {
@@ -45,7 +45,7 @@
 .contact-direct-separator {
   width: 1.5px;
   height: 18px;
-  background: var(--text-black);
+  background: var(--color-text);
   opacity: 0.7;
 }
 
@@ -62,8 +62,8 @@
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: var(--text-black);
-  color: var(--white);
+  background: var(--color-text);
+  color: var(--color-on-text);
   transition: transform var(--transition-normal);
 }
 
@@ -79,7 +79,7 @@
 
 .contact-direct-link:focus-visible,
 .contact-direct-social:focus-visible {
-  outline: 3px solid var(--text-black);
+  outline: 3px solid var(--color-text);
   outline-offset: 3px;
   border-radius: 4px;
 }

@@ -30,13 +30,14 @@
 // CORES DA ESTRELA
 // ===============================================
 
+// "black" e "gray" seguem o tema (no modo escuro, a estrela preta fica clara)
 const COLORS = {
   white: '#FFFFFF',
-  gray: '#D9D9D9',
+  gray: 'var(--color-gray)',
   orange: '#F8906A',
   cyan: '#D0FFFB',
   green: '#8CC74F',
-  black: '#000000',
+  black: 'var(--color-text)',
 }
 
 // Pontas da estrela (num quadrado de 100 × 100)
@@ -70,7 +71,7 @@ export default function Art({ src = '', alt = '', size = 80, color = 'gray', cla
       aria-hidden="true"
       focusable="false"
     >
-      <polygon points={STAR_POINTS} fill={COLORS[color] || color} />
+      <polygon points={STAR_POINTS} style={{ fill: COLORS[color] || color }} />
     </svg>
   )
 }

@@ -39,7 +39,7 @@
   position: relative;
   width: 120px;
   height: 180px;
-  background: var(--text-black);
+  background: var(--color-text);
   border-radius: 60px 60px 0 0;
   flex-shrink: 0;
 }
@@ -84,25 +84,25 @@
 }
 
 .game-character-name {
-  font-size: 26px;
+  font-size: 1.625rem;
   font-weight: 700;
-  line-height: 30px;
-  color: var(--text-black);
+  line-height: 1.875rem;
+  color: var(--color-text);
   margin: 0 0 0 12px;
 }
 
 .game-character-box {
   width: 200px;
   min-height: 125px;
-  background: var(--light-gray);
+  background: var(--color-gray);
   padding: var(--spacing-sm);
   margin-left: 0;
 }
 
 .game-character-text {
-  font-size: 13px;
-  line-height: 18px;
-  color: var(--text-black);
+  font-size: 0.8125rem;
+  line-height: 1.125rem;
+  color: var(--color-text);
   margin: 0;
 }
 

@@ -33,6 +33,7 @@ import {
   BsSearch,
   BsXLg,
 } from 'react-icons/bs'
+import { prefersReducedMotion } from '../../services/acessibilidade'
 
 // ===============================================
 // CARD COM TÍTULO
@@ -302,8 +303,7 @@ export function EditorTabs({ sections }) {
     e.preventDefault()
     const target = document.getElementById(id)
     if (!target) return
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    target.scrollIntoView({ behavior: reduce ? 'instant' : 'smooth', block: 'start' })
+    target.scrollIntoView({ behavior: prefersReducedMotion() ? 'instant' : 'smooth', block: 'start' })
     target.focus({ preventScroll: true })
     setActive(id)
   }

@@ -13,7 +13,7 @@
 
 .home-top {
   position: relative; /* referência para o cabeçalho flutuante */
-  background: var(--primary-cyan); /* aparece enquanto o banner não tem imagem */
+  background: var(--color-cyan); /* aparece enquanto o banner não tem imagem */
   margin-bottom: var(--spacing-lg);
 }
 
@@ -85,8 +85,8 @@
   border-radius: 50%;
   border: none;
   padding: 0;
-  background: rgba(217, 217, 217, 0.9); /* cinza claro, um pouco transparente */
-  color: var(--text-black);
+  background: color-mix(in srgb, var(--color-gray) 90%, transparent); /* cinza claro, um pouco transparente */
+  color: var(--color-text);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -108,12 +108,12 @@
 }
 
 .hero-arrow:hover {
-  background: var(--white);
+  background: var(--color-surface);
   transform: translateY(-50%) scale(1.08);
 }
 
 .hero-arrow:focus-visible {
-  outline: 3px solid var(--text-black);
+  outline: 3px solid var(--color-text);
   outline-offset: 2px;
 }
 
@@ -136,7 +136,7 @@
   padding: 0;
   border: none;
   border-radius: 4px;
-  background: var(--white);
+  background: var(--color-dot);
   cursor: pointer;
   transition: background var(--transition-normal), transform var(--transition-normal);
 }
@@ -150,7 +150,7 @@
 }
 
 .hero-dot:focus-visible {
-  outline: 3px solid var(--text-black);
+  outline: 3px solid var(--color-text);
   outline-offset: 3px;
 }
 

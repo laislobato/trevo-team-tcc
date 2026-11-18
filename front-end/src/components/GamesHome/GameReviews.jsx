@@ -29,6 +29,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { PLATFORM_NAMES } from '../../data/games'
+import { prefersReducedMotion } from '../../services/acessibilidade'
 import './css/GameReviews.css'
 
 // ===============================================
@@ -40,8 +41,6 @@ const FRICTION = 0.95 // embalo depois de soltar (mais perto de 1 = desliza mais
 const MAX_FLING = 2.5 // velocidade máxima do embalo (px por milissegundo)
 const DRAG_THRESHOLD = 4 // px que o dedo anda antes de contar como arraste
 
-const prefersReducedMotion = () =>
-  typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
 // ===============================================
 // CARD DO COMENTÁRIO
@@ -120,7 +119,6 @@ export default function GameReviews({ title = 'O QUE OS JOGADORES DIZEM', review
   useEffect(() => {
     if (reviews.length === 0) return undefined
     const m = motion.current
-    const reduced = prefersReducedMotion()
     let frame = 0
     let last = performance.now()
 
@@ -130,7 +128,7 @@ export default function GameReviews({ title = 'O QUE OS JOGADORES DIZEM', review
 
       if (!m.drag) {
         // Velocidade sozinha: para no hover/foco e volta aos poucos
-        const target = reduced || m.hover || m.focus || !m.loop ? 0 : m.step / (SECONDS_PER_CARD * 1000)
+        const target = prefersReducedMotion() || m.hover || m.focus || !m.loop ? 0 : m.step / (SECONDS_PER_CARD * 1000)
         m.speed += (target - m.speed) * (1 - Math.pow(0.9, dt / 16.7))
         m.offset -= m.speed * dt
 

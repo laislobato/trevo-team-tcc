@@ -12,7 +12,7 @@
 .games-page {
   width: 100%;
   overflow-x: hidden; /* evita rolagem horizontal no celular */
-  background: var(--white);
+  background: var(--color-surface);
 }
 
 /* ================================================
@@ -35,10 +35,10 @@
 }
 
 .games-heading-text {
-  font-size: 32px;
+  font-size: 2rem;
   font-weight: 700;
-  line-height: 38px;
-  color: var(--text-black);
+  line-height: 2.375rem;
+  color: var(--color-text);
   margin: 0;
   flex-shrink: 0;
 }
@@ -62,23 +62,23 @@
 }
 
 .games-about-title {
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 700;
-  color: var(--text-black);
+  color: var(--color-text);
   margin: 0 0 var(--spacing-sm) 0;
 }
 
 .games-about-text {
-  font-size: 15px;
-  line-height: 24px;
-  color: var(--text-black);
+  font-size: 0.9375rem;
+  line-height: 1.5rem;
+  color: var(--color-text);
   margin: 0;
 }
 
 /* "Desenvolvido por ..." */
 .games-about-developer {
-  font-size: 14px;
-  color: #555555;
+  font-size: 0.875rem;
+  color: var(--color-text-soft);
   margin: var(--spacing-sm) 0 0 0;
 }
 
@@ -100,13 +100,13 @@
 }
 
 .games-status h2 {
-  font-size: 32px;
+  font-size: 2rem;
   font-weight: 700;
   margin: 0;
 }
 
 .games-status p {
-  font-size: 15px;
+  font-size: 0.9375rem;
   margin: 0;
 }
 
@@ -116,6 +116,7 @@
   background: var(--primary-orange);
   border-radius: 8px;
   padding: 8px 16px;
+  color: var(--color-on-accent);
 }
 
 /* ================================================
@@ -124,8 +125,8 @@
 
 @media (max-width: 768px) {
   .games-heading-text {
-    font-size: 26px;
-    line-height: 32px;
+    font-size: 1.625rem;
+    line-height: 2rem;
   }
 }
 
@@ -135,8 +136,8 @@
   }
 
   .games-heading-text {
-    font-size: 22px;
-    line-height: 28px;
+    font-size: 1.375rem;
+    line-height: 1.75rem;
   }
 
   .games-about {

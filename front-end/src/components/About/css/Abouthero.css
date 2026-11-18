@@ -46,10 +46,10 @@
 .about-hero-title {
   margin: 0 0 var(--spacing-lg);
   text-align: center;
-  font-size: 32px;
-  line-height: 38px;
+  font-size: 2rem;
+  line-height: 2.375rem;
   font-weight: 800;
-  color: var(--text-black);
+  color: var(--color-text);
 }
 
 /* ================================================
@@ -76,7 +76,7 @@
 .about-card-frame {
   width: 100%;
   aspect-ratio: 5 / 3;
-  background: var(--white);
+  background: var(--color-surface);
   border-radius: 6px;
   overflow: hidden;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
@@ -105,15 +105,15 @@
 .about-card-subtitle {
   margin: 0;
   text-align: center;
-  font-size: 28px;
-  line-height: 28px;
+  font-size: 1.75rem;
+  line-height: 1.75rem;
   font-weight: 800;
   text-transform: uppercase;
 }
 
 .about-card-title {
   margin-top: var(--spacing-md);
-  color: var(--text-black);
+  color: var(--color-text);
 }
 
 .about-card-subtitle {
@@ -123,9 +123,9 @@
 .about-card-text {
   align-self: stretch;
   margin: var(--spacing-sm) 0 0;
-  font-size: 16px;
-  line-height: 22px;
-  color: var(--text-black);
+  font-size: 1rem;
+  line-height: 1.375rem;
+  color: var(--color-text);
 }
 
 /* ================================================
@@ -136,15 +136,15 @@
   width: min(920px, calc(100% - 2 * var(--spacing-md)));
   margin: var(--spacing-lg) auto 0;
   padding-top: 10px;
-  border-top: 1.5px solid var(--text-black);
+  border-top: 1.5px solid var(--color-text);
   text-align: center;
 }
 
 .about-hero-divider-icon {
-  font-size: 22px;
+  font-size: 1.375rem;
   font-weight: 800;
   letter-spacing: 1px;
-  color: var(--text-black);
+  color: var(--color-text);
 }
 
 /* ================================================
@@ -161,8 +161,8 @@
   }
 
   .about-hero-title {
-    font-size: 26px;
-    line-height: 32px;
+    font-size: 1.625rem;
+    line-height: 2rem;
   }
 
   .about-hero-cards {
@@ -171,12 +171,12 @@
 
   .about-card-title,
   .about-card-subtitle {
-    font-size: 22px;
-    line-height: 24px;
+    font-size: 1.375rem;
+    line-height: 1.5rem;
   }
 
   .about-card-text {
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
 }
 

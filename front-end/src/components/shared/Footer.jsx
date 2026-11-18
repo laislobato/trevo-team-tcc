@@ -24,6 +24,7 @@
 
 import SocialIcon from './SocialIcon'
 import logo from '../../assets/logo.png'
+import logoDark from '../../assets/logo_inverted.png' // versão para o modo escuro e o alto contraste
 import './css/Footer.css'
 
 // ===============================================
@@ -80,7 +81,8 @@ export default function Footer() {
         />
 
         <a href="/" className="footer-logo-link" aria-label="Trevo Team, página inicial">
-          <img src={logo} alt="Trevo Team" className="footer-logo" />
+          <img src={logo} alt="Trevo Team" className="footer-logo logo-light" />
+          <img src={logoDark} alt="Trevo Team" className="footer-logo logo-dark" />
         </a>
       </div>
 

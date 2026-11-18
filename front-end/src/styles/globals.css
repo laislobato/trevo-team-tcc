@@ -9,6 +9,11 @@
  * - Definição de tipografia
  * - Reset CSS
  * - Estilos gerais do body
+ *
+ * Cores do tema: use as variáveis --color-* (texto, fundo, cards...).
+ * Elas mudam sozinhas no modo escuro e no alto contraste
+ * (styles/acessibilidade.css). As cores --primary-* são as da marca
+ * e não mudam.
  */
 
 /* ================================================
@@ -33,6 +38,29 @@
   /* Sombras */
   --shadow-green: rgba(107, 153, 126, 0.45);
   --shadow-black: rgba(0, 0, 0, 0.1);
+
+  /* -------- CORES DO TEMA (claro) --------
+     Mudam no modo escuro e no alto contraste (acessibilidade.css) */
+
+  --color-bg: #FFFFFF;           /* fundo da página */
+  --color-surface: #FFFFFF;      /* cards e blocos brancos */
+  --color-surface-2: #F1F1F1;    /* fundos cinza bem claros */
+  --color-text: #000000;         /* texto principal, bordas e formas pretas */
+  --color-text-soft: #5C5C5C;    /* texto secundário (datas, legendas) */
+  --color-on-text: #FFFFFF;      /* texto em cima de um fundo --color-text */
+  --color-line: #D0D0D0;         /* linhas e divisórias */
+  --color-line-soft: rgba(0, 0, 0, 0.08); /* linhas bem fracas (menu do celular) */
+  --color-gray: #D9D9D9;         /* caixas cinza (imagens que ainda não existem) */
+  --color-cyan: #D0FFFB;         /* blocos ciano (topo das páginas, cards) */
+  --color-on-dark: #FFFFFF;      /* texto em cima do verde-escuro e das cores fortes */
+  --color-on-accent: #000000;    /* texto em cima do laranja e do verde */
+  --color-tint-green: #E3F3D2;   /* fundo verde clarinho */
+  --color-tint-orange: #FDE2D7;  /* fundo laranja clarinho */
+  --color-focus: #003223;        /* contorno do foco pelo teclado */
+  --color-dot: #FFFFFF;          /* bolinhas do carrossel */
+  --color-cyan-glow: rgba(208, 255, 251, 0.6); /* brilho ciano da pergunta aberta */
+  --color-text-green: #3D7A1F;   /* texto verde (cargo na equipe) */
+  --color-text-strong-green: #003223; /* texto verde-escuro (títulos de grupo, aviso de enviado) */
   
   /* -------- ESPAÇAMENTOS -------- */
   /* Sistema de espaçamento baseado em 0.5rem */
@@ -46,11 +74,11 @@
   /* -------- TIPOGRAFIA -------- */
   
   --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-size-sm: 16px;
-  --font-size-base: 20px;
-  --font-size-lg: 24px;
-  --font-size-xl: 32px;
-  --font-size-xxl: 36px;
+  --font-size-sm: 1rem;
+  --font-size-base: 1.25rem;
+  --font-size-lg: 1.5rem;
+  --font-size-xl: 2rem;
+  --font-size-xxl: 2.25rem;
   
   /* -------- BORDER RADIUS -------- */
   
@@ -81,8 +109,8 @@ html {
 
 body {
   font-family: var(--font-main);
-  color: var(--text-black);
-  background: var(--white);
+  color: var(--color-text);
+  background: var(--color-bg);
   line-height: 1.6;
   font-size: var(--font-size-base);
 }
@@ -98,7 +126,7 @@ body {
 
 .app-container {
   width: 100%;
-  background: var(--white);
+  background: var(--color-bg);
   display: flex;
   flex-direction: column;
 }
@@ -114,7 +142,7 @@ img {
 /* -------- Links -------- */
 
 a {
-  color: var(--text-black);
+  color: var(--color-text);
   text-decoration: none;
   transition: color var(--transition-normal);
 }
@@ -150,9 +178,11 @@ button:disabled {
 input, textarea, select {
   font-family: var(--font-main);
   font-size: var(--font-size-base);
-  border: 2px solid var(--light-gray);
+  border: 2px solid var(--color-gray);
   border-radius: var(--radius-sm);
   padding: var(--spacing-sm);
+  color: var(--color-text);
+  background-color: var(--color-surface);
   transition: border-color var(--transition-normal);
 }
 
@@ -169,7 +199,7 @@ input:focus, textarea:focus, select:focus {
   max-width: 1280px;
   margin: var(--spacing-xl) auto;
   height: 10px;
-  background: var(--text-black);
+  background: var(--color-text);
   border-radius: 5px;
   width: calc(100% - 2 * var(--spacing-lg));
 }
@@ -183,7 +213,7 @@ input:focus, textarea:focus, select:focus {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--light-gray);
+  background: var(--color-gray);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -204,7 +234,7 @@ input:focus, textarea:focus, select:focus {
   :root {
     --spacing-lg: 2rem;
     --spacing-xl: 3rem;
-    --font-size-base: 18px;
+    --font-size-base: 1.125rem;
   }
 }
 
@@ -214,24 +244,16 @@ input:focus, textarea:focus, select:focus {
     --spacing-lg: 1.5rem;
     --spacing-xl: 2rem;
     --spacing-md: 1.5rem;
-    --font-size-base: 16px;
+    --font-size-base: 1rem;
   }
 
   body {
-    font-size: 16px;
+    font-size: 1rem;
   }
 }
 
-/* Modo escuro (opcional, para futuro) */
-@media (prefers-color-scheme: dark) {
-  /* Descomente se quiser implementar dark mode
-  :root {
-    --text-black: #FFFFFF;
-    --white: #1a1a1a;
-    --light-gray: #2a2a2a;
-  }
-  */
-}
+/* Modo escuro, alto contraste e as outras opções do menu de
+   acessibilidade: veja styles/acessibilidade.css */
 
 /* Modo reduzido de movimento (acessibilidade) */
 @media (prefers-reduced-motion: reduce) {

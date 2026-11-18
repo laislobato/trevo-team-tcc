@@ -19,7 +19,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  background: var(--primary-cyan);
+  background: var(--color-cyan);
   border-radius: 16px;
   transition: background-color 0.4s ease;
   /* canto de baixo à direita cortado em diagonal */
@@ -27,9 +27,9 @@
 }
 
 /* Tom do assunto escolhido (versões claras das cores do site) */
-.contact-form--green { background: #e3f3d2; }
-.contact-form--cyan { background: var(--primary-cyan); }
-.contact-form--orange { background: #fde2d7; }
+.contact-form--green { background: var(--color-tint-green); }
+.contact-form--cyan { background: var(--color-cyan); }
+.contact-form--orange { background: var(--color-tint-orange); }
 
 /* Nome e E-mail lado a lado */
 .contact-form-row {
@@ -44,7 +44,7 @@
   flex-direction: column;
   gap: 6px;
   min-width: 0;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 700;
 }
 
@@ -55,17 +55,17 @@
   padding: 12px 14px;
   border: 2px solid transparent;
   border-radius: 8px;
-  background: var(--white);
+  background: var(--color-surface);
   font-family: inherit;
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 400;
-  color: var(--text-black);
+  color: var(--color-text);
   resize: vertical;
 }
 
 .contact-form-field input::placeholder,
 .contact-form-field textarea::placeholder {
-  color: #7a7a7a;
+  color: var(--color-text-soft);
 }
 
 /* Campo em uso: borda verde */
@@ -86,8 +86,8 @@
 
 .contact-form-privacy {
   margin: 0;
-  font-size: 13px;
-  color: #44514c;
+  font-size: 0.8125rem;
+  color: var(--color-text-soft);
 }
 
 .contact-form-button {
@@ -96,10 +96,10 @@
   border-radius: 8px;
   background: var(--primary-orange);
   font-family: inherit;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 800;
   letter-spacing: 1px;
-  color: var(--text-black);
+  color: var(--color-on-accent);
   white-space: nowrap;
   cursor: pointer;
   transition: transform var(--transition-normal);
@@ -110,16 +110,16 @@
 }
 
 .contact-form-button:focus-visible {
-  outline: 3px solid var(--text-black);
+  outline: 3px solid var(--color-text);
   outline-offset: 3px;
 }
 
 /* Mensagem de enviado */
 .contact-form-success {
   margin: 0;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 700;
-  color: var(--primary-b-green);
+  color: var(--color-text-strong-green);
 }
 
 /* ================================================

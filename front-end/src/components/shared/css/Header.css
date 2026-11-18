@@ -34,7 +34,7 @@
 
 /* Fundo ciano + espaço da faixa (o conteúdo começa logo abaixo dela) */
 .page-top--cyan {
-  background: var(--primary-cyan);
+  background: var(--color-cyan);
   padding-top: var(--header-space);
 }
 
@@ -45,7 +45,7 @@
 .header {
   --bar-h: 62px;
   --logo-d: 92px;
-  --header-bg: var(--primary-cyan);
+  --header-bg: var(--color-cyan);
   position: relative;
   z-index: 20; /* fica por cima do carrossel e do conteúdo */
   width: 100%;
@@ -62,10 +62,10 @@
   inset: 0;
   background: linear-gradient(
     to left,
-    rgb(208, 255, 251) 0%,    /* --primary-cyan */
-    rgba(208, 255, 251, 0.9) 20%,
-    rgba(208, 255, 251, 0.0) 40%,
-    rgba(208, 255, 251, 0) 100%
+    var(--header-bg) 0%,
+    color-mix(in srgb, var(--header-bg) 90%, transparent) 20%,
+    transparent 40%,
+    transparent 100%
   );
 }
 
@@ -151,11 +151,11 @@
 
 .header-nav-link {
   position: relative;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  color: var(--text-black);
+  color: var(--color-text);
   white-space: nowrap;
 }
 
@@ -171,7 +171,7 @@
   bottom: -4px;
   width: 0;
   height: 2px;
-  background: var(--text-black);
+  background: var(--color-text);
   transition: width var(--transition-normal);
 }
 
@@ -184,7 +184,7 @@
 .header-nav-separator {
   width: 1.5px;
   height: 14px;
-  background: var(--text-black);
+  background: var(--color-text);
   opacity: 0.7;
 }
 
@@ -205,7 +205,7 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: var(--text-black);
+  background: var(--color-text);
   color: var(--header-bg); /* o ícone fica da cor da faixa */
   transition: transform var(--transition-normal);
 }
@@ -224,7 +224,7 @@
 .header-social:focus-visible,
 .header-logo:focus-visible,
 .header-menu-toggle:focus-visible {
-  outline: 3px solid var(--text-black);
+  outline: 3px solid var(--color-text);
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -256,7 +256,7 @@
   display: block;
   width: 28px;
   height: 3px;
-  background: var(--text-black);
+  background: var(--color-text);
   border-radius: 2px;
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
@@ -293,7 +293,7 @@
   }
 
   .header-nav-link {
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 
   .header-social {
@@ -362,8 +362,8 @@
   .header-nav-link {
     display: block;
     padding: 14px 0;
-    font-size: 16px;
-    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    font-size: 1rem;
+    border-top: 1px solid var(--color-line-soft);
   }
 
   /* Na lista: sem tracinho "|" e sem sublinhado; a página atual fica verde */
@@ -380,7 +380,7 @@
   .header-socials {
     gap: var(--spacing-sm);
     padding-top: var(--spacing-xs);
-    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    border-top: 1px solid var(--color-line-soft);
   }
 
   .header-social {

@@ -35,7 +35,7 @@
   gap: 10px;
   margin-bottom: 20px;
   padding: 0 14px;
-  border: 2px solid var(--light-gray);
+  border: 2px solid var(--color-gray);
   border-radius: 8px;
   transition: border-color var(--transition-normal);
 }
@@ -47,7 +47,7 @@
 
 .blog-faq-search svg {
   flex-shrink: 0;
-  color: #777;
+  color: var(--color-text-soft);
 }
 
 .blog-faq-search input {
@@ -58,7 +58,7 @@
   outline: none;
   background: transparent;
   font-family: inherit;
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 /* ================================================
@@ -69,7 +69,7 @@
   list-style: none;
   margin: 0 0 32px;
   padding: 0;
-  border-top: 1px solid #d0d0d0;
+  border-top: 1px solid var(--color-line);
 }
 
 .blog-faq-filter {
@@ -79,13 +79,13 @@
   align-items: center;
   padding: 12px 4px;
   border: 0;
-  border-bottom: 1px solid #d0d0d0;
+  border-bottom: 1px solid var(--color-line);
   background: transparent;
   font-family: inherit;
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 700;
   text-align: left;
-  color: var(--text-black);
+  color: var(--color-text);
   cursor: pointer;
   transition: padding var(--transition-normal), box-shadow var(--transition-normal);
 }
@@ -101,7 +101,7 @@
 }
 
 .blog-faq-filter:focus-visible {
-  outline: 3px solid var(--text-black);
+  outline: 3px solid var(--color-text);
   outline-offset: -3px;
 }
 
@@ -110,8 +110,8 @@
   min-width: 26px;
   padding: 2px 8px;
   border-radius: 999px;
-  background: var(--primary-cyan);
-  font-size: 12px;
+  background: var(--color-cyan);
+  font-size: 0.75rem;
   font-weight: 800;
   text-align: center;
   transition: background var(--transition-normal);
@@ -129,29 +129,29 @@
   --cut: 30px;
   padding: 22px 22px 26px;
   border-radius: 14px;
-  background: var(--primary-cyan);
+  background: var(--color-cyan);
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%);
 }
 
 .blog-faq-help-title {
   margin: 0 0 6px;
-  font-size: 17px;
+  font-size: 1.0625rem;
   font-weight: 800;
 }
 
 .blog-faq-help-text {
   margin: 0 0 16px;
-  font-size: 14px;
-  line-height: 21px;
+  font-size: 0.875rem;
+  line-height: 1.3125rem;
 }
 
 /* Busca sem resultado */
 .blog-faq-empty {
   margin: 0;
   padding: 22px 4px;
-  border-top: 1.5px solid var(--text-black);
-  font-size: 16px;
-  line-height: 24px;
+  border-top: 1.5px solid var(--color-text);
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
 
 .blog-faq-empty a {
@@ -166,7 +166,7 @@
 
 @media (max-width: 768px) {
   .blog-faq {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr); /* com texto grande, a coluna não passa da tela */
     gap: 32px;
     padding: 40px 0 80px;
   }
@@ -188,9 +188,9 @@
     width: auto;
     gap: 8px;
     padding: 8px 12px;
-    border: 2px solid var(--text-black);
+    border: 2px solid var(--color-text);
     border-radius: 999px;
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 
   .blog-faq-filter:hover {
@@ -201,10 +201,11 @@
     padding-left: 12px;
     box-shadow: none;
     background: var(--primary-orange);
+    color: var(--color-on-accent);
   }
 
   .blog-faq-filter.is-active .blog-faq-count {
-    background: var(--white);
+    background: var(--color-surface);
   }
 }
 

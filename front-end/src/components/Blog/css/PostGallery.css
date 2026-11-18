@@ -14,7 +14,7 @@
 }
 
 .post-gallery-item {
-  background: var(--light-gray);
+  background: var(--color-gray);
   border-radius: 4px;
   overflow: hidden;
 }

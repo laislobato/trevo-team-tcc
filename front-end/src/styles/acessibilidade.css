@@ -1,0 +1,204 @@
+/**
+ * ARQUIVO: acessibilidade.css
+ * ===========================
+ * O visual de cada opção do menu de acessibilidade.
+ * O menu (components/shared/AccessibilityMenu.jsx) marca atributos na
+ * tag <html>, e as regras abaixo valem para o site inteiro e o painel:
+ *
+ *   data-tema="escuro"         -> cores escuras
+ *   data-contraste="alto"      -> preto, branco e amarelo (vale mais que o tema)
+ *   data-texto="115|130|150"   -> texto maior (tudo em rem acompanha)
+ *   data-links="destacar"      -> links e botões sublinhados
+ *   data-fonte="legivel"       -> fonte Atkinson Hyperlegible
+ *   data-espaco="amplo"        -> mais espaço entre linhas, letras e palavras
+ *   data-movimento="reduzido"  -> sem animações
+ *   data-foco="reforcado"      -> contorno grosso no foco pelo teclado
+ *
+ * As cores do tema claro ficam no globals.css (variáveis --color-*).
+ */
+
+/* ================================================
+   MODO ESCURO
+   ================================================ */
+
+html[data-tema='escuro'] {
+  color-scheme: dark;
+  --color-bg: #0f1714;
+  --color-surface: #18231f;
+  --color-surface-2: #22302b;
+  --color-text: #e9f1ed;
+  --color-text-soft: #a9b8b1;
+  --color-on-text: #0f1714;
+  --color-line: #3b4b45;
+  --color-line-soft: rgba(255, 255, 255, 0.1);
+  --color-gray: #33423c;
+  --color-cyan: #143834;
+  --color-on-dark: #ffffff;
+  --color-on-accent: #000000;
+  --color-tint-green: #1f3317;
+  --color-tint-orange: #3a2219;
+  --color-focus: #d0fffb;
+  --color-dot: rgba(255, 255, 255, 0.35);
+  --color-cyan-glow: rgba(208, 255, 251, 0.1);
+  --color-text-green: #9fd36a;
+  --color-text-strong-green: #a8e07a;
+  --shadow-black: rgba(0, 0, 0, 0.45);
+}
+
+/* ================================================
+   ALTO CONTRASTE (preto, branco e amarelo)
+   ================================================ */
+
+html[data-contraste='alto'] {
+  color-scheme: dark;
+  --color-bg: #000000;
+  --color-surface: #000000;
+  --color-surface-2: #000000;
+  --color-text: #ffffff;
+  --color-text-soft: #ffffff;
+  --color-on-text: #000000;
+  --color-line: #ffffff;
+  --color-line-soft: #ffffff;
+  --color-gray: #000000;
+  --color-cyan: #000000;
+  --color-on-dark: #ffffff;
+  --color-on-accent: #000000;
+  --color-tint-green: #000000;
+  --color-tint-orange: #000000;
+  --color-focus: #ffd400;
+  --color-dot: #ffffff;
+  --color-cyan-glow: transparent;
+  --color-text-green: #ffffff;
+  --color-text-strong-green: #ffd400;
+  --color-highlight: #ffd400; /* amarelo dos links e destaques */
+  --shadow-black: transparent;
+}
+
+/* Links sublinhados em amarelo (menos os cards do painel, que já têm borda) */
+html[data-contraste='alto'] a:not(.admin-stat):not(.admin-shortcut) {
+  text-decoration-line: underline;
+  text-decoration-color: var(--color-highlight);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+/* Campos com borda branca */
+html[data-contraste='alto'] :is(input, textarea, select) {
+  border-color: #ffffff !important;
+}
+
+/* Caixas que ficam pretas no contraste ganham uma borda branca
+   (por dentro, para não mudar o tamanho de nada) */
+html[data-contraste='alto'] :is(
+  .about-card-frame, .blog-error, .post-author-photo, .blog-card-image, .blog-faq-count,
+  .blog-faq-help, .blog-tab, .contact-form, .contact-help-subject, .game-card,
+  .game-character-box, .game-hero-back, .review, .review-avatar, .games-load-error,
+  .showcase-arrow, .showcase-card, .showcase-genre, .post-developer-card,
+  .post-developer-member, .post-gallery-item, .post-nav-card, .project-box
+) {
+  box-shadow: inset 0 0 0 2px #ffffff;
+}
+
+/* Sem sombras borradas: o que importa são as bordas */
+html[data-contraste='alto'] body *:not(svg):not(svg *) {
+  text-shadow: none !important;
+}
+
+/* ================================================
+   LOGO: no fundo escuro, a versão com o círculo ciano
+   (o componente coloca as duas imagens: .logo-light e .logo-dark)
+   ================================================ */
+
+html:not([data-tema='escuro']):not([data-contraste='alto']) .logo-dark,
+html:is([data-tema='escuro'], [data-contraste='alto']) .logo-light {
+  display: none !important;
+}
+
+/* ================================================
+   TAMANHO DO TEXTO
+   Os textos do site estão em rem: acompanham o tamanho da tag <html>.
+   ================================================ */
+
+html[data-texto='115'] {
+  font-size: 115%;
+}
+
+html[data-texto='130'] {
+  font-size: 130%;
+}
+
+html[data-texto='150'] {
+  font-size: 150%;
+}
+
+/* ================================================
+   DESTACAR LINKS
+   ================================================ */
+
+html[data-links='destacar'] :is(a, button:not(:disabled)):not(.a11y-panel *) {
+  text-decoration: underline !important;
+  text-decoration-thickness: 2px !important;
+  text-underline-offset: 0.2em !important;
+}
+
+html[data-links='destacar'] a:not(:has(img, svg)):not(.a11y-panel *) {
+  outline: 1px dashed currentColor;
+  outline-offset: 2px;
+}
+
+/* ================================================
+   FONTE MAIS LEGÍVEL
+   (Atkinson Hyperlegible, baixada só quando a opção é ligada)
+   ================================================ */
+
+html[data-fonte='legivel'] {
+  --font-main: 'Atkinson Hyperlegible', Verdana, Tahoma, 'Segoe UI', sans-serif;
+}
+
+html[data-fonte='legivel'] body,
+html[data-fonte='legivel'] :is(button, input, textarea, select) {
+  font-family: var(--font-main) !important;
+}
+
+/* ================================================
+   MAIS ESPAÇO ENTRE LINHAS, LETRAS E PALAVRAS
+   (valores da WCAG 1.4.12: o texto precisa caber assim)
+   ================================================ */
+
+html[data-espaco='amplo'] body *:not(svg):not(svg *) {
+  line-height: 1.8 !important;
+  letter-spacing: 0.06em !important;
+  word-spacing: 0.16em !important;
+}
+
+html[data-espaco='amplo'] body :is(p, li, dd, blockquote) {
+  margin-bottom: 0.6em;
+}
+
+/* ================================================
+   REDUZIR ANIMAÇÕES
+   (as animações feitas em JavaScript usam prefersReducedMotion())
+   ================================================ */
+
+html[data-movimento='reduzido'] {
+  scroll-behavior: auto !important;
+}
+
+html[data-movimento='reduzido'] *,
+html[data-movimento='reduzido'] *::before,
+html[data-movimento='reduzido'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* ================================================
+   FOCO REFORÇADO
+   ================================================ */
+
+html[data-foco='reforcado'] :focus-visible {
+  outline: 4px solid #ffd400 !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 8px #000000 !important;
+}

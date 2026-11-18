@@ -9,7 +9,7 @@
 .contact-page {
   width: 100%;
   overflow-x: hidden; /* evita rolagem horizontal no celular */
-  background: var(--white);
+  background: var(--color-surface);
 }
 
 /* Texto só para leitores de tela (não aparece na tela) */

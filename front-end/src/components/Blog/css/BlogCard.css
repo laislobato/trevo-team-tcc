@@ -48,7 +48,7 @@
   display: block;
   width: 100%;
   aspect-ratio: 3 / 4;
-  background: var(--light-gray);
+  background: var(--color-gray);
   border-radius: 6px;
   overflow: hidden;
 }
@@ -86,10 +86,10 @@
   position: absolute;
   top: 10px;
   right: 12px;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 700;
-  color: var(--white);
-  border-bottom: 2px solid var(--white);
+  color: var(--color-on-dark);
+  border-bottom: 2px solid var(--color-on-dark);
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
 }
 
@@ -103,9 +103,9 @@
    ================================================ */
 
 .blog-card-title {
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 600;
-  line-height: 30px;
+  line-height: 1.875rem;
   letter-spacing: 1px;
   text-transform: uppercase;
   margin: var(--spacing-sm) 0 6px 0;
@@ -117,15 +117,15 @@
 }
 
 .blog-card-excerpt {
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   letter-spacing: 0.5px;
-  color: #666666;
+  color: var(--color-text-soft);
   margin: 0 0 var(--spacing-md) 0;
 }
 
 .blog-card-more {
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 600;
   letter-spacing: 1px;
   text-decoration: underline;
@@ -159,13 +159,13 @@
   }
 
   .blog-card-title {
-    font-size: 20px;
-    line-height: 26px;
+    font-size: 1.25rem;
+    line-height: 1.625rem;
   }
 }
 
 @media (max-width: 480px) {
   .blog-card-more {
-    font-size: 17px;
+    font-size: 1.0625rem;
   }
 }

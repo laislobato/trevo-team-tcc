@@ -32,12 +32,16 @@
  * Estúdio só vê os posts e jogos dele: quem garante isso é a API.
  *
  * Qualquer outro endereço -> volta para a Home
+ *
+ * Em todas as páginas aparece o menu de acessibilidade (bolinha no canto).
  */
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/Admin/ProtectedRoute'
+import AccessibilityMenu from './components/shared/AccessibilityMenu'
 import './styles/globals.css'
+import './styles/acessibilidade.css'
 
 // Site
 import Home from './pages/Home'
@@ -100,6 +104,9 @@ export default function App() {
           {/* Qualquer rota desconhecida volta para a Home */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+
+        {/* Menu de acessibilidade: em todas as páginas (site, login e painel) */}
+        <AccessibilityMenu />
       </BrowserRouter>
     </AuthProvider>
   )

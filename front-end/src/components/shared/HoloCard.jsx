@@ -34,10 +34,9 @@
 // ===============================================
 
 import { useEffect, useRef } from 'react'
+import { prefersReducedMotion } from '../../services/acessibilidade'
 import './css/HoloCard.css'
 
-const prefersReducedMotion = () =>
-  typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
 // ===============================================
 // COMPONENTE PRINCIPAL

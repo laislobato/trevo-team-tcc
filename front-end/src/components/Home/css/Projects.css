@@ -34,21 +34,21 @@
 
 /* Título principal */
 .projects-title {
-  font-size: 36px;
+  font-size: 2.25rem;
   font-weight: 700;
-  color: var(--text-black);
+  color: var(--color-text);
   margin: 0 0 var(--spacing-md) 0;
-  line-height: 44px;
+  line-height: 2.75rem;
   letter-spacing: 0.5px;
 }
 
 /* Subtítulo */
 .projects-subtitle {
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 400;
-  color: var(--text-black);
+  color: var(--color-text);
   margin: 0;
-  line-height: 29px;
+  line-height: 1.8125rem;
 }
 
 /* ================================================
@@ -92,7 +92,7 @@
   transform: translateX(-50%);
   width: 140px;
   height: 140px;
-  background: var(--text-black);
+  background: var(--color-text);
   border-radius: 50%;
   z-index: 2;
   transition: all 0.3s ease;
@@ -118,7 +118,7 @@
   max-width: 100%;
   
   /* Fundo cinza na maioria */
-  background: var(--light-gray);
+  background: var(--color-gray);
   border-radius: var(--radius-sm);
   
   /* Altura para acomodar conteúdo */
@@ -157,20 +157,20 @@
 
 /* Nome do projeto */
 .project-name {
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: 700;
-  color: var(--text-black);
+  color: var(--color-text);
   margin: 0 0 var(--spacing-sm) 0;
-  line-height: 34px;
+  line-height: 2.125rem;
   letter-spacing: 0.5px;
 }
 
 /* Descrição do projeto */
 .project-description {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 400;
-  color: var(--text-black);
-  line-height: 22px;
+  color: var(--color-text);
+  line-height: 1.375rem;
   margin: 0;
 }
 
@@ -196,10 +196,10 @@
    ================================================ */
 
 .projects-description {
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 400;
-  color: var(--text-black);
-  line-height: 26px;
+  color: var(--color-text);
+  line-height: 1.625rem;
   text-align: center;
   margin: 0;
   max-width: 900px;
@@ -219,12 +219,12 @@
   }
 
   .projects-title {
-    font-size: 28px;
-    line-height: 34px;
+    font-size: 1.75rem;
+    line-height: 2.125rem;
   }
 
   .projects-subtitle {
-    font-size: 20px;
+    font-size: 1.25rem;
   }
 
   .projects-grid {
@@ -251,16 +251,16 @@
   }
 
   .project-name {
-    font-size: 24px;
-    line-height: 30px;
+    font-size: 1.5rem;
+    line-height: 1.875rem;
   }
 
   .project-description {
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
 
   .projects-description {
-    font-size: 16px;
+    font-size: 1rem;
     padding: 0 var(--spacing-md);
   }
 }
@@ -273,12 +273,12 @@
   }
 
   .projects-title {
-    font-size: 24px;
-    line-height: 30px;
+    font-size: 1.5rem;
+    line-height: 1.875rem;
   }
 
   .projects-subtitle {
-    font-size: 18px;
+    font-size: 1.125rem;
   }
 
   /* Em mobile, sempre 1 coluna */
@@ -307,14 +307,14 @@
   }
 
   .project-name {
-    font-size: 22px;
-    line-height: 28px;
+    font-size: 1.375rem;
+    line-height: 1.75rem;
     margin-bottom: var(--spacing-xs);
   }
 
   .project-description {
-    font-size: 14px;
-    line-height: 20px;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
   }
 
   .project-footer-bar {
@@ -322,8 +322,8 @@
   }
 
   .projects-description {
-    font-size: 15px;
-    line-height: 22px;
+    font-size: 0.9375rem;
+    line-height: 1.375rem;
     padding: 0 var(--spacing-sm);
   }
 }

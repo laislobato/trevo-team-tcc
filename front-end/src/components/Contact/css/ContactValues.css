@@ -14,7 +14,7 @@
 }
 
 .contact-values-title {
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: 800;
   letter-spacing: 1px;
   margin: 0 0 56px 0;
@@ -69,7 +69,7 @@
 }
 
 .contact-value-label {
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 500;
   letter-spacing: 1px;
 }
@@ -81,7 +81,7 @@
   }
 
   .contact-value-label {
-    font-size: 20px;
+    font-size: 1.25rem;
   }
 }
 
@@ -101,6 +101,6 @@
   }
 
   .contact-value-label {
-    font-size: 17px;
+    font-size: 1.0625rem;
   }
 }

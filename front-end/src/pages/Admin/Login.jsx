@@ -12,6 +12,7 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import logo from '../../assets/logo.png'
+import logoDark from '../../assets/logo_inverted.png' // modo escuro e alto contraste
 import { Alert, Field } from '../../components/Admin/AdminUI'
 import { useAuth } from '../../context/AuthContext'
 import '../../styles/globals.css'
@@ -59,7 +60,8 @@ export default function Login() {
         <span className="login-star" aria-hidden="true"></span>
 
         <Link to="/" className="login-brand" aria-label="Trevo Team: voltar para o site">
-          <img src={logo} alt="" className="login-logo" />
+          <img src={logo} alt="" className="login-logo logo-light" />
+          <img src={logoDark} alt="" className="login-logo logo-dark" />
         </Link>
         <h1 className="login-title">Painel da equipe</h1>
         <p className="login-text">Entre com o e-mail e a senha do seu login.</p>

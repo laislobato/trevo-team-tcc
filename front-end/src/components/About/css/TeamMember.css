@@ -87,7 +87,7 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  background: var(--white);
+  background: #ffffff; /* desenho: não muda com o tema */
 }
 
 .team-member-silhouette-head {
@@ -110,10 +110,10 @@
   bottom: -18px;
   left: 50%;
   transform: translateX(-50%) rotate(-4deg);
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 800;
   letter-spacing: 1px;
-  color: var(--text-black);
+  color: var(--color-on-accent);
   background: var(--primary-orange);
   border: 2px solid var(--card-shadow);
   padding: 6px 14px;
@@ -139,34 +139,34 @@
 }
 
 .team-member-role {
-  font-size: 32px;
+  font-size: 2rem;
   font-weight: 700;
-  line-height: 40px;
-  color: var(--text-black);
+  line-height: 2.5rem;
+  color: var(--color-text);
   margin: 0;
 }
 
 .team-member-name {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
-  color: var(--text-black);
+  color: var(--color-text);
   margin: 0;
 }
 
 /* Cargo e função, embaixo do nome real */
 .team-member-job {
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: #3d7a1f;
+  color: var(--color-text-green);
   margin: 0;
 }
 
 .team-member-text {
-  font-size: 14px;
-  line-height: 22px;
-  color: var(--text-black);
+  font-size: 0.875rem;
+  line-height: 1.375rem;
+  color: var(--color-text);
   max-width: 280px;
   margin: var(--spacing-sm) 0 0 0;
 }
@@ -208,7 +208,7 @@
 }
 
 .team-member-circle:focus-visible {
-  outline: 3px solid var(--text-black);
+  outline: 3px solid var(--color-text);
   outline-offset: 3px;
 }
 
@@ -245,8 +245,8 @@
   }
 
   .team-member-role {
-    font-size: 26px;
-    line-height: 32px;
+    font-size: 1.625rem;
+    line-height: 2rem;
   }
 }
 
@@ -274,7 +274,7 @@
   }
 
   .team-member-text {
-    font-size: 13px;
-    line-height: 20px;
+    font-size: 0.8125rem;
+    line-height: 1.25rem;
   }
 }

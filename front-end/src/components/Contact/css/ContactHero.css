@@ -50,17 +50,17 @@
 
 .contact-hero-title {
   margin: 0;
-  font-size: 52px;
-  line-height: 56px;
+  font-size: 3.25rem;
+  line-height: 3.5rem;
   font-weight: 800;
-  color: var(--text-black);
+  color: var(--color-text);
 }
 
 /* Subtítulo laranja colado no título (como no Sobre) */
 .contact-hero-subtitle {
   margin: 0 0 22px;
-  font-size: 36px;
-  line-height: 40px;
+  font-size: 2.25rem;
+  line-height: 2.5rem;
   font-weight: 800;
   color: var(--primary-orange);
 }
@@ -68,9 +68,9 @@
 .contact-hero-text {
   max-width: 520px;
   margin: 0 auto;
-  font-size: 18px;
-  line-height: 28px;
-  color: var(--text-black);
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: var(--color-text);
 }
 
 /* ================================================
@@ -104,19 +104,19 @@
   }
 
   .contact-hero-title {
-    font-size: 34px;
-    line-height: 38px;
+    font-size: 2.125rem;
+    line-height: 2.375rem;
   }
 
   .contact-hero-subtitle {
-    font-size: 22px;
-    line-height: 26px;
+    font-size: 1.375rem;
+    line-height: 1.625rem;
     margin-bottom: 16px;
   }
 
   .contact-hero-text {
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 1rem;
+    line-height: 1.5rem;
   }
 
   /* Estrelas menores e encostadas nas bordas */

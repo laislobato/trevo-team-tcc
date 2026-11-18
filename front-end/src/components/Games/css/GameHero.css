@@ -99,10 +99,10 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 700;
-  color: var(--text-black);
-  background: var(--primary-cyan);
+  color: var(--color-text);
+  background: var(--color-cyan);
   border-radius: var(--radius-md);
   padding: 6px 14px 6px 10px;
   margin-bottom: var(--spacing-sm);
@@ -118,10 +118,11 @@
   background: var(--primary-orange);
   transform: translateX(-3px);
   opacity: 1;
+  color: var(--color-on-accent);
 }
 
 .game-hero-back:focus-visible {
-  outline: 3px solid var(--text-black);
+  outline: 3px solid var(--color-text);
   outline-offset: 2px;
 }
 
@@ -130,24 +131,24 @@
    ================================================ */
 
 .game-hero-title {
-  font-size: 64px;
+  font-size: 4rem;
   font-weight: 700;
   line-height: 1;
-  color: var(--text-black);
+  color: var(--color-text);
   margin: 0;
 }
 
 .game-hero-subtitle {
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 700;
-  color: var(--text-black);
+  color: var(--color-text);
   margin: 6px 0 0 0;
 }
 
 .game-hero-text {
-  font-size: 15px;
-  line-height: 24px;
-  color: var(--text-black);
+  font-size: 0.9375rem;
+  line-height: 1.5rem;
+  color: var(--color-text);
   margin: var(--spacing-md) 0;
 }
 
@@ -163,14 +164,14 @@
 }
 
 .game-hero-info-label {
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 700;
-  color: var(--text-black);
+  color: var(--color-text);
 }
 
 .game-hero-info-value {
-  font-size: 15px;
-  color: #777777;
+  font-size: 0.9375rem;
+  color: var(--color-text-soft);
   margin: 2px 0 0 0;
 }
 
@@ -196,7 +197,7 @@
   }
 
   .game-hero-title {
-    font-size: 48px;
+    font-size: 3rem;
   }
 }
 
@@ -206,7 +207,7 @@
   }
 
   .game-hero-title {
-    font-size: 40px;
+    font-size: 2.5rem;
   }
 
   .game-hero-info {

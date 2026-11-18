@@ -27,6 +27,7 @@ import { Fragment, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 // ⚠️ Confira a extensão do arquivo na pasta assets (.png, .svg ou .webp)
 import logoFull from '../../assets/logo.png'
+import logoDark from '../../assets/logo_inverted.png' // versão para o modo escuro e o alto contraste
 import SocialIcon from './SocialIcon'
 import './css/Header.css'
 
@@ -61,7 +62,8 @@ export default function Header({ flat = false }) {
         {/* 🔝 LOGO NO CÍRCULO (leva para a Home) + TRACINHOS (só no celular) */}
         <div className="header-brand">
           <Link to="/" className="header-logo" onClick={closeMenu} aria-label="Trevo Team: página inicial">
-            <img src={logoFull} alt="Trevo Team" className="header-logo-img" />
+            <img src={logoFull} alt="Trevo Team" className="header-logo-img logo-light" />
+            <img src={logoDark} alt="Trevo Team" className="header-logo-img logo-dark" />
           </Link>
 
           <button

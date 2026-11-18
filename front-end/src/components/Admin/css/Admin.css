@@ -44,6 +44,37 @@
   --adm-warn-bg: #fde2d7;
   --adm-warn: #9a3d16;
 
+  /* tons claros de apoio (bordas no hover, fundos dos avisos...) */
+  --adm-line-hover: #aab5b0;
+  --adm-icon: #3d4744;
+  --adm-danger-bg: #fdecea;
+  --adm-danger-line: #efc3bf;
+  --adm-track: #d6dedb;
+  --adm-hover-bg: #f1faf6;
+  --adm-dash: #c4cfca;
+  --adm-card-hover: #c3d0cb;
+  --adm-ghost-line: #c9d0cd;
+  --adm-soft-hover: #e4e9e7;
+  --adm-placeholder: #8a9590;
+  --adm-error-bg: #fffafa;
+  --adm-zone: #fbfcfc;
+  --adm-checker: #eef1f0;
+  --adm-row-hover: #f7faf9;
+  --adm-veil: rgba(255, 255, 255, 0.82);
+  --adm-thumb-a: #e6f7f5;
+  --adm-thumb-b: #e8f2dc;
+  --adm-tint-green: #f1f8e9;
+  --adm-ok-alert-bg: #eef8e6;
+  --adm-ok-alert-line: #cfe8b8;
+  --adm-ok-alert-text: #23500b;
+  --adm-error-alert-line: #f5c2bd;
+  --adm-error-alert-text: #8c1d17;
+  --adm-info-alert-bg: #e9f7f6;
+  --adm-info-alert-line: #bde9e5;
+  --adm-info-alert-text: #0b5d57;
+  --adm-trevo-alert-line: #d6ebc0;
+  --adm-trevo-alert-text: #2f4f12;
+
   --adm-side-w: 252px;
   --adm-top-h: 64px;
   --adm-radius: 14px;
@@ -52,6 +83,135 @@
   font-size: 1rem;
   line-height: 1.5;
   color: var(--adm-text);
+}
+
+/* ---------- Modo escuro (menu de acessibilidade) ---------- */
+
+html[data-tema='escuro'] :is(.admin, .login-page) {
+  --adm-bg: #0f1714;
+  --adm-surface: #18231f;
+  --adm-soft: #22302b;
+  --adm-soft-2: #1c2824;
+  --adm-line: #31413b;
+  --adm-input-line: #46584f;
+  --adm-text: #e9f1ed;
+  --adm-muted: #a3b2ab;
+  --adm-dark: #002a1d;
+  --adm-link: #7fd8b0;
+  --adm-danger: #ff8a80;
+  --adm-ring: rgba(127, 216, 176, 0.35);
+  --adm-ok-bg: #22401a;
+  --adm-ok: #b5e48c;
+  --adm-draft-bg: #2a3531;
+  --adm-draft: #ccd6d2;
+  --adm-sched-bg: #123a36;
+  --adm-sched: #9ff2ea;
+  --adm-warn-bg: #3d2419;
+  --adm-warn: #ffb08f;
+  --adm-line-hover: #5d6f68;
+  --adm-icon: #c4cfca;
+  --adm-danger-bg: #3a1d1b;
+  --adm-danger-line: #6b302b;
+  --adm-track: #33423c;
+  --adm-hover-bg: #1d332b;
+  --adm-dash: #46584f;
+  --adm-card-hover: #46584f;
+  --adm-ghost-line: #46584f;
+  --adm-soft-hover: #2c3c36;
+  --adm-placeholder: #7e8d87;
+  --adm-error-bg: #2a1716;
+  --adm-zone: #141e1b;
+  --adm-checker: #22302b;
+  --adm-row-hover: #1d2925;
+  --adm-veil: rgba(15, 23, 20, 0.82);
+  --adm-thumb-a: #173a36;
+  --adm-thumb-b: #22361a;
+  --adm-tint-green: #1c3015;
+  --adm-ok-alert-bg: #1c3015;
+  --adm-ok-alert-line: #35552a;
+  --adm-ok-alert-text: #c8eda6;
+  --adm-error-alert-line: #6b302b;
+  --adm-error-alert-text: #ffb4ab;
+  --adm-info-alert-bg: #12302d;
+  --adm-info-alert-line: #24534e;
+  --adm-info-alert-text: #a8eee7;
+  --adm-trevo-alert-line: #35552a;
+  --adm-trevo-alert-text: #c8eda6;
+}
+
+/* ---------- Alto contraste: preto, branco e amarelo ---------- */
+
+html[data-contraste='alto'] :is(.admin, .login-page) {
+  --adm-bg: #000000;
+  --adm-surface: #000000;
+  --adm-soft: #000000;
+  --adm-soft-2: #000000;
+  --adm-line: #ffffff;
+  --adm-input-line: #ffffff;
+  --adm-text: #ffffff;
+  --adm-muted: #ffffff;
+  --adm-dark: #000000;
+  --adm-on-dark: #ffffff;
+  --adm-link: #ffd400;
+  --adm-danger: #ff9e9e;
+  --adm-cyan: #ffd400;
+  --adm-ring: rgba(255, 212, 0, 0.6);
+  --adm-ok-bg: #000000;
+  --adm-ok: #ffffff;
+  --adm-draft-bg: #000000;
+  --adm-draft: #ffffff;
+  --adm-sched-bg: #000000;
+  --adm-sched: #ffffff;
+  --adm-warn-bg: #000000;
+  --adm-warn: #ffd400;
+  --adm-line-hover: #ffd400;
+  --adm-icon: #ffffff;
+  --adm-danger-bg: #000000;
+  --adm-danger-line: #ff9e9e;
+  --adm-track: #555555;
+  --adm-hover-bg: #000000;
+  --adm-dash: #ffffff;
+  --adm-card-hover: #ffd400;
+  --adm-ghost-line: #ffffff;
+  --adm-soft-hover: #000000;
+  --adm-placeholder: #cccccc;
+  --adm-error-bg: #000000;
+  --adm-zone: #000000;
+  --adm-checker: #000000;
+  --adm-row-hover: #000000;
+  --adm-veil: rgba(0, 0, 0, 0.85);
+  --adm-thumb-a: #000000;
+  --adm-thumb-b: #000000;
+  --adm-tint-green: #000000;
+  --adm-ok-alert-bg: #000000;
+  --adm-ok-alert-line: #ffffff;
+  --adm-ok-alert-text: #ffffff;
+  --adm-error-alert-line: #ff9e9e;
+  --adm-error-alert-text: #ffffff;
+  --adm-info-alert-bg: #000000;
+  --adm-info-alert-line: #ffffff;
+  --adm-info-alert-text: #ffffff;
+  --adm-trevo-alert-line: #ffffff;
+  --adm-trevo-alert-text: #ffffff;
+}
+
+/* No contraste, o menu lateral ganha borda e as etiquetas, contorno */
+html[data-contraste='alto'] .admin-side {
+  border-right: 2px solid #ffffff;
+}
+
+html[data-contraste='alto'] :is(.admin-badge, .admin-nav-count, .admin-role, .admin-brand-tag) {
+  box-shadow: inset 0 0 0 1.5px currentColor;
+}
+
+html[data-contraste='alto'] .admin-nav-item.active {
+  background: transparent;
+  color: #ffd400;
+  box-shadow: inset 0 0 0 2px #ffd400;
+}
+
+html[data-contraste='alto'] .admin-savebar {
+  border: 2px solid #ffffff;
 }
 
 /* Texto só para leitores de tela (não aparece na tela) */
@@ -667,7 +827,7 @@
   padding: 18px 0;
   font-family: var(--font-main);
   font-size: 0.9375rem;
-  color: var(--adm-muted, #5d6864);
+  color: var(--adm-muted, var(--color-text-soft));
 }
 
 .admin-loading::before {
@@ -675,8 +835,8 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  border: 2.5px solid #d6dedb;
-  border-top-color: #00704f;
+  border: 2.5px solid var(--adm-track, var(--color-line));
+  border-top-color: var(--adm-link, var(--color-focus));
   animation: admin-spin 0.8s linear infinite;
 }
 
@@ -684,7 +844,7 @@
 body > #root > .admin-loading {
   justify-content: center;
   min-height: 100vh;
-  background: #f3f5f4;
+  background: var(--color-bg);
 }
 
 @keyframes admin-spin {
@@ -729,13 +889,13 @@ body > #root > .admin-loading {
 
 .admin-btn--ghost {
   background: var(--adm-surface);
-  border-color: #c9d0cd;
+  border-color: var(--adm-ghost-line);
   color: var(--adm-text);
 }
 
 .admin-btn--ghost:hover:not(:disabled) {
   background: var(--adm-soft-2);
-  border-color: #aab5b0;
+  border-color: var(--adm-line-hover);
 }
 
 .admin-btn--soft {
@@ -744,17 +904,17 @@ body > #root > .admin-loading {
 }
 
 .admin-btn--soft:hover:not(:disabled) {
-  background: #e4e9e7;
+  background: var(--adm-soft-hover);
 }
 
 .admin-btn--danger {
   background: transparent;
   color: var(--adm-danger);
-  border-color: #efc3bf;
+  border-color: var(--adm-danger-line);
 }
 
 .admin-btn--danger:hover:not(:disabled) {
-  background: #fdecea;
+  background: var(--adm-danger-bg);
 }
 
 .admin-btn--on-dark {
@@ -788,7 +948,7 @@ body > #root > .admin-loading {
   height: 34px;
   border-radius: 8px;
   background: transparent;
-  color: #3d4744;
+  color: var(--adm-icon);
   font-size: 0.9375rem;
   cursor: pointer;
   transition: background-color 0.15s ease, color 0.15s ease;
@@ -800,7 +960,7 @@ body > #root > .admin-loading {
 }
 
 .admin-icon-btn--danger:hover:not(:disabled) {
-  background: #fdecea;
+  background: var(--adm-danger-bg);
   color: var(--adm-danger);
 }
 
@@ -842,7 +1002,7 @@ body > #root > .admin-loading {
   gap: 8px;
   width: 100%;
   padding: 12px;
-  border: 1.5px dashed #bfcac5;
+  border: 1.5px dashed var(--adm-dash);
   border-radius: 10px;
   background: transparent;
   font-family: var(--font-main);
@@ -854,7 +1014,7 @@ body > #root > .admin-loading {
 }
 
 .admin-add:hover {
-  background: #f1faf6;
+  background: var(--adm-hover-bg);
   border-color: var(--adm-link);
 }
 
@@ -932,27 +1092,27 @@ body > #root > .admin-loading {
 }
 
 .admin-alert--ok {
-  background: #eef8e6;
-  border-color: #cfe8b8;
-  color: #23500b;
+  background: var(--adm-ok-alert-bg);
+  border-color: var(--adm-ok-alert-line);
+  color: var(--adm-ok-alert-text);
 }
 
 .admin-alert--error {
-  background: #fdecea;
-  border-color: #f5c2bd;
-  color: #8c1d17;
+  background: var(--adm-danger-bg);
+  border-color: var(--adm-error-alert-line);
+  color: var(--adm-error-alert-text);
 }
 
 .admin-alert--info {
-  background: #e9f7f6;
-  border-color: #bde9e5;
-  color: #0b5d57;
+  background: var(--adm-info-alert-bg);
+  border-color: var(--adm-info-alert-line);
+  color: var(--adm-info-alert-text);
 }
 
 .admin-alert--trevo {
-  background: #f1f8e9;
-  border-color: #d6ebc0;
-  color: #2f4f12;
+  background: var(--adm-tint-green);
+  border-color: var(--adm-trevo-alert-line);
+  color: var(--adm-trevo-alert-text);
 }
 
 /* ---------- Lista vazia ---------- */
@@ -1001,7 +1161,7 @@ body > #root > .admin-loading {
   height: 40px;
   overflow: hidden;
   border-radius: 6px;
-  background: linear-gradient(135deg, #e6f7f5, #e8f2dc);
+  background: linear-gradient(135deg, var(--adm-thumb-a), var(--adm-thumb-b));
 }
 
 .admin-thumb img {
@@ -1083,11 +1243,11 @@ body > #root > .admin-loading {
 }
 
 :where(.admin, .login-page) :is(input, select, textarea)::placeholder {
-  color: #8a9590;
+  color: var(--adm-placeholder);
 }
 
 :where(.admin, .login-page) :is(input, select, textarea):not(:where([type='checkbox'], [type='radio'], [type='file'])):hover {
-  border-color: #aab5b0;
+  border-color: var(--adm-line-hover);
 }
 
 :where(.admin, .login-page) :is(input, select, textarea):not(:where([type='checkbox'], [type='radio'], [type='file'])):focus {
@@ -1113,7 +1273,7 @@ body > #root > .admin-loading {
 
 .admin .has-error :is(input, select, textarea) {
   border-color: var(--adm-danger);
-  background-color: #fffafa;
+  background-color: var(--adm-error-bg);
 }
 
 .admin input[type='checkbox'],
@@ -1168,7 +1328,7 @@ body > #root > .admin-loading {
 }
 
 .admin-swatch:hover {
-  border-color: #aab5b0;
+  border-color: var(--adm-line-hover);
 }
 
 .admin-swatch.is-selected {
@@ -1219,12 +1379,12 @@ body > #root > .admin-loading {
 }
 
 .admin-check:hover {
-  border-color: #aab5b0;
+  border-color: var(--adm-line-hover);
 }
 
 .admin-check:has(input:checked) {
   border-color: var(--primary-green);
-  background: #f1f8e9;
+  background: var(--adm-tint-green);
 }
 
 .admin-check input {
@@ -1252,16 +1412,16 @@ body > #root > .admin-loading {
   justify-content: center;
   height: 140px;
   overflow: hidden;
-  border: 2px dashed #c4cfca;
+  border: 2px dashed var(--adm-dash);
   border-radius: 10px;
-  background: #fbfcfc;
+  background: var(--adm-zone);
   transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
 .admin-upload-zone:hover,
 .admin-upload.is-dragging .admin-upload-zone {
   border-color: var(--adm-link);
-  background: #f1faf6;
+  background: var(--adm-hover-bg);
 }
 
 .admin-upload-zone:has(input:focus-visible) {
@@ -1314,7 +1474,7 @@ body > #root > .admin-loading {
 
 /* Logotipos e PNG recortado: imagem inteira, com xadrez atrás */
 .admin-upload--contain.is-filled .admin-upload-zone {
-  background: repeating-conic-gradient(#eef1f0 0 25%, #ffffff 0 50%) 50% / 16px 16px;
+  background: repeating-conic-gradient(var(--adm-checker) 0 25%, #ffffff 0 50%) 50% / 16px 16px;
 }
 
 .admin-upload--contain .admin-upload-img {
@@ -1330,7 +1490,7 @@ body > #root > .admin-loading {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.82);
+  background: var(--adm-veil);
   font-size: 0.8125rem;
   font-weight: 700;
 }
@@ -1340,7 +1500,7 @@ body > #root > .admin-loading {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  border: 2.5px solid #d6dedb;
+  border: 2.5px solid var(--adm-track);
   border-top-color: var(--adm-link);
   animation: admin-spin 0.8s linear infinite;
 }
@@ -1381,7 +1541,7 @@ body > #root > .admin-loading {
 }
 
 a.admin-stat:hover {
-  border-color: #c3d0cb;
+  border-color: var(--adm-card-hover);
   box-shadow: 0 6px 16px rgba(0, 50, 35, 0.07);
 }
 
@@ -1496,7 +1656,7 @@ a.admin-stat:hover {
   height: 34px;
   border-radius: 8px;
   background: var(--adm-soft);
-  color: #3d4744;
+  color: var(--adm-icon);
   font-size: 0.9375rem;
   transition: background-color 0.15s ease, color 0.15s ease;
 }
@@ -1558,7 +1718,7 @@ a.admin-stat:hover {
 }
 
 .admin-shortcut:hover {
-  border-color: #c3d0cb;
+  border-color: var(--adm-card-hover);
   background: var(--adm-soft-2);
 }
 
@@ -1640,7 +1800,7 @@ a.admin-stat:hover {
   font-family: var(--font-main);
   font-size: 0.84375rem;
   font-weight: 700;
-  color: #3d4744;
+  color: var(--adm-icon);
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
@@ -1701,7 +1861,7 @@ a.admin-stat:hover {
 }
 
 .admin-table tbody tr:hover {
-  background: #f7faf9;
+  background: var(--adm-row-hover);
 }
 
 .admin-cell-main {
@@ -1883,7 +2043,7 @@ a.admin-stat:hover {
   font-size: 0.8125rem;
   line-height: 1.45;
   background: var(--adm-soft);
-  color: #3d4744;
+  color: var(--adm-icon);
 }
 
 .admin-note svg {
@@ -1941,7 +2101,7 @@ a.admin-stat:hover {
   height: 150px;
   overflow: hidden;
   border-radius: 10px;
-  background: linear-gradient(135deg, #e6f7f5, #e8f2dc);
+  background: linear-gradient(135deg, var(--adm-thumb-a), var(--adm-thumb-b));
   font-size: 0.8125rem;
   color: var(--adm-muted);
 }
@@ -2324,7 +2484,7 @@ a.admin-stat:hover {
   gap: 10px;
   align-items: start;
   padding: 14px;
-  border: 1.5px dashed #c4cfca;
+  border: 1.5px dashed var(--adm-dash);
   border-radius: 10px;
 }
 
@@ -2345,6 +2505,7 @@ a.admin-stat:hover {
   display: grid;
   place-items: center;
   padding: 32px 16px;
+  overflow-x: clip; /* a estrela do card não cria rolagem para o lado no celular */
   background:
     radial-gradient(circle at 15% 20%, rgba(140, 199, 79, 0.25), transparent 40%),
     radial-gradient(circle at 85% 85%, rgba(208, 255, 251, 0.18), transparent 45%),

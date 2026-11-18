@@ -35,6 +35,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../../services/api'
+import { prefersReducedMotion } from '../../services/acessibilidade'
 import './css/Hero.css'
 
 const DEFAULT_BANNERS = [
@@ -51,9 +52,6 @@ const LOADING_BANNERS = [{ image: '', alt: 'Carregando banners', link: '' }]
 
 const AUTOPLAY_MS = 6000
 
-// true se a pessoa pediu para reduzir animações no sistema
-const prefersReducedMotion = () =>
-  typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
 export default function Hero({ page, banners: fallback = DEFAULT_BANNERS, label = 'Destaques da Trevo Team' }) {
   // Banners do painel: null = carregando | [] = nenhum (usa a lista reserva)
@@ -88,7 +86,9 @@ export default function Hero({ page, banners: fallback = DEFAULT_BANNERS, label 
   // Troca automática
   useEffect(() => {
     if (paused || total < 2 || prefersReducedMotion()) return
-    const timer = setTimeout(() => setCurrent((c) => (c + 1) % total), AUTOPLAY_MS)
+    const timer = setTimeout(() => {
+      if (!prefersReducedMotion()) setCurrent((c) => (c + 1) % total) // a opção pode ter sido ligada agora
+    }, AUTOPLAY_MS)
     return () => clearTimeout(timer)
   }, [current, paused, total])
 

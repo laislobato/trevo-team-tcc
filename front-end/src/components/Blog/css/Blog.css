@@ -12,7 +12,7 @@
 .blog-page {
   width: 100%;
   overflow-x: hidden; /* evita rolagem horizontal no celular */
-  background: var(--white);
+  background: var(--color-surface);
 }
 
 /* Texto só para leitores de tela (não aparece na tela) */
@@ -35,7 +35,7 @@
 .blog-banner {
   width: 100%;
   height: 460px; /* o cabeçalho flutua por cima dos primeiros ~75px */
-  background: var(--primary-cyan);
+  background: var(--color-cyan);
   border-radius: 0 0 8px 8px; /* começa no topo da tela */
   overflow: hidden;
 }
@@ -77,8 +77,8 @@
 .blog-leaf {
   width: 30px;
   height: 22px;
-  border: 2px solid var(--text-black);
-  background: var(--white);
+  border: 2px solid var(--color-text);
+  background: var(--color-surface);
   border-radius: 0 100% 0 100%;
   flex-shrink: 0;
 }
@@ -88,10 +88,10 @@
 }
 
 .blog-heading-title {
-  font-size: 32px;
+  font-size: 2rem;
   font-weight: 700;
-  line-height: 38px;
-  color: var(--text-black);
+  line-height: 2.375rem;
+  color: var(--color-text);
 }
 
 /* ================================================
@@ -109,14 +109,14 @@
 
 .blog-empty {
   text-align: center;
-  font-size: 16px;
-  color: #666666;
+  font-size: 1rem;
+  color: var(--color-text-soft);
 }
 
 /* Mensagem de erro ao carregar (ex.: servidor desligado) */
 .blog-error {
-  color: var(--text-black);
-  background: var(--primary-cyan);
+  color: var(--color-text);
+  background: var(--color-cyan);
   border-left: 6px solid var(--primary-orange);
   border-radius: 8px;
   padding: var(--spacing-sm);
@@ -130,12 +130,12 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--text-black);
+  color: var(--color-text);
 }
 
 .post-author-photo {
   border-radius: 50%;
-  background: var(--light-gray);
+  background: var(--color-gray);
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -151,7 +151,7 @@
 }
 
 .post-author-date {
-  color: #666666;
+  color: var(--color-text-soft);
 }
 
 /* Tamanho pequeno: lista do blog */
@@ -161,13 +161,13 @@
 }
 
 .post-author--small .post-author-name {
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 700;
 }
 
 .post-author--small .post-author-dot,
 .post-author--small .post-author-date {
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 /* Tamanho grande: página do post */
@@ -177,13 +177,13 @@
 }
 
 .post-author--large .post-author-name {
-  font-size: 20px;
+  font-size: 1.25rem;
   letter-spacing: 0.5px;
 }
 
 .post-author--large .post-author-dot,
 .post-author--large .post-author-date {
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 /* ================================================
@@ -202,17 +202,17 @@
 }
 
 .post-type {
-  font-size: 22px;
+  font-size: 1.375rem;
   font-weight: 400;
-  color: var(--text-black);
+  color: var(--color-text);
   margin: 0;
 }
 
 .post-title {
-  font-size: 32px;
+  font-size: 2rem;
   font-weight: 700;
-  line-height: 38px;
-  color: var(--text-black);
+  line-height: 2.375rem;
+  color: var(--color-text);
   margin: 4px 0 0 0;
 }
 
@@ -221,16 +221,16 @@
 }
 
 .post-subtitle {
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 700;
-  color: var(--text-black);
+  color: var(--color-text);
   margin: 0 0 var(--spacing-sm) 0;
 }
 
 .post-body p {
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--text-black);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: var(--color-text);
   margin: 0 0 var(--spacing-sm) 0;
 }
 
@@ -238,7 +238,7 @@
 .post-divider {
   width: 130px;
   height: 3px;
-  background: var(--text-black);
+  background: var(--color-text);
   border-radius: 2px;
   margin: var(--spacing-lg) auto;
 }
@@ -267,12 +267,12 @@
 
   .blog-heading-title,
   .post-title {
-    font-size: 26px;
-    line-height: 32px;
+    font-size: 1.625rem;
+    line-height: 2rem;
   }
 
   .post-type {
-    font-size: 18px;
+    font-size: 1.125rem;
   }
 }
 
@@ -290,11 +290,11 @@
 
   .blog-heading-title,
   .post-title {
-    font-size: 22px;
-    line-height: 28px;
+    font-size: 1.375rem;
+    line-height: 1.75rem;
   }
 
   .post-author--large .post-author-name {
-    font-size: 17px;
+    font-size: 1.0625rem;
   }
 }

@@ -30,6 +30,7 @@
 // ===============================================
 
 import { useEffect, useId, useRef, useState } from 'react'
+import { onSettingsChange } from '../../services/acessibilidade'
 import './css/FaqList.css'
 
 // ===============================================
@@ -73,7 +74,15 @@ function useReservedHeight(ref) {
     measure()
     const observer = new ResizeObserver(measure)
     observer.observe(list)
-    return () => observer.disconnect()
+    // Mudou o tamanho do texto ou o espaçamento (menu de acessibilidade): mede do zero
+    const stopListening = onSettingsChange(() => {
+      lastWidth.current = 0
+      requestAnimationFrame(measure)
+    })
+    return () => {
+      observer.disconnect()
+      stopListening()
+    }
   }, [ref])
 
   return minHeight
