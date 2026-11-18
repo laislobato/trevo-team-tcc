@@ -52,7 +52,7 @@ import {
 import logo from '../../assets/logo_inverted.png'
 import { useAuth } from '../../context/AuthContext'
 import { api } from '../../services/api'
-import { avatarName, initials } from './adminHelpers'
+import { avatarName, initials } from './AdminHelpers'
 import './css/Admin.css'
 
 const LEAVE_TEXT = 'Você tem alterações que ainda não foram salvas. Sair mesmo assim?'
