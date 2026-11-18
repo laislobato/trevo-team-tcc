@@ -1,0 +1,110 @@
+/**
+ * ESTILOS: ContactDirect
+ * ======================
+ * Linha centralizada com e-mail, prazo e redes, separados por "|"
+ * (o mesmo tracinho do cabeçalho). No celular, um embaixo do outro.
+ */
+
+.contact-direct {
+  list-style: none;
+  margin: 40px 0 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.contact-direct li {
+  display: flex;
+  align-items: center;
+}
+
+.contact-direct-link,
+.contact-direct-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-black);
+}
+
+.contact-direct-link svg,
+.contact-direct-text svg {
+  font-size: 18px;
+}
+
+.contact-direct-link:hover {
+  text-decoration: underline;
+  opacity: 1;
+}
+
+/* Tracinho "|" entre os itens */
+.contact-direct-separator {
+  width: 1.5px;
+  height: 18px;
+  background: var(--text-black);
+  opacity: 0.7;
+}
+
+/* Bolinhas pretas com o ícone branco */
+.contact-direct-socials {
+  display: flex;
+  gap: 8px;
+}
+
+.contact-direct-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--text-black);
+  color: var(--white);
+  transition: transform var(--transition-normal);
+}
+
+.contact-direct-social svg {
+  width: 50%;
+  height: 50%;
+}
+
+.contact-direct-social:hover {
+  transform: translateY(-2px);
+  opacity: 1;
+}
+
+.contact-direct-link:focus-visible,
+.contact-direct-social:focus-visible {
+  outline: 3px solid var(--text-black);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.contact-direct-social:focus-visible {
+  border-radius: 50%;
+}
+
+/* ================================================
+   CELULAR (até 768px): um embaixo do outro, sem os "|"
+   ================================================ */
+
+@media (max-width: 768px) {
+  .contact-direct {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .contact-direct-separator {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-direct-social {
+    transition: none;
+  }
+}

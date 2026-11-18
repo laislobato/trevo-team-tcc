@@ -1,109 +1,156 @@
 /**
  * ESTILOS: ContactForm
  * ====================
- * Campos laranja (como no protótipo), com texto preto.
- * O foco do teclado aparece como borda preta.
+ * Card ciano centralizado, com o canto de baixo à direita cortado
+ * (o mesmo corte do card da vitrine "Nossos Projetos" da Home).
+ *
+ * --cut: tamanho do canto cortado.
+ *
+ * O fundo muda para o tom do assunto escolhido (contact-form--green,
+ * --cyan ou --orange), com uma transição suave.
  */
 
 .contact-form {
+  --cut: 48px;
+  width: min(760px, 100%);
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 36px 40px 40px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
+  background: var(--primary-cyan);
+  border-radius: 16px;
+  transition: background-color 0.4s ease;
+  /* canto de baixo à direita cortado em diagonal */
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%);
 }
 
+/* Tom do assunto escolhido (versões claras das cores do site) */
+.contact-form--green { background: #e3f3d2; }
+.contact-form--cyan { background: var(--primary-cyan); }
+.contact-form--orange { background: #fde2d7; }
+
+/* Nome e E-mail lado a lado */
 .contact-form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-sm);
+  gap: 14px;
 }
 
+/* Campo: nome do campo em cima, caixa embaixo */
 .contact-form-field {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 700;
 }
 
-/* Inputs, select e textarea com o mesmo visual */
 .contact-form-field input,
-.contact-form-field select,
 .contact-form-field textarea {
   width: 100%;
-  background: var(--primary-orange);
-  color: var(--text-black);
+  box-sizing: border-box;
+  padding: 12px 14px;
   border: 2px solid transparent;
   border-radius: 8px;
-  padding: 12px var(--spacing-sm);
-  font-size: 16px;
-}
-
-.contact-form-field textarea {
+  background: var(--white);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text-black);
   resize: vertical;
-  min-height: 150px;
 }
 
 .contact-form-field input::placeholder,
 .contact-form-field textarea::placeholder {
-  color: rgba(0, 0, 0, 0.65);
+  color: #7a7a7a;
 }
 
-/* Select sem opção escolhida mostra o texto mais claro, como placeholder */
-.contact-form-field select:invalid {
-  color: rgba(0, 0, 0, 0.65);
-}
-
+/* Campo em uso: borda verde */
 .contact-form-field input:focus,
-.contact-form-field select:focus,
 .contact-form-field textarea:focus {
-  border-color: var(--text-black);
+  outline: none;
+  border-color: var(--primary-green);
+}
+
+/* Aviso de dados à esquerda, botão à direita (longe do canto cortado) */
+.contact-form-end {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-right: 28px;
 }
 
 .contact-form-privacy {
-  font-size: 13px;
-  color: #666666;
   margin: 0;
-}
-
-.contact-form-actions {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--spacing-sm);
+  font-size: 13px;
+  color: #44514c;
 }
 
 .contact-form-button {
-  background: var(--primary-orange);
-  color: var(--text-black);
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  padding: 12px var(--spacing-md);
+  padding: 14px 26px;
+  border: 0;
   border-radius: 8px;
-  border: 2px solid transparent;
+  background: var(--primary-orange);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text-black);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform var(--transition-normal);
 }
 
 .contact-form-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
 }
 
 .contact-form-button:focus-visible {
-  border-color: var(--text-black);
+  outline: 3px solid var(--text-black);
+  outline-offset: 3px;
 }
 
+/* Mensagem de enviado */
 .contact-form-success {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text-black);
-  background: var(--primary-cyan);
-  padding: 8px var(--spacing-sm);
-  border-radius: 8px;
   margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary-b-green);
 }
 
-@media (max-width: 480px) {
+/* ================================================
+   CELULAR (até 768px)
+   ================================================ */
+
+@media (max-width: 768px) {
+  .contact-form {
+    --cut: 36px;
+    padding: 24px 20px 32px;
+  }
+
   .contact-form-row {
     grid-template-columns: 1fr;
   }
 
+  /* Botão embaixo do aviso */
+  .contact-form-end {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-right: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-form,
   .contact-form-button {
-    width: 100%;
+    transition: none;
+  }
+
+  .contact-form-button:hover {
+    transform: none;
   }
 }

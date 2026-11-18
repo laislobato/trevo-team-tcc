@@ -1,0 +1,161 @@
+/**
+ * ESTILOS: ContactHelp
+ * ====================
+ * Título preto + subtítulo laranja (como no Sobre), três botões de assunto
+ * com contorno preto (o escolhido fica preenchido com a cor dele) e a dica.
+ * O formulário e a linha de contato direto têm o CSS deles.
+ *
+ * Animação na troca de assunto:
+ * - o botão escolhido dá um "pulinho" (contactSubjectPop);
+ * - a dica entra subindo e aparecendo (contactHintIn).
+ */
+
+.contact-help {
+  width: min(1120px, calc(100% - 2 * var(--spacing-md)));
+  margin: 0 auto;
+  padding: 72px 0 40px;
+}
+
+/* ================================================
+   TÍTULO
+   ================================================ */
+
+.contact-help-title {
+  margin: 0;
+  text-align: center;
+  font-size: 32px;
+  line-height: 36px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.contact-help-subtitle {
+  margin: 0 0 36px;
+  text-align: center;
+  font-size: 26px;
+  line-height: 30px;
+  font-weight: 800;
+  color: var(--primary-orange);
+}
+
+/* ================================================
+   BOTÕES DE ASSUNTO
+   ================================================ */
+
+.contact-help-subjects {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.contact-help-subject {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 26px;
+  border: 2px solid var(--text-black);
+  border-radius: 999px;
+  background: var(--white);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text-black);
+  cursor: pointer;
+  transition: background var(--transition-normal), transform var(--transition-normal);
+}
+
+.contact-help-subject svg {
+  font-size: 18px;
+}
+
+.contact-help-subject:hover {
+  transform: translateY(-2px);
+}
+
+.contact-help-subject:focus-visible {
+  outline: 3px solid var(--text-black);
+  outline-offset: 3px;
+}
+
+/* Escolhido: preenchido com a cor do assunto e um "pulinho" */
+.contact-help-subject.is-active {
+  animation: contactSubjectPop 0.35s ease;
+}
+
+.contact-help-subject--green.is-active { background: var(--primary-green); }
+.contact-help-subject--cyan.is-active { background: var(--primary-cyan); }
+.contact-help-subject--orange.is-active { background: var(--primary-orange); }
+
+/* Dica do assunto (altura mínima: a página não "pula" se a dica tiver 2 linhas) */
+.contact-help-hint {
+  max-width: 640px;
+  min-height: 44px;
+  margin: 20px auto 24px;
+  text-align: center;
+  font-size: 15px;
+  line-height: 22px;
+  color: #333;
+}
+
+.contact-help-hint-text {
+  margin: 0;
+  animation: contactHintIn 0.35s ease;
+}
+
+@keyframes contactSubjectPop {
+  0% { transform: scale(0.94); }
+  60% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes contactHintIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/* ================================================
+   CELULAR (até 768px)
+   ================================================ */
+
+@media (max-width: 768px) {
+  .contact-help {
+    padding-top: 48px;
+  }
+
+  .contact-help-title {
+    font-size: 24px;
+    line-height: 28px;
+  }
+
+  .contact-help-subtitle {
+    font-size: 20px;
+    line-height: 24px;
+    margin-bottom: 24px;
+  }
+
+  .contact-help-subjects {
+    gap: 10px;
+  }
+
+  .contact-help-subject {
+    padding: 10px 18px;
+    font-size: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-help-subject,
+  .contact-help-subject.is-active,
+  .contact-help-hint-text {
+    transition: none;
+    animation: none;
+  }
+
+  .contact-help-subject:hover {
+    transform: none;
+  }
+}

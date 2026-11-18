@@ -1,0 +1,259 @@
+/**
+ * ESTILOS: ContactFaq
+ * ===================
+ * Duas colunas: à esquerda o título (preto + laranja), o texto e o botão;
+ * à direita a lista numerada. A pergunta aberta ganha um fundo ciano
+ * que some para a direita. No celular, uma coluna só.
+ *
+ * Animações:
+ * - o "+" gira meia volta e o tracinho de pé deita (vira "−");
+ * - a resposta abre e fecha deslizando (grid-template-rows 0fr -> 1fr);
+ * - o fundo ciano da pergunta aberta aparece e some aos poucos.
+ */
+
+.contact-faq {
+  width: min(1120px, calc(100% - 2 * var(--spacing-md)));
+  margin: 0 auto;
+  padding: 72px 0 128px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.6fr);
+  gap: 72px;
+  align-items: start;
+}
+
+/* ================================================
+   COLUNA DA ESQUERDA
+   ================================================ */
+
+.contact-faq-title {
+  margin: 0 0 16px;
+  font-size: 28px;
+  line-height: 32px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+/* "FREQUENTES" em laranja, na linha de baixo */
+.contact-faq-subtitle {
+  display: block;
+  color: var(--primary-orange);
+}
+
+.contact-faq-text {
+  margin: 0 0 28px;
+  font-size: 16px;
+  line-height: 25px;
+}
+
+.contact-faq-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  border-radius: 8px;
+  background: var(--primary-orange);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text-black);
+  transition: transform var(--transition-normal);
+}
+
+.contact-faq-button:hover {
+  transform: translateY(-2px);
+  opacity: 1;
+}
+
+/* ================================================
+   LISTA
+   ================================================ */
+
+.contact-faq-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1.5px solid var(--text-black);
+}
+
+.contact-faq-item {
+  position: relative;
+  border-bottom: 1px solid #d0d0d0;
+}
+
+/* Aberta: fundo ciano que some para a direita (aparece aos poucos) */
+.contact-faq-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to right, rgba(208, 255, 251, 0.6), rgba(208, 255, 251, 0));
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.contact-faq-item.is-open::before {
+  opacity: 1;
+}
+
+.contact-faq-list {
+  position: relative;
+  z-index: 0; /* o fundo das perguntas (z-index -1) fica dentro da lista */
+}
+
+/* A pergunta inteira é o botão */
+.contact-faq-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 22px 4px;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: left;
+  color: var(--text-black);
+  cursor: pointer;
+}
+
+.contact-faq-number {
+  min-width: 22px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--primary-orange);
+}
+
+.contact-faq-question-text {
+  flex: 1;
+}
+
+/* Aberta: a pergunta fica mais perto da resposta */
+.contact-faq-question {
+  transition: padding 0.35s ease;
+}
+
+.is-open .contact-faq-question {
+  padding-bottom: 12px;
+}
+
+/* ---------- "+" que vira "−" ---------- */
+
+.contact-faq-icon {
+  position: relative;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  transition: transform 0.35s ease;
+}
+
+/* Os dois tracinhos do "+" */
+.contact-faq-icon::before,
+.contact-faq-icon::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 16px;
+  height: 2px;
+  margin: -1px 0 0 -8px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform 0.35s ease;
+}
+
+/* Tracinho de pé */
+.contact-faq-icon::after {
+  transform: rotate(90deg);
+}
+
+/* Aberta: o ícone gira meia volta e o tracinho de pé deita ("−") */
+.is-open .contact-faq-icon {
+  transform: rotate(180deg);
+}
+
+.is-open .contact-faq-icon::after {
+  transform: rotate(0deg);
+}
+
+/* ---------- Resposta que abre deslizando ---------- */
+
+.contact-faq-panel {
+  display: grid;
+  grid-template-rows: 0fr; /* fechada: altura 0 */
+  transition: grid-template-rows 0.35s ease;
+}
+
+.is-open .contact-faq-panel {
+  grid-template-rows: 1fr; /* aberta: altura do texto */
+}
+
+.contact-faq-panel-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.contact-faq-answer {
+  max-width: 560px;
+  margin: 0;
+  padding: 0 4px 22px 48px; /* alinhado com o texto da pergunta */
+  font-size: 15px;
+  line-height: 23px;
+  color: #444;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.is-open .contact-faq-answer {
+  opacity: 1;
+}
+
+.contact-faq-button:focus-visible,
+.contact-faq-question:focus-visible {
+  outline: 3px solid var(--text-black);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ================================================
+   CELULAR (até 768px): uma coluna
+   ================================================ */
+
+@media (max-width: 768px) {
+  .contact-faq {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 48px 0 80px;
+  }
+
+  .contact-faq-title {
+    font-size: 24px;
+    line-height: 28px;
+  }
+
+  .contact-faq-question {
+    gap: 14px;
+    font-size: 16px;
+  }
+
+  .contact-faq-answer {
+    padding-left: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-faq-button,
+  .contact-faq-question,
+  .contact-faq-item::before,
+  .contact-faq-icon,
+  .contact-faq-icon::before,
+  .contact-faq-icon::after,
+  .contact-faq-panel,
+  .contact-faq-answer {
+    transition: none;
+  }
+
+  .contact-faq-button:hover {
+    transform: none;
+  }
+}

@@ -701,9 +701,9 @@
 
 /* O palco continua cortando dos lados (cards escondidos), mas deixa
    a cabeça passar por cima. Navegador antigo: fica cortado como antes. */
-@supports (overflow: clip) {
+@supports (overflow: auto) {
   .showcase--home .showcase-stage {
-    overflow-x: visible;
+    overflow-x: clip;
     overflow-y: visible;
   }
 }
