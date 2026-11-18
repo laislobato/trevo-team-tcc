@@ -56,8 +56,30 @@ const quickLinks = [
 ]
 
 // Contato (EXEMPLO: troque pelo e-mail e telefone reais)
+const CONTACT_EMAIL = 'contato@trevo.com'
+
+// Mensagem que já vem escrita quando a pessoa clica no e-mail
+// (abre o programa de e-mail dela com o assunto e o texto preenchidos)
+const EMAIL_SUBJECT = 'Contato pelo site da Trevo Team'
+const EMAIL_BODY = [
+  'Olá, equipe Trevo Team!',
+  '',
+  'Meu nome é [seu nome] e estou entrando em contato sobre:',
+  '(  ) Dúvida geral   (  ) Suporte   (  ) Parceria e marketing   (  ) Imprensa',
+  '',
+  'Mensagem:',
+  '',
+  '',
+  'Obrigado(a)!',
+].join('\r\n') // quebra de linha no formato que os programas de e-mail entendem
+
+// mailto:e-mail?subject=...&body=... (encodeURIComponent troca espaços e acentos por códigos)
+const EMAIL_HREF = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(EMAIL_SUBJECT)}&body=${encodeURIComponent(EMAIL_BODY)}`
+
+
+// Contato (EXEMPLO: troque pelo e-mail e telefone reais)
 const contacts = [
-  { label: 'E-mail', text: 'contato@gmail.com', href: 'mailto:contato@gmail.com' },
+  { label: 'E-mail', text: CONTACT_EMAIL, href: EMAIL_HREF },
   { label: 'Telefone', text: '+14 99119 8597', href: 'tel:+14991198597' },
 ]
 
