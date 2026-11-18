@@ -703,7 +703,7 @@
    a cabeça passar por cima. Navegador antigo: fica cortado como antes. */
 @supports (overflow: clip) {
   .showcase--home .showcase-stage {
-    overflow-x: clip;
+    overflow-x: visible;
     overflow-y: visible;
   }
 }
