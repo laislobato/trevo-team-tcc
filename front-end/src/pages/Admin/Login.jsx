@@ -5,11 +5,21 @@
  * Não aparece no menu do site: a equipe acessa digitando o endereço.
  */
 
-import { useState } from 'react'
+// ===============================================
+// IMPORTAÇÕES
+// ===============================================
+
+import { useEffect, useState } from 'react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
+import logo from '../../assets/logo.png'
+import { Alert, Field } from '../../components/Admin/AdminUI'
 import { useAuth } from '../../context/AuthContext'
 import '../../styles/globals.css'
 import '../../components/Admin/css/Admin.css'
+
+// ===============================================
+// COMPONENTE PRINCIPAL
+// ===============================================
 
 export default function Login() {
   const { login, isLoggedIn, checking } = useAuth()
@@ -22,6 +32,10 @@ export default function Login() {
 
   // Depois do login, volta para a página que a pessoa tentou abrir (ou /painel)
   const destination = location.state?.from || '/painel'
+
+  useEffect(() => {
+    document.title = 'Entrar | Painel Trevo Team'
+  }, [])
 
   if (!checking && isLoggedIn) return <Navigate to={destination} replace />
 
@@ -41,49 +55,33 @@ export default function Login() {
 
   return (
     <div className="login-page">
-      <form className="login-card" onSubmit={handleSubmit}>
+      <main className="login-card">
         <span className="login-star" aria-hidden="true"></span>
 
-        <Link to="/" className="admin-brand login-brand">
-          <span className="admin-brand-circle" aria-hidden="true"></span>
-          Trevo Team
+        <Link to="/" className="login-brand" aria-label="Trevo Team: voltar para o site">
+          <img src={logo} alt="" className="login-logo" />
         </Link>
         <h1 className="login-title">Painel da equipe</h1>
+        <p className="login-text">Entre com o e-mail e a senha do seu login.</p>
 
-        <label className="admin-field">
-          <span className="admin-label">E-mail</span>
-          <input
-            type="email"
-            autoComplete="username"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
+        <form onSubmit={handleSubmit}>
+          <Field label="E-mail">
+            <input type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          </Field>
+          <Field label="Senha">
+            <input type="password" autoComplete="current-password" value={password}
+              onChange={(e) => setPassword(e.target.value)} required />
+          </Field>
 
-        <label className="admin-field">
-          <span className="admin-label">Senha</span>
-          <input
-            type="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
+          {error && <Alert tone="error">{error}</Alert>}
 
-        {error && (
-          <p className="admin-alert admin-alert--error" role="alert">
-            {error}
-          </p>
-        )}
-
-        <button type="submit" className="admin-button admin-button--primary login-button" disabled={sending}>
-          {sending ? 'Entrando...' : 'Entrar'}
-        </button>
+          <button type="submit" className="admin-btn admin-btn--primary login-button" disabled={sending}>
+            {sending ? 'Entrando...' : 'Entrar'}
+          </button>
+        </form>
 
         <Link to="/" className="login-back">← Voltar para o site</Link>
-      </form>
+      </main>
     </div>
   )
 }

@@ -5,11 +5,22 @@
  * Serve para os dois tipos de login: admin da Trevo e estúdio.
  */
 
+// ===============================================
+// IMPORTAÇÕES
+// ===============================================
+
 import { useState } from 'react'
+import { BsKey, BsPersonCircle } from 'react-icons/bs'
 import AdminLayout from '../../components/Admin/AdminLayout'
+import { Alert, Field, Section } from '../../components/Admin/AdminUI'
+import { avatarName, initials } from '../../components/Admin/AdminHelpers'
 import { useAuth } from '../../context/AuthContext'
 import { api } from '../../services/api'
 import '../../styles/globals.css'
+
+// ===============================================
+// COMPONENTE PRINCIPAL
+// ===============================================
 
 export default function AdminAccount() {
   const { run, user, isAdmin } = useAuth()
@@ -39,52 +50,58 @@ export default function AdminAccount() {
     }
   }
 
+  const roleName = isAdmin ? 'Admin da Trevo' : user?.developer?.name || 'Estúdio'
+
   return (
-    <AdminLayout title="Conta">
-      <form className="admin-form admin-form--narrow" onSubmit={handleSubmit}>
+    <AdminLayout title="Minha conta" subtitle="Dados do seu login e troca de senha." crumbs={[{ label: 'Minha conta' }]}>
+      <div className="admin-stack admin-narrow">
         {/* ---------- Dados do login ---------- */}
-        <section className="admin-card" aria-labelledby="account-info-title">
-          <h2 id="account-info-title" className="admin-card-title">Seu login</h2>
-          <p><strong>E-mail:</strong> {user?.email}</p>
-          <p>
-            <strong>Tipo:</strong>{' '}
+        <Section title="Seu login" icon={BsPersonCircle}>
+          <div className="admin-profile admin-gap">
+            <span className="admin-avatar" aria-hidden="true">
+              {initials(avatarName(user, isAdmin))}
+            </span>
+            <div className="admin-profile-text">
+              <strong>{user?.email}</strong>
+              <span className={`admin-role admin-role--${isAdmin ? 'admin' : 'studio'}`}>{roleName}</span>
+            </div>
+          </div>
+          <p className="admin-muted">
             {isAdmin
-              ? 'Admin da Trevo (mexe em tudo)'
-              : `Login de estúdio · ${user?.developer?.name || ''} (mexe só no que é do estúdio)`}
+              ? 'Admin da Trevo: mexe em tudo do painel.'
+              : `Login de estúdio: mexe só no que é do ${user?.developer?.name || 'estúdio'}. Para trocar o e-mail do login, fale com a equipe da Trevo.`}
           </p>
-          {!isAdmin && (
-            <p className="admin-hint">Para trocar o e-mail do login, fale com a equipe da Trevo.</p>
-          )}
-        </section>
+        </Section>
 
-        <fieldset className="admin-card">
-          <legend className="admin-card-title">Trocar senha</legend>
-
+        {/* ---------- Trocar senha ---------- */}
+        <Section title="Trocar senha" icon={BsKey}>
           {feedback.text && (
-            <p className={`admin-alert ${feedback.type === 'error' ? 'admin-alert--error' : ''}`} role="status">
+            <Alert tone={feedback.type === 'error' ? 'error' : 'ok'} onClose={() => setFeedback({ type: '', text: '' })}>
               {feedback.text}
-            </p>
+            </Alert>
           )}
 
-          <label className="admin-field">
-            <span className="admin-label">Senha atual</span>
-            <input type="password" autoComplete="current-password" value={current} onChange={(e) => setCurrent(e.target.value)} required />
-          </label>
-          <label className="admin-field">
-            <span className="admin-label">Nova senha</span>
-            <input type="password" autoComplete="new-password" minLength={10} value={next} onChange={(e) => setNext(e.target.value)} required />
-            <span className="admin-hint">Pelo menos 10 caracteres.</span>
-          </label>
-          <label className="admin-field">
-            <span className="admin-label">Confirmar nova senha</span>
-            <input type="password" autoComplete="new-password" value={confirm} onChange={(e) => setConfirm(e.target.value)} required />
-          </label>
-
-          <button type="submit" className="admin-button admin-button--primary" disabled={saving}>
-            {saving ? 'Salvando...' : 'Trocar senha'}
-          </button>
-        </fieldset>
-      </form>
+          <form onSubmit={handleSubmit}>
+            <Field label="Senha atual">
+              <input type="password" autoComplete="current-password" value={current}
+                onChange={(e) => setCurrent(e.target.value)} required />
+            </Field>
+            <div className="admin-grid-2">
+              <Field label="Nova senha" hint="Pelo menos 10 caracteres.">
+                <input type="password" autoComplete="new-password" minLength={10} value={next}
+                  onChange={(e) => setNext(e.target.value)} required />
+              </Field>
+              <Field label="Confirmar nova senha">
+                <input type="password" autoComplete="new-password" value={confirm}
+                  onChange={(e) => setConfirm(e.target.value)} required />
+              </Field>
+            </div>
+            <button type="submit" className="admin-btn admin-btn--primary" disabled={saving}>
+              {saving ? 'Salvando...' : 'Trocar senha'}
+            </button>
+          </form>
+        </Section>
+      </div>
     </AdminLayout>
   )
 }

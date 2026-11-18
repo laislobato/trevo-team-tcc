@@ -5,13 +5,15 @@
  * Com esses logins, o estúdio entra no painel e mexe só no que é dele:
  * os posts e jogos do estúdio e o perfil do estúdio.
  *
- *   Logins do estúdio
- *   contato@orvalho.com            [Editar] [Apagar]
- *   ---------------------------------------------
- *   E-mail [          ]  Senha [          ]  [Criar login]
+ *   Logins do estúdio                                   2
+ *   (@) contato@orvalho.com                  [editar] [apagar]
+ *   ┌ - - - - - - - - - - - - - - - - - - - - - - - - - - ┐
+ *   | E-mail [          ]  Senha [          ]  [Criar login] |
+ *   └ - - - - - - - - - - - - - - - - - - - - - - - - - - ┘
  *
  * Props:
  * - developerId: estúdio dono dos logins
+ * - id:          id do bloco (as abas do editor rolam até ele)
  */
 
 // ===============================================
@@ -19,6 +21,8 @@
 // ===============================================
 
 import { useEffect, useState } from 'react'
+import { BsPencil, BsPersonCircle, BsTrash } from 'react-icons/bs'
+import { Alert, Field, Section } from './AdminUI'
 import { useAuth } from '../../context/AuthContext'
 import { api } from '../../services/api'
 import './css/Admin.css'
@@ -29,7 +33,7 @@ const EMPTY = { email: '', password: '' }
 // COMPONENTE PRINCIPAL
 // ===============================================
 
-export default function StudioAccounts({ developerId }) {
+export default function StudioAccounts({ developerId, id }) {
   const { run } = useAuth()
   const [accounts, setAccounts] = useState([])
   const [loading, setLoading] = useState(true)
@@ -94,7 +98,7 @@ export default function StudioAccounts({ developerId }) {
     }, `Login ${account.email} apagado.`)
   }
 
-  // Enter num campo = clicar no botão do formulário (sem enviar o formulário da desenvolvedora)
+  // Enter num campo = clicar no botão do bloco (sem enviar o formulário da desenvolvedora)
   const onEnter = (fn) => (e) => {
     if (e.key === 'Enter') {
       e.preventDefault()
@@ -103,57 +107,56 @@ export default function StudioAccounts({ developerId }) {
   }
 
   return (
-    <section className="admin-card" aria-labelledby="studio-accounts-title">
-      <h2 id="studio-accounts-title" className="admin-card-title">Logins do estúdio ({accounts.length})</h2>
-      <p className="admin-hint">
+    <Section id={id} title="Logins do estúdio" note={loading ? '' : String(accounts.length)}>
+      <p className="admin-muted admin-gap">
         Quem entra com estes logins só vê e edita os posts, os jogos e o perfil deste estúdio.
       </p>
 
       {feedback.text && (
-        <p className={`admin-alert ${feedback.type === 'error' ? 'admin-alert--error' : ''}`} role="status">
+        <Alert tone={feedback.type === 'error' ? 'error' : 'ok'} onClose={() => setFeedback({ type: '', text: '' })}>
           {feedback.text}
-        </p>
+        </Alert>
       )}
 
       {loading && <p className="admin-loading">Carregando logins...</p>}
-      {!loading && accounts.length === 0 && <p className="admin-empty">Este estúdio ainda não tem login.</p>}
+      {!loading && accounts.length === 0 && <p className="admin-muted admin-gap">Este estúdio ainda não tem login.</p>}
 
       {/* ---------- Lista de logins ---------- */}
       <ul className="admin-accounts">
         {accounts.map((account) =>
           editing?.id === account.id ? (
             // Linha em modo edição
-            <li key={account.id} className="admin-list-row">
-              <label className={`admin-field admin-field--grow ${errors.email ? 'has-error' : ''}`}>
-                <span className="admin-label">E-mail</span>
+            <li key={account.id} className="admin-account admin-account--editing">
+              <Field label="E-mail" error={errors.email}>
                 <input type="email" value={editing.email} autoComplete="off"
                   onChange={(e) => setEditing({ ...editing, email: e.target.value })} onKeyDown={onEnter(handleSave)} />
-                {errors.email && <span className="admin-field-error">{errors.email}</span>}
-              </label>
-              <label className={`admin-field admin-field--grow ${errors.password ? 'has-error' : ''}`}>
-                <span className="admin-label">Nova senha</span>
+              </Field>
+              <Field label="Nova senha" error={errors.password}>
                 <input type="password" value={editing.password} autoComplete="new-password" placeholder="vazio = continua a mesma"
                   onChange={(e) => setEditing({ ...editing, password: e.target.value })} onKeyDown={onEnter(handleSave)} />
-                {errors.password && <span className="admin-field-error">{errors.password}</span>}
-              </label>
-              <button type="button" className="admin-button admin-button--primary" onClick={handleSave} disabled={saving}>
-                Salvar
-              </button>
-              <button type="button" className="admin-button admin-button--ghost" onClick={() => { setEditing(null); setErrors({}) }}>
-                Cancelar
-              </button>
+              </Field>
+              <div className="admin-account-buttons">
+                <button type="button" className="admin-btn admin-btn--primary" onClick={handleSave} disabled={saving}>
+                  Salvar
+                </button>
+                <button type="button" className="admin-btn admin-btn--ghost" onClick={() => { setEditing(null); setErrors({}) }}>
+                  Cancelar
+                </button>
+              </div>
             </li>
           ) : (
             // Linha normal
             <li key={account.id} className="admin-account">
+              <span className="admin-account-icon" aria-hidden="true"><BsPersonCircle /></span>
               <span className="admin-account-email">{account.email}</span>
-              <div className="admin-table-actions">
-                <button type="button" className="admin-button admin-button--light"
+              <div className="admin-row-actions">
+                <button type="button" className="admin-icon-btn" title="Editar" aria-label={`Editar login ${account.email}`}
                   onClick={() => { setEditing({ id: account.id, email: account.email, password: '' }); setErrors({}) }}>
-                  Editar
+                  <BsPencil aria-hidden="true" />
                 </button>
-                <button type="button" className="admin-button admin-button--danger" onClick={() => handleDelete(account)}>
-                  Apagar
+                <button type="button" className="admin-icon-btn admin-icon-btn--danger" title="Apagar"
+                  aria-label={`Apagar login ${account.email}`} onClick={() => handleDelete(account)}>
+                  <BsTrash aria-hidden="true" />
                 </button>
               </div>
             </li>
@@ -163,24 +166,20 @@ export default function StudioAccounts({ developerId }) {
 
       {/* ---------- Criar login ---------- */}
       {!editing && (
-        <div className="admin-list-row admin-account-new">
-          <label className={`admin-field admin-field--grow ${errors.email ? 'has-error' : ''}`}>
-            <span className="admin-label">E-mail do novo login</span>
+        <div className="admin-account-new">
+          <Field label="E-mail do novo login" error={errors.email}>
             <input type="email" value={newAccount.email} autoComplete="off" placeholder="contato@estudio.com"
               onChange={(e) => setNewAccount({ ...newAccount, email: e.target.value })} onKeyDown={onEnter(handleCreate)} />
-            {errors.email && <span className="admin-field-error">{errors.email}</span>}
-          </label>
-          <label className={`admin-field admin-field--grow ${errors.password ? 'has-error' : ''}`}>
-            <span className="admin-label">Senha</span>
+          </Field>
+          <Field label="Senha" error={errors.password}>
             <input type="password" value={newAccount.password} autoComplete="new-password" placeholder="pelo menos 10 caracteres"
               onChange={(e) => setNewAccount({ ...newAccount, password: e.target.value })} onKeyDown={onEnter(handleCreate)} />
-            {errors.password && <span className="admin-field-error">{errors.password}</span>}
-          </label>
-          <button type="button" className="admin-button admin-button--primary" onClick={handleCreate} disabled={saving}>
+          </Field>
+          <button type="button" className="admin-btn admin-btn--primary" onClick={handleCreate} disabled={saving}>
             Criar login
           </button>
         </div>
       )}
-    </section>
+    </Section>
   )
 }

@@ -10,7 +10,7 @@
  *   Título     [            ]             Título     [            ]
  *   Subtítulo  [            ] (laranja)   Subtítulo  [            ]
  *   Texto      [            ]             Texto      [            ]
- *                                                    [Salvar cards]
+ *   [● Alterações não salvas                      Descartar  Salvar cards]
  *
  * As mudanças só vão para o site quando clicar em "Salvar cards".
  */
@@ -21,12 +21,16 @@
 
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { BsBoxArrowUpRight } from 'react-icons/bs'
 import AdminLayout from '../../components/Admin/AdminLayout'
 import ImageUpload from '../../components/Admin/ImageUpload'
+import { Alert, Field, SaveBar, Section } from '../../components/Admin/AdminUI'
+import { useLeaveWarning } from '../../components/Admin/AdminHelpers'
 import { useAuth } from '../../context/AuthContext'
 import { api } from '../../services/api'
 import '../../styles/globals.css'
 
+const FORM_ID = 'about-form'
 const EMPTY_CARD = { image: '', title: '', subtitle: '', text: '' }
 const SLOTS = ['Card 1 (esquerda)', 'Card 2 (direita)']
 
@@ -44,22 +48,27 @@ const fillSlots = (cards = []) =>
 export default function AdminAbout() {
   const { run } = useAuth()
   const [cards, setCards] = useState(null) // null = carregando
-  const [changed, setChanged] = useState(false) // tem mudança sem salvar?
+  const [saved, setSaved] = useState(null) // como está no site
   const [saving, setSaving] = useState(false)
   const [errors, setErrors] = useState({})
   const [feedback, setFeedback] = useState({ type: '', text: '' })
 
+  const changed = Boolean(cards) && JSON.stringify(cards) !== JSON.stringify(saved) // tem mudança sem salvar?
+  useLeaveWarning(changed && !saving)
+
   // ---------- Carrega os cards ----------
   useEffect(() => {
     run((token) => api.admin.getAboutCards(token))
-      .then((list) => setCards(fillSlots(list)))
+      .then((list) => {
+        setCards(fillSlots(list))
+        setSaved(fillSlots(list))
+      })
       .catch((err) => setFeedback({ type: 'error', text: err.message }))
   }, [run])
 
   // ---------- Mudanças (ainda não salvas) ----------
   const set = (index, field, value) => {
     setCards((list) => list.map((c, i) => (i === index ? { ...c, [field]: value } : c)))
-    setChanged(true)
     setFeedback({ type: '', text: '' })
     setErrors((old) => {
       const next = { ...old }
@@ -68,15 +77,22 @@ export default function AdminAbout() {
     })
   }
 
+  const discard = () => {
+    if (!window.confirm('Descartar as alterações que ainda não foram salvas?')) return
+    setCards(saved)
+    setErrors({})
+    setFeedback({ type: '', text: '' })
+  }
+
   // ---------- Salvar ----------
   const handleSave = async (e) => {
     e.preventDefault()
     setErrors({})
     setSaving(true)
     try {
-      const saved = await run((token) => api.admin.saveAboutCards(token, cards))
-      setCards(fillSlots(saved))
-      setChanged(false)
+      const result = await run((token) => api.admin.saveAboutCards(token, cards))
+      setCards(fillSlots(result))
+      setSaved(fillSlots(result))
       setFeedback({ type: 'ok', text: 'Cards salvos. Já estão no site.' })
     } catch (err) {
       setErrors(err.details || {})
@@ -89,62 +105,60 @@ export default function AdminAbout() {
   const fieldError = (i, field) => errors[`cards.${i}.${field}`]
 
   return (
-    <AdminLayout title="Página About">
-      <p className="admin-hint admin-scope">
-        Os 2 cards do topo da página About, embaixo do título &quot;SOBRE NÓS&quot;. Tamanho recomendado da
-        imagem: <strong>1200 × 720 px</strong> (paisagem).{' '}
-        <Link to="/sobre" target="_blank" rel="noreferrer">Ver página ↗</Link>
-      </p>
+    <AdminLayout
+      title="Página About"
+      subtitle="Os 2 cards do topo da página About, embaixo do título “SOBRE NÓS”."
+      crumbs={[{ label: 'Página About' }]}
+      dirty={changed}
+      actions={
+        <>
+          <Link to="/sobre" target="_blank" rel="noreferrer" className="admin-btn admin-btn--ghost">
+            <BsBoxArrowUpRight aria-hidden="true" /> <span className="admin-btn-text">Ver página</span>
+          </Link>
+          <button type="submit" form={FORM_ID} className="admin-btn admin-btn--primary" disabled={saving || !changed}>
+            {saving ? 'Salvando...' : 'Salvar cards'}
+          </button>
+        </>
+      }
+    >
+      <Alert tone="info">
+        Tamanho recomendado da imagem: <strong>1200 × 720 px</strong> (paisagem).
+      </Alert>
 
       {feedback.text && (
-        <p className={`admin-alert ${feedback.type === 'error' ? 'admin-alert--error' : ''}`} role="status">
+        <Alert tone={feedback.type === 'error' ? 'error' : 'ok'} onClose={() => setFeedback({ type: '', text: '' })}>
           {feedback.text}
-        </p>
+        </Alert>
       )}
       {!cards && !feedback.text && <p className="admin-loading">Carregando cards...</p>}
 
       {cards && (
-        <form className="admin-form" onSubmit={handleSave} noValidate>
+        <form id={FORM_ID} onSubmit={handleSave} noValidate>
           <div className="admin-about-grid">
             {cards.map((card, i) => (
-              <section key={SLOTS[i]} className="admin-card" aria-labelledby={`about-card-${i}`}>
-                <h2 id={`about-card-${i}`} className="admin-card-title">{SLOTS[i]}</h2>
-
+              <Section key={SLOTS[i]} title={SLOTS[i]}>
                 <ImageUpload label="Imagem" value={card.image} onChange={(v) => set(i, 'image', v)} />
-                {fieldError(i, 'image') && <span className="admin-field-error">{fieldError(i, 'image')}</span>}
+                {fieldError(i, 'image') && <p className="admin-field-error">{fieldError(i, 'image')}</p>}
 
-                <label className={`admin-field ${fieldError(i, 'title') ? 'has-error' : ''}`}>
-                  <span className="admin-label">Título</span>
-                  <input value={card.title} maxLength={40} placeholder="Ex.: QUEM SOMOS"
-                    onChange={(e) => set(i, 'title', e.target.value)} />
-                  {fieldError(i, 'title') && <span className="admin-field-error">{fieldError(i, 'title')}</span>}
-                </label>
+                <div className="admin-grid-2">
+                  <Field label="Título" error={fieldError(i, 'title')}>
+                    <input value={card.title} maxLength={40} placeholder="Ex.: QUEM SOMOS"
+                      onChange={(e) => set(i, 'title', e.target.value)} />
+                  </Field>
+                  <Field label="Subtítulo (laranja)" error={fieldError(i, 'subtitle')}>
+                    <input value={card.subtitle} maxLength={40} placeholder="Ex.: TREVO TEAM"
+                      onChange={(e) => set(i, 'subtitle', e.target.value)} />
+                  </Field>
+                </div>
 
-                <label className={`admin-field ${fieldError(i, 'subtitle') ? 'has-error' : ''}`}>
-                  <span className="admin-label">Subtítulo (laranja)</span>
-                  <input value={card.subtitle} maxLength={40} placeholder="Ex.: TREVO TEAM"
-                    onChange={(e) => set(i, 'subtitle', e.target.value)} />
-                  {fieldError(i, 'subtitle') && <span className="admin-field-error">{fieldError(i, 'subtitle')}</span>}
-                </label>
-
-                <label className={`admin-field ${fieldError(i, 'text') ? 'has-error' : ''}`}>
-                  <span className="admin-label">Texto</span>
-                  <textarea value={card.text} maxLength={400} rows={5}
-                    onChange={(e) => set(i, 'text', e.target.value)} />
-                  <span className="admin-hint">{card.text.length}/400</span>
-                  {fieldError(i, 'text') && <span className="admin-field-error">{fieldError(i, 'text')}</span>}
-                </label>
-              </section>
+                <Field label="Texto" error={fieldError(i, 'text')} count={`${card.text.length}/400`}>
+                  <textarea value={card.text} maxLength={400} rows={5} onChange={(e) => set(i, 'text', e.target.value)} />
+                </Field>
+              </Section>
             ))}
           </div>
 
-          {/* ---------- Botão ---------- */}
-          <div className="admin-banners-footer">
-            {changed && <span className="admin-hint">Mudanças ainda não salvas.</span>}
-            <button type="submit" className="admin-button admin-button--primary" disabled={saving || !changed}>
-              {saving ? 'Salvando...' : 'Salvar cards'}
-            </button>
-          </div>
+          <SaveBar show={changed} saving={saving} form={FORM_ID} onDiscard={discard} saveLabel="Salvar cards" />
         </form>
       )}
     </AdminLayout>

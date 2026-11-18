@@ -14,7 +14,8 @@
  *
  * Painel da equipe (precisa de login):
  * - /login                          -> entrar
- * - /painel                         -> lista de posts
+ * - /painel                         -> visão geral (resumo, pendências e atalhos)
+ * - /painel/posts                   -> lista de posts
  * - /painel/posts/novo              -> criar post
  * - /painel/posts/:id               -> editar post
  * - /painel/jogos                   -> lista de jogos
@@ -49,6 +50,7 @@ import BlogPost from './pages/Blog/BlogPost'
 
 // Painel
 import Login from './pages/Admin/Login'
+import AdminOverview from './pages/Admin/AdminOverview'
 import AdminPosts from './pages/Admin/AdminPosts'
 import PostEditor from './pages/Admin/PostEditor'
 import AdminGames from './pages/Admin/AdminGames'
@@ -81,7 +83,8 @@ export default function App() {
 
           {/* ---------- Painel ---------- */}
           <Route path="/login" element={<Login />} />
-          <Route path="/painel" element={admin(<AdminPosts />)} />
+          <Route path="/painel" element={admin(<AdminOverview />)} />
+          <Route path="/painel/posts" element={admin(<AdminPosts />)} />
           <Route path="/painel/posts/novo" element={admin(<PostEditor />)} />
           <Route path="/painel/posts/:id" element={admin(<PostEditor />)} />
           <Route path="/painel/jogos" element={admin(<AdminGames />)} />

@@ -5,6 +5,10 @@
  * uma desenvolvedora: nome, logotipo, descrição, devs ativos,
  * redes sociais (até 6) e integrantes (até 12, com foto).
  *
+ *   [Estúdio] [Redes sociais] [Integrantes] [Logins]      <- abas
+ *   formulário                          | Resumo (lateral)
+ *   Logins do estúdio (só admin)        |
+ *
  * - Admin: edita qualquer desenvolvedora e, embaixo, cria os logins do
  *   estúdio (componente StudioAccounts).
  * - Estúdio: esta página vira "Meu estúdio" e só abre o estúdio dele.
@@ -12,16 +16,31 @@
  *   (apelido, nome, cargo, foto, descrição e até 3 redes de cada um).
  */
 
+// ===============================================
+// IMPORTAÇÕES
+// ===============================================
+
 import { useEffect, useState } from 'react'
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { BsPlusLg, BsTrash } from 'react-icons/bs'
 import AdminLayout from '../../components/Admin/AdminLayout'
 import ImageUpload from '../../components/Admin/ImageUpload'
 import StudioAccounts from '../../components/Admin/StudioAccounts'
+import { Alert, EditorTabs, Field, SaveBar, Section, Thumb } from '../../components/Admin/AdminUI'
+import { plural, useLeaveWarning } from '../../components/Admin/AdminHelpers'
 import { useAuth } from '../../context/AuthContext'
-import { api } from '../../services/api'
+import { api, imageUrl } from '../../services/api'
 import '../../styles/globals.css'
 
+const FORM_ID = 'developer-form'
 const EMPTY = { name: '', logo: '', description: '', activeDevs: 0, socials: [], members: [] }
+const MAX_SOCIALS = 6
+const MAX_MEMBERS = 12
+const MAX_MEMBER_SOCIALS = 3
+
+// ===============================================
+// COMPONENTE PRINCIPAL
+// ===============================================
 
 export default function DeveloperEditor() {
   const { id } = useParams()
@@ -29,14 +48,17 @@ export default function DeveloperEditor() {
   const { run, isAdmin, refreshUser } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
-  const backTo = isAdmin ? '/painel/desenvolvedoras' : '/painel' // para onde o "Cancelar" volta
 
   const [form, setForm] = useState(EMPTY)
+  const [saved, setSaved] = useState(EMPTY) // como está salvo (para saber se mudou)
   const [loading, setLoading] = useState(!isNew)
   const [saving, setSaving] = useState(false)
   const [errors, setErrors] = useState({})
   const [message, setMessage] = useState('')
   const [notice, setNotice] = useState('') // aviso de "salvo" (estúdio fica na página)
+
+  const dirty = JSON.stringify(form) !== JSON.stringify(saved)
+  useLeaveWarning(dirty && !saving)
 
   // Aviso que veio junto com a navegação (ex.: "Desenvolvedora criada...")
   useEffect(() => {
@@ -46,7 +68,10 @@ export default function DeveloperEditor() {
   useEffect(() => {
     if (isNew) return
     run((token) => api.admin.getDeveloper(token, id))
-      .then((dev) => setForm(dev))
+      .then((dev) => {
+        setForm(dev)
+        setSaved(dev)
+      })
       .catch((err) => setMessage(err.message))
       .finally(() => setLoading(false))
   }, [id, isNew, run])
@@ -60,7 +85,6 @@ export default function DeveloperEditor() {
   const removeItem = (list, index) => setForm((f) => ({ ...f, [list]: f[list].filter((_, i) => i !== index) }))
 
   // Redes de UM integrante (lista dentro da lista)
-  const MAX_MEMBER_SOCIALS = 3
   const setMemberSocials = (index, fn) =>
     setForm((f) => ({
       ...f,
@@ -71,6 +95,14 @@ export default function DeveloperEditor() {
     setMemberSocials(index, (list) => list.map((s, k) => (k === j ? { ...s, [field]: value } : s)))
   const removeMemberSocial = (index, j) => setMemberSocials(index, (list) => list.filter((_, k) => k !== j))
 
+  const discard = () => {
+    if (!window.confirm('Descartar as alterações que ainda não foram salvas?')) return
+    setForm(saved)
+    setErrors({})
+    setMessage('')
+  }
+
+  // ---------- Salvar ----------
   const handleSubmit = async (e) => {
     e.preventDefault()
     setErrors({})
@@ -79,17 +111,20 @@ export default function DeveloperEditor() {
     setSaving(true)
     const payload = { ...form, activeDevs: Number(form.activeDevs) }
     try {
-      const saved = await run((token) =>
+      const result = await run((token) =>
         isNew ? api.admin.createDeveloper(token, payload) : api.admin.updateDeveloper(token, id, payload),
       )
       if (!isAdmin) {
         // Estúdio: continua na página e atualiza o nome no menu
+        setForm(result)
+        setSaved(result)
         setNotice('Perfil do estúdio salvo.')
         refreshUser().catch(() => {})
         window.scrollTo({ top: 0, behavior: 'smooth' })
       } else if (isNew) {
         // Admin criou: abre a página dela para já criar os logins
-        navigate(`/painel/desenvolvedoras/${saved.id}`, {
+        setSaved(form) // não pergunta "sair sem salvar?"
+        navigate(`/painel/desenvolvedoras/${result.id}`, {
           replace: true,
           state: { message: 'Desenvolvedora criada. Agora você pode criar os logins do estúdio lá embaixo.' },
         })
@@ -105,10 +140,14 @@ export default function DeveloperEditor() {
     }
   }
 
-  const title = !isAdmin ? 'Meu estúdio' : isNew ? 'Nova desenvolvedora' : 'Editar desenvolvedora'
+  const title = !isAdmin ? 'Meu estúdio' : isNew ? 'Nova desenvolvedora' : saved.name || 'Editar desenvolvedora'
+  const crumbs = isAdmin
+    ? [{ label: 'Desenvolvedoras', to: '/painel/desenvolvedoras' }, { label: isNew ? 'Nova' : 'Editar' }]
+    : [{ label: 'Meu estúdio' }]
+
   if (loading) {
     return (
-      <AdminLayout title={title}>
+      <AdminLayout title={title} crumbs={crumbs}>
         <p className="admin-loading">Carregando...</p>
       </AdminLayout>
     )
@@ -117,170 +156,200 @@ export default function DeveloperEditor() {
   // Erro de um item de lista, ex.: errors["members.0.name"]
   const itemError = (list, i, field) => errors[`${list}.${i}.${field}`]
 
+  const sections = [
+    { id: 'dev-estudio', label: 'Estúdio' },
+    { id: 'dev-redes', label: 'Redes sociais' },
+    { id: 'dev-integrantes', label: 'Integrantes' },
+    ...(isAdmin && !isNew ? [{ id: 'dev-logins', label: 'Logins' }] : []),
+  ]
+
   return (
-    <AdminLayout title={title}>
-      {message && <p className="admin-alert admin-alert--error" role="alert">{message}</p>}
-      {notice && <p className="admin-alert" role="status">{notice}</p>}
+    <AdminLayout
+      title={title}
+      subtitle={!isAdmin ? 'O perfil do estúdio aparece no “Developed By” dos posts.' : undefined}
+      crumbs={crumbs}
+      dirty={dirty}
+      actions={
+        <button type="submit" form={FORM_ID} className="admin-btn admin-btn--primary"
+          disabled={saving || (!isNew && !dirty)}>
+          {saving ? 'Salvando...' : isNew ? 'Criar desenvolvedora' : 'Salvar'}
+        </button>
+      }
+    >
+      {message && <Alert tone="error">{message}</Alert>}
+      {notice && <Alert onClose={() => setNotice('')}>{notice}</Alert>}
       {form.isTrevo && (
-        <p className="admin-alert admin-alert--trevo" role="note">
-          🍀 Esta é a <strong>Trevo Team</strong>. Os integrantes daqui aparecem na seção da equipe da página About.
-        </p>
+        <Alert tone="trevo">
+          Esta é a <strong>Trevo Team</strong>. Os integrantes daqui aparecem na seção da equipe da página About.
+        </Alert>
       )}
 
-      <form className="admin-form" onSubmit={handleSubmit} noValidate>
-        <fieldset className="admin-card">
-          <legend className="admin-card-title">Estúdio</legend>
-          <div className="admin-grid-2">
-            <label className={`admin-field ${errors.name ? 'has-error' : ''}`}>
-              <span className="admin-label">Nome</span>
-              <input value={form.name} maxLength={100} onChange={(e) => set('name', e.target.value)} required />
-              {errors.name && <span className="admin-field-error">{errors.name}</span>}
-            </label>
-            <label className={`admin-field ${errors.activeDevs ? 'has-error' : ''}`}>
-              <span className="admin-label">Devs ativos</span>
-              <input type="number" min="0" max="999" value={form.activeDevs} onChange={(e) => set('activeDevs', e.target.value)} />
-              {errors.activeDevs && <span className="admin-field-error">{errors.activeDevs}</span>}
-            </label>
-          </div>
-          <label className={`admin-field ${errors.description ? 'has-error' : ''}`}>
-            <span className="admin-label">Descrição</span>
-            <textarea rows="3" maxLength={600} value={form.description} onChange={(e) => set('description', e.target.value)} />
-            {errors.description && <span className="admin-field-error">{errors.description}</span>}
-          </label>
-          <ImageUpload label="Logotipo" value={form.logo} onChange={(v) => set('logo', v)} small />
-        </fieldset>
+      <EditorTabs sections={sections} />
 
-        {/* ---------- Redes sociais ---------- */}
-        <fieldset className="admin-card">
-          <legend className="admin-card-title">Redes sociais ({form.socials.length}/6)</legend>
-          {form.socials.map((social, i) => (
-            <div key={i} className="admin-list-row">
-              <label className="admin-field">
-                <span className="admin-label">Rede</span>
-                <input value={social.label} placeholder="Instagram" maxLength={30}
-                  onChange={(e) => setItem('socials', i, 'label', e.target.value)} />
-                {itemError('socials', i, 'label') && <span className="admin-field-error">{itemError('socials', i, 'label')}</span>}
-              </label>
-              <label className="admin-field admin-field--grow">
-                <span className="admin-label">Link</span>
-                <input value={social.url} placeholder="https://..."
-                  onChange={(e) => setItem('socials', i, 'url', e.target.value)} />
-                {itemError('socials', i, 'url') && <span className="admin-field-error">{itemError('socials', i, 'url')}</span>}
-              </label>
-              <button type="button" className="admin-button admin-button--ghost" onClick={() => removeItem('socials', i)}
-                aria-label={`Remover rede ${social.label || i + 1}`}>
-                Remover
-              </button>
-            </div>
-          ))}
-          {form.socials.length < 6 && (
-            <button type="button" className="admin-button admin-button--light" onClick={() => addItem('socials', { label: '', url: '' })}>
-              + Adicionar rede
-            </button>
-          )}
-        </fieldset>
+      <div className="admin-editor">
+        <div className="admin-stack">
+          <form id={FORM_ID} className="admin-stack" onSubmit={handleSubmit} noValidate>
+            {/* ========== ESTÚDIO ========== */}
+            <Section id="dev-estudio" title="Estúdio">
+              <div className="admin-grid-2">
+                <Field label="Nome" error={errors.name}>
+                  <input value={form.name} maxLength={100} onChange={(e) => set('name', e.target.value)} required />
+                </Field>
+                <Field label="Devs ativos" error={errors.activeDevs}>
+                  <input type="number" min="0" max="999" value={form.activeDevs}
+                    onChange={(e) => set('activeDevs', e.target.value)} />
+                </Field>
+              </div>
+              <Field label="Descrição" error={errors.description} count={`${(form.description || '').length}/600`}>
+                <textarea rows="3" maxLength={600} value={form.description}
+                  onChange={(e) => set('description', e.target.value)} />
+              </Field>
+              <ImageUpload label="Logotipo" value={form.logo} onChange={(v) => set('logo', v)} small contain />
+            </Section>
 
-        {/* ---------- Integrantes ---------- */}
-        <fieldset className="admin-card">
-          <legend className="admin-card-title">Integrantes ({form.members.length}/12)</legend>
-          {form.members.map((member, i) => {
-            const socials = member.socials || []
-            const socialError = (j, field) => errors[`members.${i}.socials.${j}.${field}`]
-            return (
-              <div key={i} className="admin-member">
-                {/* Linha 1: foto, nome, apelido e cargo */}
-                <div className="admin-list-row admin-list-row--member">
-                  <ImageUpload label="Foto" value={member.photo} onChange={(v) => setItem('members', i, 'photo', v)} small />
-                  <label className={`admin-field ${itemError('members', i, 'name') ? 'has-error' : ''}`}>
-                    <span className="admin-label">Nome</span>
-                    <input value={member.name} maxLength={60} onChange={(e) => setItem('members', i, 'name', e.target.value)} />
-                    {itemError('members', i, 'name') && <span className="admin-field-error">{itemError('members', i, 'name')}</span>}
-                  </label>
-                  <label className="admin-field">
-                    <span className="admin-label">Apelido</span>
-                    <input value={member.nickname || ''} maxLength={30} placeholder="Ex.: TECO"
-                      onChange={(e) => setItem('members', i, 'nickname', e.target.value)} />
-                  </label>
-                  <label className="admin-field">
-                    <span className="admin-label">Cargo e função</span>
-                    <input value={member.role} maxLength={60} placeholder="Ex.: Programador · Front-end"
-                      onChange={(e) => setItem('members', i, 'role', e.target.value)} />
-                  </label>
-                  <button type="button" className="admin-button admin-button--ghost" onClick={() => removeItem('members', i)}
-                    aria-label={`Remover integrante ${member.name || i + 1}`}>
-                    Remover
+            {/* ========== REDES SOCIAIS ========== */}
+            <Section id="dev-redes" title="Redes sociais" note={`${form.socials.length}/${MAX_SOCIALS}`}>
+              {form.socials.length === 0 && <p className="admin-muted admin-gap">Nenhuma rede ainda.</p>}
+              {form.socials.map((social, i) => (
+                <div key={i} className="admin-row admin-row--labeled">
+                  <Field label="Rede" error={itemError('socials', i, 'label')}>
+                    <input value={social.label} placeholder="Instagram" maxLength={30}
+                      onChange={(e) => setItem('socials', i, 'label', e.target.value)} />
+                  </Field>
+                  <Field label="Link" error={itemError('socials', i, 'url')}>
+                    <input value={social.url} placeholder="https://..."
+                      onChange={(e) => setItem('socials', i, 'url', e.target.value)} />
+                  </Field>
+                  <button type="button" className="admin-icon-btn admin-icon-btn--danger" onClick={() => removeItem('socials', i)}
+                    title="Remover" aria-label={`Remover rede ${social.label || i + 1}`}>
+                    <BsTrash aria-hidden="true" />
                   </button>
                 </div>
+              ))}
+              {form.socials.length < MAX_SOCIALS && (
+                <button type="button" className="admin-add" onClick={() => addItem('socials', { label: '', url: '' })}>
+                  <BsPlusLg aria-hidden="true" /> Adicionar rede
+                </button>
+              )}
+            </Section>
 
-                {/* Linha 2: descrição */}
-                <label className={`admin-field ${itemError('members', i, 'description') ? 'has-error' : ''}`}>
-                  <span className="admin-label">Descrição</span>
-                  <textarea rows="2" maxLength={600} value={member.description || ''}
-                    onChange={(e) => setItem('members', i, 'description', e.target.value)} />
-                  {itemError('members', i, 'description') && (
-                    <span className="admin-field-error">{itemError('members', i, 'description')}</span>
-                  )}
-                </label>
-
-                {/* Linha 3: redes da pessoa (viram as bolinhas na página About) */}
-                <div className="admin-member-socials">
-                  <span className="admin-label">Redes ({socials.length}/{MAX_MEMBER_SOCIALS})</span>
-                  {socials.map((social, j) => (
-                    <div key={j} className="admin-list-row">
-                      <label className={`admin-field ${socialError(j, 'label') ? 'has-error' : ''}`}>
-                        <span className="visually-hidden">Nome da rede</span>
-                        <input value={social.label} maxLength={30} placeholder="Instagram"
-                          onChange={(e) => setMemberSocial(i, j, 'label', e.target.value)} />
-                        {socialError(j, 'label') && <span className="admin-field-error">{socialError(j, 'label')}</span>}
-                      </label>
-                      <label className={`admin-field admin-field--grow ${socialError(j, 'url') ? 'has-error' : ''}`}>
-                        <span className="visually-hidden">Link da rede</span>
-                        <input value={social.url} placeholder="https://..."
-                          onChange={(e) => setMemberSocial(i, j, 'url', e.target.value)} />
-                        {socialError(j, 'url') && <span className="admin-field-error">{socialError(j, 'url')}</span>}
-                      </label>
-                      <button type="button" className="admin-button admin-button--ghost" onClick={() => removeMemberSocial(i, j)}
-                        aria-label={`Remover rede ${social.label || j + 1}`}>
-                        Remover
+            {/* ========== INTEGRANTES ========== */}
+            <Section id="dev-integrantes" title="Integrantes" note={`${form.members.length}/${MAX_MEMBERS}`}>
+              {form.members.map((member, i) => {
+                const socials = member.socials || []
+                const socialError = (j, field) => errors[`members.${i}.socials.${j}.${field}`]
+                return (
+                  <div key={i} className="admin-item">
+                    <div className="admin-item-head">
+                      <span className="admin-item-number" aria-hidden="true">{i + 1}</span>
+                      <span className="admin-item-title">{member.name || `Integrante ${i + 1}`}</span>
+                      <button type="button" className="admin-icon-btn admin-icon-btn--danger"
+                        onClick={() => removeItem('members', i)} title="Remover"
+                        aria-label={`Remover integrante ${member.name || i + 1}`}>
+                        <BsTrash aria-hidden="true" />
                       </button>
                     </div>
-                  ))}
-                  {socials.length < MAX_MEMBER_SOCIALS && (
-                    <button type="button" className="admin-button admin-button--light" onClick={() => addMemberSocial(i)}>
-                      + Rede
-                    </button>
-                  )}
-                </div>
-              </div>
-            )
-          })}
-          {form.members.length < 12 && (
-            <button type="button" className="admin-button admin-button--light"
-              onClick={() => addItem('members', { name: '', nickname: '', role: '', photo: '', description: '', socials: [] })}>
-              + Adicionar integrante
-            </button>
+
+                    <div className="admin-item-body">
+                      <ImageUpload label="Foto" value={member.photo} onChange={(v) => setItem('members', i, 'photo', v)} small />
+                      <div className="admin-item-fields">
+                        <div className="admin-grid-3">
+                          <Field label="Nome" error={itemError('members', i, 'name')}>
+                            <input value={member.name} maxLength={60}
+                              onChange={(e) => setItem('members', i, 'name', e.target.value)} />
+                          </Field>
+                          <Field label="Apelido" error={itemError('members', i, 'nickname')}>
+                            <input value={member.nickname || ''} maxLength={30} placeholder="Ex.: TECO"
+                              onChange={(e) => setItem('members', i, 'nickname', e.target.value)} />
+                          </Field>
+                          <Field label="Cargo e função" error={itemError('members', i, 'role')}>
+                            <input value={member.role} maxLength={60} placeholder="Ex.: Programador · Front-end"
+                              onChange={(e) => setItem('members', i, 'role', e.target.value)} />
+                          </Field>
+                        </div>
+                        <Field label="Descrição" error={itemError('members', i, 'description')}>
+                          <textarea rows="2" maxLength={600} value={member.description || ''}
+                            onChange={(e) => setItem('members', i, 'description', e.target.value)} />
+                        </Field>
+
+                        {/* Redes da pessoa (viram as bolinhas na página About) */}
+                        <p className="admin-subhead">
+                          Redes <span>({socials.length}/{MAX_MEMBER_SOCIALS})</span>
+                        </p>
+                        {socials.map((social, j) => (
+                          <div key={j} className="admin-row">
+                            <Field label="Nome da rede" hideLabel error={socialError(j, 'label')}>
+                              <input value={social.label} maxLength={30} placeholder="Instagram"
+                                onChange={(e) => setMemberSocial(i, j, 'label', e.target.value)} />
+                            </Field>
+                            <Field label="Link da rede" hideLabel error={socialError(j, 'url')}>
+                              <input value={social.url} placeholder="https://..."
+                                onChange={(e) => setMemberSocial(i, j, 'url', e.target.value)} />
+                            </Field>
+                            <button type="button" className="admin-icon-btn admin-icon-btn--danger"
+                              onClick={() => removeMemberSocial(i, j)} title="Remover"
+                              aria-label={`Remover rede ${social.label || j + 1}`}>
+                              <BsTrash aria-hidden="true" />
+                            </button>
+                          </div>
+                        ))}
+                        {socials.length < MAX_MEMBER_SOCIALS && (
+                          <button type="button" className="admin-text-btn" onClick={() => addMemberSocial(i)}>
+                            <BsPlusLg aria-hidden="true" /> Adicionar rede
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+              {form.members.length < MAX_MEMBERS && (
+                <button type="button" className="admin-add"
+                  onClick={() => addItem('members', { name: '', nickname: '', role: '', photo: '', description: '', socials: [] })}>
+                  <BsPlusLg aria-hidden="true" /> Adicionar integrante
+                </button>
+              )}
+            </Section>
+
+            <SaveBar show={dirty} saving={saving} form={FORM_ID} onDiscard={discard}
+              saveLabel={isNew ? 'Criar desenvolvedora' : 'Salvar alterações'} />
+          </form>
+
+          {/* ========== LOGINS DO ESTÚDIO (só admin) ========== */}
+          {isAdmin && !isNew && <StudioAccounts id="dev-logins" developerId={Number(id)} />}
+          {isAdmin && isNew && (
+            <p className="admin-muted">Depois de criar a desenvolvedora, os logins do estúdio aparecem aqui embaixo.</p>
           )}
-        </fieldset>
-
-        <div className="admin-form-actions">
-          <Link to={backTo} className="admin-button admin-button--ghost">{isAdmin ? 'Cancelar' : 'Voltar'}</Link>
-          <button type="submit" className="admin-button admin-button--primary" disabled={saving}>
-            {saving ? 'Salvando...' : isNew ? 'Criar desenvolvedora' : 'Salvar alterações'}
-          </button>
         </div>
-      </form>
 
-      {/* ========== LOGINS DO ESTÚDIO (só admin) ========== */}
-      {isAdmin && !isNew && (
-        <div className="admin-form admin-after-form">
-          <StudioAccounts developerId={Number(id)} />
-        </div>
-      )}
-      {isAdmin && isNew && (
-        <p className="admin-hint admin-after-form">
-          Depois de criar a desenvolvedora, os logins do estúdio aparecem aqui embaixo.
-        </p>
-      )}
+        {/* ========== LATERAL: RESUMO ========== */}
+        <aside className="admin-aside" aria-label="Resumo">
+          <Section title="Resumo">
+            <div className="admin-profile admin-gap">
+              <Thumb src={imageUrl(form.logo)} contain round />
+              <div className="admin-profile-text">
+                <strong>{form.name || 'Nome do estúdio'}</strong>
+                <span className="admin-muted">{plural(Number(form.activeDevs) || 0, 'dev ativo', 'devs ativos')}</span>
+              </div>
+            </div>
+            <dl className="admin-facts">
+              <div>
+                <dt>Integrantes</dt>
+                <dd>{form.members.length}/{MAX_MEMBERS}</dd>
+              </div>
+              <div>
+                <dt>Redes sociais</dt>
+                <dd>{form.socials.length}/{MAX_SOCIALS}</dd>
+              </div>
+            </dl>
+            <p className="admin-note">
+              {form.isTrevo
+                ? 'Os integrantes aparecem na seção da equipe da página About.'
+                : 'Aparece no “Developed By” dos posts e como estúdio dos jogos.'}
+            </p>
+          </Section>
+        </aside>
+      </div>
     </AdminLayout>
   )
 }
