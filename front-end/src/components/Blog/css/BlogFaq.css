@@ -1,127 +1,217 @@
 /**
  * ESTILOS: BlogFaq
  * ================
- * Perguntas em caixas cinza com animação ao abrir e fechar:
- * - a resposta desliza para baixo (altura de 0 até o tamanho do texto)
- *   e aparece com um leve fade;
- * - o "+" gira 45° e vira um "×";
- * - a borda esquerda passa de ciano para laranja.
+ * Aba FAQ do Blog: duas colunas, como o FAQ da Contact.
+ * - Esquerda: título, busca, filtro por tema e o bloco "Não achou?"
+ *   (fica parada enquanto a lista rola, no computador).
+ * - Direita: a lista (FaqList, CSS em shared/css/FaqList.css).
  *
- * A animação de altura usa grid-template-rows (0fr -> 1fr), que funciona
- * sem precisar saber a altura do texto.
- * Quem ativa "reduzir movimento" no sistema não vê as animações
- * (regra prefers-reduced-motion do globals.css).
+ * O título, o texto e o botão laranja vêm de Contact/css/ContactFaq.css.
  */
 
 .blog-faq {
-  max-width: 820px;
+  width: min(1120px, calc(100% - 2 * var(--spacing-md)));
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
+  padding: 56px 0 128px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.6fr);
+  gap: 72px;
+  align-items: start;
+}
+
+/* Coluna da esquerda parada enquanto a lista rola */
+.blog-faq-intro {
+  position: sticky;
+  top: 24px;
 }
 
 /* ================================================
-   CAIXA DA PERGUNTA
+   BUSCA
    ================================================ */
 
-.blog-faq-item {
-  background: var(--light-gray);
-  border-radius: var(--radius-sm);
-  border-left: 8px solid var(--primary-cyan);
-  overflow: hidden;
-  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+.blog-faq-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 0 14px;
+  border: 2px solid var(--light-gray);
+  border-radius: 8px;
+  transition: border-color var(--transition-normal);
 }
 
-.blog-faq-item:hover {
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+/* Campo em uso: borda verde (como nos formulários) */
+.blog-faq-search:focus-within {
+  border-color: var(--primary-green);
 }
 
-.blog-faq-item.is-open {
-  border-left-color: var(--primary-orange);
+.blog-faq-search svg {
+  flex-shrink: 0;
+  color: #777;
 }
 
-.blog-faq-heading {
-  margin: 0;
+.blog-faq-search input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 15px;
 }
 
-.blog-faq-question {
+/* ================================================
+   FILTRO POR TEMA
+   ================================================ */
+
+.blog-faq-filters {
+  list-style: none;
+  margin: 0 0 32px;
+  padding: 0;
+  border-top: 1px solid #d0d0d0;
+}
+
+.blog-faq-filter {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: 12px 4px;
+  border: 0;
+  border-bottom: 1px solid #d0d0d0;
   background: transparent;
-  text-align: left;
-  font-size: 18px;
+  font-family: inherit;
+  font-size: 15px;
   font-weight: 700;
+  text-align: left;
   color: var(--text-black);
+  cursor: pointer;
+  transition: padding var(--transition-normal), box-shadow var(--transition-normal);
 }
 
-.blog-faq-question:focus-visible {
+.blog-faq-filter:hover {
+  padding-left: 10px;
+}
+
+/* Escolhido: tracinho laranja na esquerda e número laranja */
+.blog-faq-filter.is-active {
+  padding-left: 14px;
+  box-shadow: inset 4px 0 0 var(--primary-orange);
+}
+
+.blog-faq-filter:focus-visible {
   outline: 3px solid var(--text-black);
   outline-offset: -3px;
 }
 
-/* "+" que gira e vira "×" */
-.blog-faq-icon {
-  font-size: 28px;
-  font-weight: 400;
-  line-height: 1;
-  flex-shrink: 0;
-  transition: transform 0.35s ease;
+/* Quantidade de perguntas do tema */
+.blog-faq-count {
+  min-width: 26px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--primary-cyan);
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
+  transition: background var(--transition-normal);
 }
 
-.blog-faq-item.is-open .blog-faq-icon {
-  transform: rotate(45deg);
+.blog-faq-filter.is-active .blog-faq-count {
+  background: var(--primary-orange);
 }
 
 /* ================================================
-   RESPOSTA (painel animado)
+   "NÃO ACHOU SUA RESPOSTA?" (canto cortado)
    ================================================ */
 
-.blog-faq-panel {
-  display: grid;
-  grid-template-rows: 0fr; /* fechado: altura zero */
-  transition: grid-template-rows 0.35s ease;
+.blog-faq-help {
+  --cut: 30px;
+  padding: 22px 22px 26px;
+  border-radius: 14px;
+  background: var(--primary-cyan);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%);
 }
 
-.blog-faq-item.is-open .blog-faq-panel {
-  grid-template-rows: 1fr; /* aberto: altura do texto */
+.blog-faq-help-title {
+  margin: 0 0 6px;
+  font-size: 17px;
+  font-weight: 800;
 }
 
-.blog-faq-panel-inner {
-  overflow: hidden;
-  min-height: 0;
+.blog-faq-help-text {
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 21px;
 }
 
-.blog-faq-answer {
+/* Busca sem resultado */
+.blog-faq-empty {
+  margin: 0;
+  padding: 22px 4px;
+  border-top: 1.5px solid var(--text-black);
   font-size: 16px;
   line-height: 24px;
-  padding: 0 var(--spacing-md) var(--spacing-sm);
-  margin: 0;
-  opacity: 0;
-  transform: translateY(-8px);
-  transition: opacity 0.3s ease, transform 0.35s ease;
 }
 
-.blog-faq-item.is-open .blog-faq-answer {
-  opacity: 1;
-  transform: translateY(0);
+.blog-faq-empty a {
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* ================================================
-   RESPONSIVIDADE
+   CELULAR (até 768px): uma coluna, filtros em linha
    ================================================ */
 
-@media (max-width: 480px) {
-  .blog-faq-question {
-    font-size: 16px;
-    padding: var(--spacing-sm);
+@media (max-width: 768px) {
+  .blog-faq {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 40px 0 80px;
   }
 
-  .blog-faq-answer {
-    padding: 0 var(--spacing-sm) var(--spacing-sm);
+  .blog-faq-intro {
+    position: static;
+  }
+
+  /* Filtros viram "pílulas" lado a lado */
+  .blog-faq-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    border-top: 0;
+    margin-bottom: 24px;
+  }
+
+  .blog-faq-filter {
+    width: auto;
+    gap: 8px;
+    padding: 8px 12px;
+    border: 2px solid var(--text-black);
+    border-radius: 999px;
+    font-size: 14px;
+  }
+
+  .blog-faq-filter:hover {
+    padding-left: 12px;
+  }
+
+  .blog-faq-filter.is-active {
+    padding-left: 12px;
+    box-shadow: none;
+    background: var(--primary-orange);
+  }
+
+  .blog-faq-filter.is-active .blog-faq-count {
+    background: var(--white);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-faq-search,
+  .blog-faq-filter,
+  .blog-faq-count {
+    transition: none;
   }
 }

@@ -1,0 +1,199 @@
+/**
+ * ESTILOS: FaqList
+ * ================
+ * Lista numerada de perguntas (Contact e aba FAQ do Blog).
+ * A pergunta aberta ganha um fundo ciano que some para a direita.
+ *
+ * Animações:
+ * - o "+" gira meia volta e o tracinho de pé deita (vira "−");
+ * - a resposta abre e fecha deslizando (grid-template-rows 0fr -> 1fr);
+ * - o fundo ciano da pergunta aberta aparece e some aos poucos.
+ *
+ * A altura mínima (para o rodapé não se mexer) vem do FaqList.jsx.
+ */
+
+/* ================================================
+   GRUPOS (temas)
+   ================================================ */
+
+.faq-list-group + .faq-list-group {
+  margin-top: 40px;
+}
+
+/* Nome do tema: pequeno, verde-escuro, espaçado */
+.faq-list-group-name {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--primary-b-green);
+}
+
+/* ================================================
+   LISTA
+   ================================================ */
+
+.faq-list-items {
+  position: relative;
+  z-index: 0; /* o fundo das perguntas (z-index -1) fica dentro da lista */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1.5px solid var(--text-black);
+}
+
+.faq-list-item {
+  position: relative;
+  padding-bottom: 10px; /* espaço fixo embaixo (aberta ou fechada: só a resposta muda de altura) */
+  border-bottom: 1px solid #d0d0d0;
+}
+
+/* Aberta: fundo ciano que some para a direita (aparece aos poucos) */
+.faq-list-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to right, rgba(208, 255, 251, 0.6), rgba(208, 255, 251, 0));
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.faq-list-item.is-open::before {
+  opacity: 1;
+}
+
+/* A pergunta inteira é o botão */
+.faq-list-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 22px 4px 12px; /* + os 10px do item = 22px embaixo */
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: left;
+  color: var(--text-black);
+  cursor: pointer;
+}
+
+.faq-list-question:focus-visible {
+  outline: 3px solid var(--text-black);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.faq-list-number {
+  min-width: 22px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--primary-orange);
+}
+
+.faq-list-question-text {
+  flex: 1;
+}
+
+/* ================================================
+   "+" QUE VIRA "−"
+   ================================================ */
+
+.faq-list-icon {
+  position: relative;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  transition: transform 0.35s ease;
+}
+
+/* Os dois tracinhos do "+" */
+.faq-list-icon::before,
+.faq-list-icon::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 16px;
+  height: 2px;
+  margin: -1px 0 0 -8px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform 0.35s ease;
+}
+
+/* Tracinho de pé */
+.faq-list-icon::after {
+  transform: rotate(90deg);
+}
+
+/* Aberta: o ícone gira meia volta e o tracinho de pé deita ("−") */
+.is-open .faq-list-icon {
+  transform: rotate(180deg);
+}
+
+.is-open .faq-list-icon::after {
+  transform: rotate(0deg);
+}
+
+/* ================================================
+   RESPOSTA QUE ABRE DESLIZANDO
+   ================================================ */
+
+.faq-list-panel {
+  display: grid;
+  grid-template-rows: 0fr; /* fechada: altura 0 */
+  transition: grid-template-rows 0.35s ease;
+}
+
+.is-open .faq-list-panel {
+  grid-template-rows: 1fr; /* aberta: altura do texto */
+}
+
+.faq-list-panel-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.faq-list-answer {
+  max-width: 560px;
+  margin: 0;
+  padding: 0 4px 12px 48px; /* alinhado com o texto da pergunta */
+  font-size: 15px;
+  line-height: 23px;
+  color: #444;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.is-open .faq-list-answer {
+  opacity: 1;
+}
+
+/* ================================================
+   CELULAR (até 768px)
+   ================================================ */
+
+@media (max-width: 768px) {
+  .faq-list-question {
+    gap: 14px;
+    font-size: 16px;
+  }
+
+  .faq-list-answer {
+    padding-left: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-list-item::before,
+  .faq-list-icon,
+  .faq-list-icon::before,
+  .faq-list-icon::after,
+  .faq-list-panel,
+  .faq-list-answer {
+    transition: none;
+  }
+}

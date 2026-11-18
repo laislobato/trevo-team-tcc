@@ -11,6 +11,7 @@
  *                    (ContactForm) e a linha de contato direto (ContactDirect)
  * - ContactValues -> "NOSSOS VALORES"
  * - ContactFaq    -> perguntas frequentes + botão para o FAQ do blog
+ *                    (as perguntas vêm de src/data/faq.js: só as com "destaque")
  * - Footer
  *
  * Para trocar textos, edite as constantes abaixo.
@@ -27,6 +28,7 @@ import ContactHero from '../components/Contact/ContactHero'
 import ContactHelp from '../components/Contact/ContactHelp'
 import ContactValues from '../components/Contact/ContactValues'
 import ContactFaq from '../components/Contact/ContactFaq'
+import { faq } from '../data/faq'
 import '../styles/globals.css'
 import '../components/Contact/css/Contact.css'
 
@@ -58,26 +60,9 @@ const values = [
   { label: 'Alcance', image: '' },
 ]
 
-// Perguntas frequentes desta página (EXEMPLO: troque pelas reais).
-// A lista completa fica na aba FAQ do blog.
-const faq = [
-  {
-    question: 'Quanto tempo leva para responderem?',
-    answer: 'Respondemos em até 2 dias úteis. Mensagens de suporte têm prioridade e costumam ser respondidas antes.',
-  },
-  {
-    question: 'O que preciso enviar numa proposta de jogo?',
-    answer: 'O nome e o gênero do jogo, em que fase ele está, um link de vídeo, demo ou página, e do que vocês precisam: divulgação, financiamento ou os dois.',
-  },
-  {
-    question: 'Comprei um jogo e ele não abre. O que faço?',
-    answer: 'Escolha o assunto "Suporte" no formulário e conte qual é o jogo, em qual plataforma e o que aparece na tela.',
-  },
-  {
-    question: 'Vocês trabalham com estúdios de fora do Brasil?',
-    answer: 'Sim. Pode mandar a proposta em português ou em inglês.',
-  },
-]
+// Perguntas frequentes desta página: as marcadas com "destaque: true"
+// em src/data/faq.js (a lista completa fica na aba FAQ do blog)
+const faqHighlights = faq.filter((item) => item.destaque)
 
 // ===============================================
 // COMPONENTE PRINCIPAL
@@ -110,7 +95,7 @@ export default function Contact() {
       {/* ========== PERGUNTAS FREQUENTES ========== */}
       <ContactFaq
         text="As dúvidas que mais chegam para a equipe. Se a sua não estiver aqui, veja a lista completa ou mande uma mensagem."
-        items={faq}
+        items={faqHighlights}
       />
 
       {/* ========== RODAPÉ ========== */}

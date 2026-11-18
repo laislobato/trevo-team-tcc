@@ -24,7 +24,7 @@ import BlogTabs from '../../components/Blog/BlogTabs'
 import BlogCard from '../../components/Blog/BlogCard'
 import BlogFaq from '../../components/Blog/BlogFaq'
 import { api } from '../../services/api'
-import { faq } from '../../data/faq'
+import { faq, faqCategories } from '../../data/faq'
 import '../../styles/globals.css'
 import '../../components/Blog/css/Blog.css'
 
@@ -77,7 +77,6 @@ export default function Blog() {
 
   // O que aparece no lugar da lista
   function renderList() {
-    if (activeTab === 'faq') return <BlogFaq items={faq} />
     if (status === 'loading') return <p className="blog-empty">Carregando posts...</p>
     if (status === 'error') return <p className="blog-empty blog-error">{error}</p>
     if (visiblePosts.length === 0) return <p className="blog-empty">Ainda não há posts nesta categoria.</p>
@@ -99,9 +98,14 @@ export default function Blog() {
       <BlogTabs tabs={tabs} activeId={activeTab} onChange={setActiveTab} />
 
       {/* ========== POSTS OU FAQ ========== */}
-      <section className="blog-list" aria-live="polite" aria-busy={status === 'loading'}>
-        {renderList()}
-      </section>
+      {/* O FAQ tem a largura e as duas colunas dele (fora da lista de posts) */}
+      {activeTab === 'faq' ? (
+        <BlogFaq items={faq} categories={faqCategories} />
+      ) : (
+        <section className="blog-list" aria-live="polite" aria-busy={status === 'loading'}>
+          {renderList()}
+        </section>
+      )}
 
       {/* ========== NEWSLETTER E RODAPÉ ========== */}
       <Footer />

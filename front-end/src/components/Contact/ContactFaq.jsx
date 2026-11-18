@@ -9,13 +9,11 @@
  *   [ VER TODAS NO FAQ → ]    02  O que preciso enviar...?       +
  *                             03  ...                            +
  *
- * - Clicar numa pergunta abre a resposta (e fecha a que estava aberta).
- *   A primeira já começa aberta.
+ * - A lista é o FaqList (o mesmo da aba FAQ do Blog): a primeira pergunta
+ *   começa aberta, o "+" vira "−" com animação e o rodapé não se mexe.
+ * - As perguntas vêm de src/data/faq.js: aqui entram só as que têm
+ *   "destaque: true" (a página Contact passa elas em "items").
  * - O botão leva para a aba FAQ do blog (/blog?aba=faq).
- * - O leitor de tela é avisado se cada pergunta está aberta (aria-expanded).
- * - Animação: o "+" gira e vira "−", e a resposta abre deslizando
- *   (a altura é animada no CSS). Resposta fechada fica "inert":
- *   o leitor de tela e o Tab pulam ela.
  *
  * Props:
  * - title, subtitle: título e a parte laranja embaixo
@@ -28,9 +26,10 @@
 // IMPORTAÇÕES
 // ===============================================
 
-import { useId, useState } from 'react'
+import { useId } from 'react'
 import { Link } from 'react-router-dom'
 import { BsArrowRight } from 'react-icons/bs'
+import FaqList from '../shared/FaqList'
 import './css/ContactFaq.css'
 
 // ===============================================
@@ -44,16 +43,18 @@ export default function ContactFaq({
   items = [],
   linkTo = '/blog?aba=faq',
 }) {
-  const [open, setOpen] = useState(0) // pergunta aberta (-1 = nenhuma)
-  const baseId = useId() // liga cada pergunta à sua resposta (aria-controls)
+  const titleId = useId()
 
   if (items.length === 0) return null
 
+  // Um grupo só, sem nome, numerado 01, 02, 03...
+  const groups = [{ name: '', items: items.map((item, index) => ({ ...item, number: index + 1 })) }]
+
   return (
-    <section className="contact-faq" aria-labelledby={`${baseId}-title`}>
+    <section className="contact-faq" aria-labelledby={titleId}>
       {/* ========== COLUNA DA ESQUERDA ========== */}
       <div className="contact-faq-intro">
-        <h2 id={`${baseId}-title`} className="contact-faq-title">
+        <h2 id={titleId} className="contact-faq-title">
           {title}
           {subtitle && <span className="contact-faq-subtitle">{subtitle}</span>}
         </h2>
@@ -64,35 +65,7 @@ export default function ContactFaq({
       </div>
 
       {/* ========== LISTA DE PERGUNTAS ========== */}
-      <ul className="contact-faq-list">
-        {items.map((item, index) => {
-          const isOpen = index === open
-          const answerId = `${baseId}-answer-${index}`
-          return (
-            <li key={item.question} className={`contact-faq-item ${isOpen ? 'is-open' : ''}`}>
-              <button
-                type="button"
-                className="contact-faq-question"
-                aria-expanded={isOpen}
-                aria-controls={answerId}
-                onClick={() => setOpen(isOpen ? -1 : index)}
-              >
-                <span className="contact-faq-number">{String(index + 1).padStart(2, '0')}</span>
-                <span className="contact-faq-question-text">{item.question}</span>
-                {/* "+" feito de dois tracinhos: aberto, o de pé deita e vira "−" */}
-                <span className="contact-faq-icon" aria-hidden="true" />
-              </button>
-
-              {/* Painel que abre e fecha (a altura é animada no CSS) */}
-              <div id={answerId} className="contact-faq-panel" inert={!isOpen}>
-                <div className="contact-faq-panel-inner">
-                  <p className="contact-faq-answer">{item.answer}</p>
-                </div>
-              </div>
-            </li>
-          )
-        })}
-      </ul>
+      <FaqList groups={groups} />
     </section>
   )
 }
