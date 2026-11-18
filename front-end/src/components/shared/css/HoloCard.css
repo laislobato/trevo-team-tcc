@@ -1,0 +1,84 @@
+/**
+ * ESTILOS: HoloCard
+ * =================
+ * Efeito de carta holográfica. As duas camadas ficam por cima da imagem,
+ * com o mesmo arredondado do cartão, e só aparecem com o mouse em cima
+ * (classe .is-holo, colocada pelo HoloCard.jsx).
+ *
+ * Variáveis que o HoloCard.jsx atualiza conforme o mouse:
+ *   --holo-x, --holo-y: posição do mouse no cartão (0% a 100%)
+ *   --holo-edge:        0 no meio do cartão, 1 na borda (brilho mais forte)
+ *
+ * Para mudar a força do efeito, ajuste os "opacity" de .is-holo no fim.
+ */
+
+.holo {
+  position: relative; /* referência para as camadas */
+  will-change: transform;
+}
+
+/* Base das duas camadas */
+.holo-foil,
+.holo-glare {
+  position: absolute;
+  inset: 0;
+  z-index: 1; /* por cima da foto */
+  border-radius: inherit;
+  pointer-events: none; /* o mouse "atravessa" as camadas */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* ================================================
+   ARCO-ÍRIS (o "holográfico")
+   ================================================
+   Faixas de cor na diagonal + listrinhas finas brilhantes.
+   O fundo é bem maior que o cartão e desliza conforme o mouse. */
+
+.holo-foil {
+  background:
+    repeating-linear-gradient(
+      55deg,
+      rgba(255, 255, 255, 0.14) 0 2px,
+      transparent 2px 7px
+    ),
+    repeating-linear-gradient(
+      115deg,
+      #ff4f9a 0%,
+      #ffc93c 7%,
+      #3ee6a0 14%,
+      #35b6ff 21%,
+      #a066ff 28%,
+      #ff4f9a 35%
+    );
+  background-size: 100% 100%, 400% 400%;
+  background-position: 0 0, var(--holo-x, 50%) var(--holo-y, 50%);
+  mix-blend-mode: soft-light; /* tinge as cores de baixo sem apagar, como papel metalizado */
+}
+
+/* ================================================
+   REFLEXO DE LUZ (embaixo do mouse)
+   ================================================ */
+
+.holo-glare {
+  background: radial-gradient(
+    circle at var(--holo-x, 50%) var(--holo-y, 50%),
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 0.3) 22%,
+    rgba(255, 255, 255, 0) 55%
+  );
+  mix-blend-mode: overlay;
+}
+
+/* ================================================
+   MOUSE EM CIMA: camadas aparecem
+   ================================================ */
+
+.holo.is-holo .holo-foil {
+  /* mais forte perto da borda, como nas cartas de verdade */
+  opacity: calc(0.55 + var(--holo-edge, 0) * 0.35);
+}
+
+.holo.is-holo .holo-glare {
+  opacity: 1;
+}

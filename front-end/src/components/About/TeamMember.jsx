@@ -28,6 +28,7 @@
 
 import SocialIcon from '../shared/SocialIcon'
 import './css/TeamMember.css'
+import HoloCard from '../shared/HoloCard'
 
 // Cores das bolinhas das redes, na ordem
 const SOCIAL_COLORS = ['cyan', 'orange', 'cyan']
@@ -47,7 +48,8 @@ export default function TeamMember({
 
       {/* 🖼️ LADO DA IMAGEM (cartão em arco) */}
       <div className="team-member-visual">
-        <div className={`team-member-card team-member-card--${color}`}>
+        {/* Cartão holográfico: inclina e brilha com o mouse em cima */}
+        <HoloCard className={`team-member-card team-member-card--${color}`}>
           {photo ? (
             <img className="team-member-photo" src={photo} alt={`Foto de ${name}`} />
           ) : (
@@ -60,7 +62,7 @@ export default function TeamMember({
 
           {/* Etiqueta laranja na base, estilo adesivo */}
           <span className="team-member-tag" aria-hidden="true">TREVO TEAM</span>
-        </div>
+        </HoloCard>
       </div>
 
       {/* 📝 LADO DO TEXTO */}

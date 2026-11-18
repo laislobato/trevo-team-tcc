@@ -118,6 +118,7 @@
   border: 2px solid var(--card-shadow);
   padding: 6px 14px;
   white-space: nowrap;
+  z-index: 2; /* por cima do brilho holográfico */
 }
 
 /* No cartão laranja, a etiqueta fica ciano para aparecer */
