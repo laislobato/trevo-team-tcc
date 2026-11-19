@@ -33,6 +33,10 @@
  *                com o canto de baixo cortado e um "+" que leva para o jogo;
  *                embaixo do nome aparece o estúdio (Home)
  *
+ * Personagem do card do meio: a arte aparece inteira e sai do arco por
+ * cima e pelos lados (só a base fica presa). Use arte com fundo
+ * transparente (PNG). Medidas no CSS: --pop e --wide.
+ *
  * Card do meio: clicar em qualquer parte dele abre a página do jogo
  * (não só no "Ver mais" / "+"). Com o mouse em cima do card, o "Ver mais"
  * sobe e o "+" gira, como se o mouse estivesse neles. Pelo teclado, o

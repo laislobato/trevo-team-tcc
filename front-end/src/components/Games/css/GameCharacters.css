@@ -1,9 +1,18 @@
 /**
  * ESTILOS: GameCharacters
  * =======================
- * Personagens em linha que quebra (3 por linha no desktop).
- * Cada um: silhueta preta com cabeça e corpo laranja,
+ * Personagens em linha que quebra (2 por linha no computador).
+ * Cada um: arco colorido com a imagem saindo pelo topo (ou a silhueta),
  * ao lado de um nome e uma caixa cinza.
+ *
+ * O arco e a caixa têm sempre a mesma altura: se o texto for comprido
+ * (ou o texto do site estiver ampliado), os dois crescem juntos e o nome
+ * continua alinhado com o topo do arco.
+ *
+ * Medidas principais (mude aqui para ajustar):
+ *   --figure-w / --figure-h: tamanho do arco (a altura é a mínima)
+ *   --pop:                   altura da imagem em relação ao arco (1.3 = passa 30% do topo)
+ *   --box-w:                 largura da caixa do texto
  */
 
 /* ================================================
@@ -15,13 +24,13 @@
 }
 
 .game-characters-list {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: var(--spacing-xl) auto 0;
   padding: 0 var(--spacing-lg);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: var(--spacing-xl) var(--spacing-xl);
+  gap: var(--spacing-xl) 72px;
 }
 
 /* ================================================
@@ -29,55 +38,95 @@
    ================================================ */
 
 .game-character {
+  --figure-w: 130px;
+  --figure-h: 200px;
+  --pop: 1.3; /* a imagem é 1,3 vez a altura do arco (passa 30% do topo) */
+  --box-w: 290px;
   display: flex;
-  align-items: flex-end;
+  align-items: stretch; /* arco e caixa com a mesma altura */
   gap: 0;
+  padding-top: calc(var(--figure-h) * 0.3); /* espaço para a imagem que sai do arco */
 }
 
-/* Silhueta: fundo preto com arco no topo */
+/* Arco: fundo colorido com o topo arredondado */
 .game-character-figure {
   position: relative;
-  width: 120px;
-  height: 180px;
-  background: var(--color-text);
-  border-radius: 60px 60px 0 0;
+  width: var(--figure-w);
+  min-height: var(--figure-h);
+  border-radius: calc(var(--figure-w) / 2) calc(var(--figure-w) / 2) 0 0;
   flex-shrink: 0;
 }
 
-/* Imagem do personagem (quando tiver): ocupa a silhueta toda */
-.game-character-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: inherit;
+/* Fundo do arco: cor principal do jogo ou escuro (ver BACKGROUND no .jsx) */
+.game-character-figure--green {
+  background: var(--primary-green);
 }
 
-/* Cabeça laranja */
-.game-character-head {
+.game-character-figure--cyan {
+  background: var(--primary-cyan);
+}
+
+.game-character-figure--orange {
+  background: var(--primary-orange);
+}
+
+.game-character-figure--escuro {
+  background: var(--color-text);
+}
+
+/* Imagem do personagem: presa na base do arco, passando pelo topo */
+.game-character-image {
   position: absolute;
-  top: 22px;
+  left: 50%;
+  bottom: 0;
+  width: auto; /* a largura segue a proporção da arte */
+  height: calc(var(--figure-h) * var(--pop));
+  max-width: calc(var(--figure-w) + 24px); /* passa no máximo 12px de cada lado */
+  object-fit: contain;
+  object-position: center bottom;
+  transform: translateX(-50%);
+  transition: transform var(--transition-normal);
+  pointer-events: none;
+}
+
+/* Mouse em cima do personagem: a imagem sobe um pouquinho */
+.game-character:hover .game-character-image {
+  transform: translateX(-50%) translateY(-6px);
+}
+
+/* Silhueta (sem imagem): cabeça e corpo */
+.game-character-head,
+.game-character-body {
+  position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  background: var(--dark-brown); /* marrom-escuro sobre a cor do jogo */
+}
+
+/* No fundo escuro, a silhueta fica laranja (como era antes) */
+.game-character-figure--escuro .game-character-head,
+.game-character-figure--escuro .game-character-body {
+  background: var(--primary-orange);
+}
+
+.game-character-head {
+  top: 24px;
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: var(--primary-orange);
 }
 
-/* Corpo laranja */
 .game-character-body {
-  position: absolute;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 82px;
-  height: 100px;
-  border-radius: 41px 41px 0 0;
-  background: var(--primary-orange);
+  width: 84px;
+  height: 108px;
+  border-radius: 42px 42px 0 0;
 }
 
-/* Nome e caixa cinza à direita da silhueta */
+/* Nome e caixa cinza à direita do arco */
 .game-character-info {
+  position: relative;
+  z-index: 1; /* o nome e o texto ficam por cima da arte */
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -91,9 +140,11 @@
   margin: 0 0 0 12px;
 }
 
+/* Caixa do texto: mais larga e com a altura do arco (menos o nome) */
 .game-character-box {
-  width: 200px;
-  min-height: 125px;
+  flex: 1; /* ocupa a altura que sobra embaixo do nome */
+  width: var(--box-w);
+  min-height: calc(var(--figure-h) - 1.875rem);
   background: var(--color-gray);
   padding: var(--spacing-sm);
   margin-left: 0;
@@ -104,6 +155,17 @@
   line-height: 1.125rem;
   color: var(--color-text);
   margin: 0;
+}
+
+/* Alto contraste: borda branca no arco */
+html[data-contraste='alto'] .game-character-figure {
+  box-shadow: inset 0 0 0 2px #ffffff;
+}
+
+/* Reduzir animações: opção do menu de acessibilidade
+   (já vem ligada quando o computador pede menos movimento) */
+html[data-movimento='reduzido'] .game-character:hover .game-character-image {
+  transform: translateX(-50%);
 }
 
 /* ================================================
@@ -123,7 +185,10 @@
     align-items: center;
   }
 
-  .game-character-box {
-    width: 170px;
+  .game-character {
+    --figure-w: 110px;
+    --figure-h: 180px;
+    /* a caixa ocupa o que sobra da tela ao lado do arco */
+    --box-w: min(260px, calc(100vw - var(--figure-w) - 2 * var(--spacing-md)));
   }
 }

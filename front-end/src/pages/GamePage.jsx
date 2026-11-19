@@ -148,7 +148,7 @@ export default function GamePage() {
 
       {/* ========== PERSONAGENS ========== */}
       {characters.length > 0 && (
-        <GameCharacters title="CONHEÇA OS PERSONAGENS" characters={characters} />
+        <GameCharacters title="CONHEÇA OS PERSONAGENS" characters={characters} color={game.color} />
       )}
 
       {/* ========== OUTROS PROJETOS (vitrine sem o jogo aberto) ========== */}

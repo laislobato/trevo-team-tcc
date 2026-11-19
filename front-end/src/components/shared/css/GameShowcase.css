@@ -694,59 +694,68 @@ html[data-movimento='reduzido'] .showcase-card.is-center .showcase-info-inner {
 }
 
 /* ================================================
-   VARIANTE 'home': PERSONAGEM SAINDO DA MOLDURA
+   PERSONAGEM SAINDO DA MOLDURA (Home e página de jogos)
    ================================================
-   No card do meio, a arte fica mais alta que o arco colorido:
-   a cabeça passa por cima do arco e do fundo cinza (até a faixa laranja),
-   e embaixo continua alinhada com o fim do arco.
+   No card do meio, a arte aparece INTEIRA e maior que o arco colorido:
+   passa por cima do topo e um pouco dos lados, como se estivesse saindo
+   da moldura. Só a base fica presa na linha de baixo do arco.
+   Nos cards das laterais, a arte continua dentro do arco.
 
    Funciona com arte de fundo transparente (PNG ou WEBP); uma imagem com
    fundo "chapado" sairia como um retângulo para fora do arco.
 
-   --pop: quanto a arte sobe para fora do arco. */
+   --pop:  quanto a arte sobe acima do arco
+   --wide: quanto a arte pode passar de cada lado do arco */
 
-.showcase--home {
-  --pop: 56px;
+.showcase {
+  --pop: 64px;
+  --wide: 24px;
 }
 
 /* O palco continua cortando dos lados (cards escondidos), mas deixa
-   a cabeça passar por cima. Navegador antigo: fica cortado como antes. */
+   a arte passar por cima. Navegador antigo: fica cortado como antes. */
 @supports (overflow: clip) {
-  .showcase--home .showcase-stage {
+  .showcase-stage {
     overflow-x: clip; /* corta os cards dos lados na borda da tela (sem rolagem lateral no celular) */
-    overflow-y: visible; /* a cabeça do personagem sai por cima */
+    overflow-y: visible; /* a arte do personagem sai por cima */
   }
 }
 
 /* A arte é posicionada a partir do pé do arco */
-.showcase--home .showcase-character img {
+.showcase-character img {
   position: absolute;
-  left: 0;
+  left: 50%;
   bottom: 0;
   width: 100%;
   height: 100%;
-  transition: height var(--speed) ease;
+  max-width: none;
+  transform: translateX(-50%);
+  transition: height var(--speed) ease, width var(--speed) ease;
 }
 
-/* Card do meio: o arco não corta mais, e a arte cresce para cima */
-.showcase--home .showcase-card.is-center .showcase-character {
+/* Card do meio: nem o card nem o arco cortam mais a arte */
+.showcase-card.is-center,
+.showcase-card.is-center .showcase-character {
   overflow: visible;
 }
 
-.showcase--home .showcase-card.is-center .showcase-character img {
+/* A arte cresce para cima e para os lados, inteira (sem cortar nada) */
+.showcase-card.is-center .showcase-character img {
+  width: calc(100% + 2 * var(--wide));
   height: calc(100% + var(--pop));
-  /* mantém os cantinhos arredondados de baixo do arco */
-  clip-path: inset(0 round 0 0 8px 8px);
+  object-fit: contain;
+  object-position: center bottom; /* a base fica no pé do arco */
 }
 
 @media (max-width: 860px) {
-  .showcase--home {
-    --pop: 40px;
+  .showcase {
+    --pop: 44px;
+    --wide: 12px;
   }
 }
 
 /* Reduzir animações: opção do menu de acessibilidade
    (já vem ligada quando o computador pede menos movimento) */
-html[data-movimento='reduzido'] .showcase--home .showcase-character img {
+html[data-movimento='reduzido'] .showcase-character img {
   transition: none;
 }
