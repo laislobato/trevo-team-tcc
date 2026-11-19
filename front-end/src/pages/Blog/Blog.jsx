@@ -11,12 +11,11 @@
  * - BlogTabs    -> Todos, Anúncios, Patch Notes, Avisos e FAQ
  * - BlogCard    -> um card por post, alternando o lado da imagem
  *   (ou BlogFaq, quando a aba FAQ está selecionada)
- * - Newsletter e Footer
+ * -  Footer
  */
 
 import { useEffect, useState } from 'react'
 import Header from '../../components/shared/Header'
-import Newsletter from '../../components/shared/Newsletter'
 import Footer from '../../components/shared/Footer'
 import BlogBanner from '../../components/Blog/BlogBanner'
 import BlogHeading from '../../components/Blog/BlogHeading'
@@ -107,7 +106,7 @@ export default function Blog() {
         </section>
       )}
 
-      {/* ========== NEWSLETTER E RODAPÉ ========== */}
+      {/* ========== RODAPÉ ========== */}
       <Footer />
     </div>
   )
