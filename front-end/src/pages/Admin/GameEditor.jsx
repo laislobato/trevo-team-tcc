@@ -15,7 +15,8 @@
  * - Situação "Rascunho" não aparece no site; "Publicado" aparece na hora.
  * - Login de estúdio: o estúdio é sempre o dele (não aparece o seletor).
  * - O endereço da página (/jogo/<slug>) é criado a partir do nome na
- *   primeira vez que o jogo é salvo e não muda depois.
+ *   primeira vez que o jogo é salvo. Ao editar, ele pode ser trocado no
+ *   campo "Endereço da página"; o endereço antigo deixa de funcionar.
  */
 
 // ===============================================
@@ -42,6 +43,7 @@ const FORM_ID = 'game-form'
 
 const EMPTY = {
   title: '',
+  slug: '',
   subtitle: '',
   developerId: '',
   status: 'rascunho',
@@ -71,6 +73,7 @@ const SECTIONS = [
 /** Jogo da API -> formulário */
 const toForm = (game) => ({
   title: game.title,
+  slug: game.slug,
   subtitle: game.subtitle,
   developerId: game.developerId ?? '',
   status: game.status,
@@ -88,6 +91,15 @@ const toForm = (game) => ({
   about: game.about,
   characters: game.characters,
 })
+
+/** Deixa o endereço no formato aceito: minúsculas, sem acento, hífen no lugar de espaço */
+const toSlug = (text) =>
+  text
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9-]+/g, '-')
+    .replace(/-{2,}/g, '-')
 
 // ===============================================
 // COMPONENTE PRINCIPAL
@@ -167,7 +179,11 @@ export default function GameEditor() {
     setErrors({})
     setMessage('')
 
-    const payload = { ...form, developerId: form.developerId === '' ? null : Number(form.developerId) }
+    const payload = {
+      ...form,
+      slug: form.slug.replace(/^-+|-+$/g, ''),
+      developerId: form.developerId === '' ? null : Number(form.developerId),
+    }
 
     setSaving(true)
     try {
@@ -239,7 +255,7 @@ export default function GameEditor() {
               <Field
                 label="Nome do jogo"
                 error={errors.title}
-                hint={game ? `Endereço: /jogo/${game.slug}` : 'O endereço da página é criado a partir do nome.'}
+                hint={game ? undefined : 'O endereço da página é criado a partir do nome.'}
               >
                 <input value={form.title} maxLength={100} onChange={(e) => set('title', e.target.value)} required />
               </Field>
@@ -247,6 +263,23 @@ export default function GameEditor() {
                 <input value={form.subtitle} maxLength={150} onChange={(e) => set('subtitle', e.target.value)} />
               </Field>
             </div>
+
+            {/* Endereço: só ao editar (no jogo novo, sai do nome) */}
+            {game && (
+              <Field
+                label="Endereço da página"
+                error={errors.slug}
+                hint={
+                  form.slug !== game.slug
+                    ? `Ao salvar, a página passa para /jogo/${form.slug.replace(/^-+|-+$/g, '')} e /jogo/${game.slug} deixa de funcionar.`
+                    : `A página fica em /jogo/${game.slug}. Use letras minúsculas, números e hífens.`
+                }
+              >
+                <input value={form.slug} maxLength={80} spellCheck={false} autoCapitalize="none"
+                  onChange={(e) => set('slug', toSlug(e.target.value))}
+                  onBlur={() => set('slug', form.slug.replace(/^-+|-+$/g, ''))} />
+              </Field>
+            )}
 
             {isAdmin ? (
               <Field label="Estúdio" error={errors.developerId} hint="O estúdio escolhido também pode editar este jogo.">

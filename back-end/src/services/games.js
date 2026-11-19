@@ -5,8 +5,9 @@
  *
  * Regras:
  * - O site público só mostra jogos com status "publicado".
- * - O endereço (slug) é criado a partir do título e não muda depois,
- *   para os links compartilhados continuarem funcionando.
+ * - O endereço (slug) é criado a partir do título quando o jogo é criado.
+ *   Depois, só muda se alguém trocar no painel (campo "Endereço da página");
+ *   o endereço antigo deixa de funcionar.
  * - developerId = estúdio dono do jogo (quem pode editar: ver permissions.js).
  */
 
@@ -26,6 +27,25 @@ export const GAME_RATINGS = ['Livre', '10 anos', '12 anos', '14 anos', '16 anos'
 export const GAME_PLATFORMS = ['PC', 'PlayStation', 'Xbox', 'Nintendo Switch', 'Mobile', 'Tabuleiro']
 
 const toIso = (sql) => (sql ? `${sql.replace(' ', 'T')}Z` : null)
+
+/** Endereço válido: letras minúsculas, números e hífens (ex.: never-lost) */
+const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
+
+/**
+ * Confere o endereço digitado no painel ao editar um jogo.
+ * Vazio ou igual ao atual = não muda. Devolve o endereço que vai ficar salvo.
+ */
+function validateSlug(db, value, id, current, errors) {
+  const clean = typeof value === 'string' ? value.trim() : ''
+  if (clean === '' || clean === current) return current
+  if (clean.length > 80) errors.slug = 'O endereço pode ter no máximo 80 caracteres.'
+  else if (!SLUG_PATTERN.test(clean)) {
+    errors.slug = 'Use só letras minúsculas sem acento, números e hífens (ex.: never-lost).'
+  } else if (db.prepare('SELECT 1 FROM games WHERE slug = ? AND id != ?').get(clean, Number(id))) {
+    errors.slug = 'Outro jogo já usa esse endereço.'
+  }
+  return clean
+}
 
 function uniqueSlug(db, title) {
   const base = slugify(title)
@@ -198,16 +218,29 @@ export function createGame(db, input) {
   return getGame(db, lastInsertRowid)
 }
 
-export function updateGame(db, id, input) {
-  if (!getGame(db, id)) throw new HttpError(404, 'Jogo não encontrado.')
-  const data = validateGame(db, input)
-  db.prepare(`UPDATE games SET title = :title, subtitle = :subtitle, developer_id = :developerId,
+export function updateGame(db, id, input = {}) {
+  const current = getGame(db, id)
+  if (!current) throw new HttpError(404, 'Jogo não encontrado.')
+
+  // Os erros do endereço aparecem junto com os outros campos
+  let data
+  const slugErrors = {}
+  const slug = validateSlug(db, input.slug, id, current.slug, slugErrors)
+  try {
+    data = validateGame(db, input)
+  } catch (err) {
+    if (err instanceof HttpError && err.details) Object.assign(err.details, slugErrors)
+    throw err
+  }
+  if (Object.keys(slugErrors).length) throw new HttpError(400, 'Confira os campos destacados.', slugErrors)
+
+  db.prepare(`UPDATE games SET slug = :slug, title = :title, subtitle = :subtitle, developer_id = :developerId,
                 character = :character, character_image = :characterImage, color = :color,
                 description = :description, genre = :genre, rating = :rating, theme = :theme,
                 platforms = :platforms, art = :art, quote = :quote, screenshots = :screenshots, about = :about,
                 characters = :characters, status = :status, updated_at = CURRENT_TIMESTAMP
               WHERE id = :id`)
-    .run({ ...params(data), id: Number(id) })
+    .run({ ...params(data), slug, id: Number(id) })
   return getGame(db, id)
 }
 

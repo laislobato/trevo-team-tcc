@@ -419,6 +419,38 @@ test('jogo: editar mantém o slug; apagar some; apagar o estúdio deixa o jogo s
   assert.throws(() => games.deleteGame(db, game.id), /não encontrado/)
 })
 
+test('jogo: o endereço pode ser trocado no painel, com validação', () => {
+  const db = freshDb()
+  const a = games.createGame(db, validGame({ title: 'Raízes de Vidro' }))
+  const b = games.createGame(db, validGame({ title: 'Lumen Drift' }))
+
+  // Trocar: a página passa para o endereço novo e o antigo some
+  const moved = games.updateGame(db, a.id, validGame({ title: 'Never Lost', slug: 'never-lost' }))
+  assert.equal(moved.slug, 'never-lost')
+  assert.equal(games.getPublicGame(db, 'never-lost').game.id, a.id)
+  assert.throws(() => games.getPublicGame(db, 'raizes-de-vidro'), /não encontrado/)
+
+  // Vazio ou igual = não muda
+  assert.equal(games.updateGame(db, a.id, validGame({ slug: '' })).slug, 'never-lost')
+  assert.equal(games.updateGame(db, a.id, validGame({ slug: 'never-lost' })).slug, 'never-lost')
+
+  const slugError = (slug, extra = {}) => {
+    try {
+      games.updateGame(db, b.id, validGame({ slug, ...extra }))
+    } catch (err) {
+      return err.details
+    }
+    return {}
+  }
+  assert.match(slugError('never-lost').slug, /já usa/)
+  assert.ok(slugError('Never Lost').slug, 'maiúscula e espaço')
+  assert.ok(slugError('jogo-').slug, 'hífen no fim')
+  assert.ok(slugError('a'.repeat(81)).slug)
+  const both = slugError('x y', { title: 'a' })
+  assert.ok(both.slug && both.title, 'erros do endereço junto com os outros')
+  assert.equal(games.getGame(db, b.id).slug, 'lumen-drift', 'com erro, nada muda')
+})
+
 test('painel do estúdio lista só os jogos dele', () => {
   const { db, orvalho, lume, orvalhoUser } = studioDb()
   games.createGame(db, validGame({ title: 'Jogo do Orvalho', developerId: orvalho.id }))

@@ -148,7 +148,7 @@ export default function BannerList({ page, title, preview, initial = [], onDirty
                     onChange={(e) => set(i, 'alt', e.target.value)} />
                 </Field>
                 <Field label="Link (opcional)" error={fieldError(i, 'link')}>
-                  <input value={banner.link} placeholder="/jogo/mare-alta ou https://..."
+                  <input value={banner.link} placeholder="/jogo/never-lost ou https://..."
                     onChange={(e) => set(i, 'link', e.target.value)} />
                 </Field>
               </div>

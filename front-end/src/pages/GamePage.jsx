@@ -3,7 +3,7 @@
  * ====================================
  * (a página inicial dos jogos, com a vitrine, é a pages/Games.jsx)
  * Modelo (template) usado por todos os jogos, na rota /jogo/:slug.
- *   ex.: /jogo/raizes-de-vidro, /jogo/mare-alta, /jogo/lumen-drift
+ *   ex.: /jogo/never-lost, /jogo/pequeno-guardiao, /jogo/the-treasure-in-the-deep
  *
  * A página lê o slug do endereço e pede os dados do jogo para
  * src/services/games.js, que busca na API (jogos cadastrados pelo painel).
