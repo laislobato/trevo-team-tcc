@@ -56,6 +56,7 @@
   --color-on-accent: #000000;    /* texto em cima do laranja e do verde */
   --color-tint-green: #E3F3D2;   /* fundo verde clarinho */
   --color-tint-orange: #FDE2D7;  /* fundo laranja clarinho */
+  --color-text-orange: #B4491A;  /* texto laranja: versão escura do laranja, legível no fundo claro */
   --color-focus: #003223;        /* contorno do foco pelo teclado */
   --color-dot: #FFFFFF;          /* bolinhas do carrossel */
   --color-cyan-glow: rgba(208, 255, 251, 0.6); /* brilho ciano da pergunta aberta */

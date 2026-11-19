@@ -37,6 +37,7 @@ html[data-tema='escuro'] {
   --color-on-accent: #000000;
   --color-tint-green: #1f3317;
   --color-tint-orange: #3a2219;
+  --color-text-orange: #f8906a;
   --color-focus: #d0fffb;
   --color-dot: rgba(255, 255, 255, 0.35);
   --color-cyan-glow: rgba(208, 255, 251, 0.1);
@@ -65,6 +66,7 @@ html[data-contraste='alto'] {
   --color-on-accent: #000000;
   --color-tint-green: #000000;
   --color-tint-orange: #000000;
+  --color-text-orange: #f8906a;
   --color-focus: #ffd400;
   --color-dot: #ffffff;
   --color-cyan-glow: transparent;

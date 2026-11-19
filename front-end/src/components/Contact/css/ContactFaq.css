@@ -34,7 +34,7 @@
 /* "FREQUENTES" em laranja, na linha de baixo */
 .contact-faq-subtitle {
   display: block;
-  color: var(--primary-orange);
+  color: var(--color-text-orange);
 }
 
 .contact-faq-text {

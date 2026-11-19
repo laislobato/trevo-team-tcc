@@ -112,7 +112,7 @@
 }
 
 .blog-card-title a:hover {
-  color: var(--primary-orange);
+  color: var(--color-text-orange);
   opacity: 1;
 }
 
@@ -133,7 +133,7 @@
 }
 
 .blog-card-more:hover {
-  color: var(--primary-orange);
+  color: var(--color-text-orange);
   opacity: 1;
 }
 
