@@ -20,7 +20,6 @@ export const faqCategories = [
   { id: 'site', label: 'O site' },
   { id: 'suporte', label: 'Suporte' },
   { id: 'parcerias', label: 'Parcerias' },
-  { id: 'newsletter', label: 'Newsletter' },
 ]
 
 export const faq = [
@@ -80,13 +79,5 @@ export const faq = [
     answer: 'Sim. Pode mandar a proposta em português ou em inglês.',
     category: 'parcerias',
     destaque: true,
-  },
-
-  // ========== NEWSLETTER ==========
-  {
-    question: 'Como cancelo a newsletter?',
-    answer:
-      'Todo e-mail da newsletter tem um link para cancelar a inscrição. Basta clicar nele.',
-    category: 'newsletter',
   },
 ]

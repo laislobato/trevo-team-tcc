@@ -5,7 +5,7 @@
  * (pages/Privacy.jsx) só monta o visual.
  *
  * ⚠️ PROVISÓRIO: antes de publicar o site de verdade,
- * - troque o e-mail pelo definitivo (é o mesmo da página Contact);
+ * - o e-mail é fictício, como o próprio site (é o mesmo da página Contact);
  * - confira os prazos de "Por quanto tempo" (estão como EXEMPLO);
  * - valide a base legal de cada dado com o professor orientador
  *   ou com orientação jurídica;
@@ -21,7 +21,7 @@
 // INFORMAÇÕES GERAIS
 // ===============================================
 
-// E-mail para assuntos de privacidade (provisório, o mesmo da Contact)
+// E-mail para assuntos de privacidade (fictício, o mesmo da Contact)
 export const PRIVACY_EMAIL = 'contato@trevoteam.com'
 
 // Data da última mudança no texto
@@ -73,14 +73,6 @@ export const dataUses = [
     purpose: 'Responder sua mensagem, pedido de suporte, proposta de parceria ou contato de imprensa.',
     keep: 'Até 1 ano depois da resposta.',
     basis: 'Interesse legítimo em responder a quem procura a equipe (art. 7º, IX).',
-  },
-  {
-    name: 'Newsletter',
-    soon: true,
-    data: 'Seu e-mail.',
-    purpose: 'Mandar as novidades dos jogos e da Trevo Team, só se você pedir.',
-    keep: 'Até você cancelar a inscrição, pelo link que vem em todo e-mail.',
-    basis: 'Seu consentimento, que pode ser retirado quando quiser (art. 7º, I, e art. 8º, § 5º).',
   },
   {
     name: 'Enviar um jogo',
@@ -189,7 +181,7 @@ export const sections = [
       },
       {
         type: 'p',
-        text: 'Quando o formulário do Contact Us e a newsletter começarem a mandar e-mails, o serviço de envio usado também vai aparecer aqui.',
+        text: 'Quando o formulário do Contact Us começar a mandar e-mails, o serviço de envio usado também vai aparecer aqui.',
       },
     ],
   },
@@ -240,7 +232,7 @@ export const sections = [
           'saber se usamos dados seus e ver quais são;',
           'corrigir dados errados, incompletos ou desatualizados;',
           'pedir que apaguemos dados desnecessários ou que você autorizou;',
-          'retirar uma autorização, como a da newsletter;',
+          'retirar uma autorização que você tenha dado;',
           'saber com quem os dados foram compartilhados;',
           'levar seus dados para outro serviço (portabilidade).',
         ],
@@ -257,7 +249,7 @@ export const sections = [
     blocks: [
       {
         type: 'p',
-        text: 'Qualquer pessoa pode navegar pelo site. Para mandar uma mensagem ou se inscrever na newsletter, menores de 12 anos precisam da autorização de um dos pais ou responsável. Se uma criança mandou dados sem essa autorização, fale com a gente que apagamos.',
+        text: 'Qualquer pessoa pode navegar pelo site. Para mandar uma mensagem ou enviar um jogo, menores de 12 anos precisam da autorização de um dos pais ou responsável. Se uma criança mandou dados sem essa autorização, fale com a gente que apagamos.',
       },
     ],
   },
@@ -267,7 +259,7 @@ export const sections = [
     blocks: [
       {
         type: 'p',
-        text: 'Quando o site ganhar funções novas, como a newsletter, esta página vai mudar. A data da última mudança fica no topo. Se a mudança for grande, avisamos aqui no site.',
+        text: 'Quando o site ganhar funções novas, como a página Enviar um jogo, esta página vai mudar. A data da última mudança fica no topo. Se a mudança for grande, avisamos aqui no site.',
       },
     ],
   },
