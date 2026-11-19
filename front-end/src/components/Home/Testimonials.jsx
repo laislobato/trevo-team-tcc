@@ -17,12 +17,14 @@
  *
  * - As 3 raízes são o MESMO desenho; o card cobre uma parte diferente do topo
  *   de cada uma (--hide no CSS), igual à referência.
- * - As estrelas são lugares de ARTES (componente Art): para trocar, importe a
- *   imagem e passe em "src" (veja ARTS logo abaixo).
+ * - As estrelas são lugares de ARTES (componente Art). Enquanto a arte não
+ *   existe, nada aparece: importe a imagem e passe em "src" (veja ARTS
+ *   logo abaixo) que ela volta a aparecer no lugar da estrela.
  * - No celular os cards ficam um embaixo do outro, em zigue-zague.
  *
- * Para mudar os depoimentos: edite a lista TESTIMONIALS.
- *   photo: foto da pessoa (vazio = bolinha preta)
+ * Para mudar os objetivos: edite a lista TESTIMONIALS.
+ *   icon:  ícone branco na bolinha verde-escura (react-icons/bs)
+ *   photo: foto no lugar do ícone (opcional)
  *   color: cor do card e da raiz ('cyan' | 'green' | 'orange')
  */
 
@@ -30,6 +32,7 @@
 // IMPORTAÇÕES
 // ===============================================
 
+import { BsController, BsMegaphoneFill, BsShieldFillCheck } from 'react-icons/bs'
 import Art from '../shared/Art'
 import TreeRoot from './TreeRoot'
 import './css/Testimonials.css'
@@ -41,9 +44,16 @@ import './css/Testimonials.css'
 const TITLE = 'Nossos Objetivos'
 
 const TESTIMONIALS = [
-  { id: 1, author: 'Jogador 1', photo: '', color: 'cyan', text: 'Marketing e Divulgação' },
-  { id: 2, author: 'Jogador 2', photo: '', color: 'green', text: 'Transparencia e integridade com nossos jogadores' },
-  { id: 3, author: 'Jogador 3', photo: '', color: 'orange', text: 'Trazer uma boa experiência para os fans' },
+  { id: 1, author: 'Marketing', icon: BsMegaphoneFill, photo: '', color: 'cyan', text: 'Marketing e Divulgação' },
+  {
+    id: 2,
+    author: 'Transparência',
+    icon: BsShieldFillCheck,
+    photo: '',
+    color: 'green',
+    text: 'Transparência e integridade com nossos jogadores',
+  },
+  { id: 3, author: 'Experiência', icon: BsController, photo: '', color: 'orange', text: 'Trazer uma boa experiência para os fãs' },
 ]
 
 // ⭐ ARTES (hoje estrelas). Para trocar uma estrela pela arte:
@@ -62,8 +72,8 @@ const ARTS = [
 export default function Testimonials() {
   return (
     <section className="testimonials" aria-labelledby="testimonials-title">
-      {/* ========== ARTES (estrelas por enquanto) ========== */}
-      {ARTS.map((art) => (
+      {/* ========== ARTES (só as que já têm imagem; as estrelas ficam ocultas) ========== */}
+      {ARTS.filter((art) => art.src).map((art) => (
         <Art
           key={art.id}
           src={art.src}
@@ -81,9 +91,9 @@ export default function Testimonials() {
         {TESTIMONIALS.map((item) => (
           <li key={item.id} className={`testimonial testimonial--${item.color}`}>
             <figure className="testimonial-card">
-              {/* Bolinha da pessoa, metade para fora do card */}
-              <span className="testimonial-avatar">
-                {item.photo && <img src={item.photo} alt="" />}
+              {/* Bolinha verde-escura com o ícone, metade para fora do card */}
+              <span className="testimonial-avatar" aria-hidden="true">
+                {item.photo ? <img src={item.photo} alt="" /> : item.icon && <item.icon className="testimonial-icon" />}
               </span>
 
               <blockquote className="testimonial-text">

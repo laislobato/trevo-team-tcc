@@ -41,9 +41,18 @@
 .contact-value-circle {
   width: 130px;
   height: 130px;
+  display: grid;
+  place-items: center;
   border-radius: 50%;
   overflow: hidden;
+  color: var(--primary-b-green); /* ícone verde-escuro */
   transition: transform var(--transition-normal);
+}
+
+/* Ícone do valor (o tamanho acompanha o círculo) */
+.contact-value-icon {
+  width: 40%;
+  height: 40%;
 }
 
 .contact-value:hover .contact-value-circle {

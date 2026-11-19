@@ -146,9 +146,23 @@
   width: 87px;
   height: 87px;
   transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
   border-radius: 50%;
-  background: var(--color-text);
+  background: var(--primary-b-green); /* verde-escuro do site (não muda com o tema) */
+  color: #ffffff; /* ícone branco */
   overflow: hidden;
+}
+
+/* Ícone do objetivo */
+.testimonial-icon {
+  width: 42%;
+  height: 42%;
+}
+
+/* Alto contraste: borda branca para a bolinha não sumir no fundo preto */
+html[data-contraste='alto'] .testimonial-avatar {
+  box-shadow: inset 0 0 0 2px #ffffff;
 }
 
 .testimonial-avatar img {
