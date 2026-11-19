@@ -29,7 +29,7 @@
 // ===============================================
 
 import Art from '../shared/Art'
-import aboutArt from '../../assets/about-hero.png'
+import aboutArt from '../../assets/about-hero-orange.png'
 import './css/ContactHero.css'
 
 // ===============================================
