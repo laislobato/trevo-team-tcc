@@ -83,8 +83,8 @@ html[data-contraste='alto'] .privacy-nav-link.is-active {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .privacy-nav-link {
-    transition: none;
-  }
+/* Reduzir animações: opção do menu de acessibilidade
+   (já vem ligada quando o computador pede menos movimento) */
+html[data-movimento='reduzido'] .privacy-nav-link {
+  transition: none;
 }

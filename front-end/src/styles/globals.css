@@ -252,13 +252,7 @@ input:focus, textarea:focus, select:focus {
   }
 }
 
-/* Modo escuro, alto contraste e as outras opções do menu de
-   acessibilidade: veja styles/acessibilidade.css */
-
-/* Modo reduzido de movimento (acessibilidade) */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation: none !important;
-    transition: none !important;
-  }
-}
+/* Modo escuro, alto contraste, reduzir animações e as outras opções do
+   menu de acessibilidade: veja styles/acessibilidade.css.
+   O "reduzir movimento" do computador liga sozinho o "Reduzir animações"
+   do menu (e a pessoa pode desligar lá). */

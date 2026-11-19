@@ -103,8 +103,8 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .contact-direct-social {
-    transition: none;
-  }
+/* Reduzir animações: opção do menu de acessibilidade
+   (já vem ligada quando o computador pede menos movimento) */
+html[data-movimento='reduzido'] .contact-direct-social {
+  transition: none;
 }

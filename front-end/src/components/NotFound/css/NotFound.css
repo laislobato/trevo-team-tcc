@@ -311,9 +311,9 @@ html[data-contraste='alto'] .notfound-path code {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .notfound-zero,
-  .notfound-mascot.art--star {
-    animation: none;
-  }
+/* Reduzir animações: opção do menu de acessibilidade
+   (já vem ligada quando o computador pede menos movimento) */
+html[data-movimento='reduzido'] .notfound-zero,
+html[data-movimento='reduzido'] .notfound-mascot.art--star {
+  animation: none;
 }

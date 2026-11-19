@@ -355,13 +355,11 @@
    REDUZIR MOVIMENTO: troca sem deslizar
    ================================================ */
 
-@media (prefers-reduced-motion: reduce) {
-  .showcase-card,
-  .showcase-character,
-  .showcase-info-inner,
-  .showcase-card.is-center .showcase-info-inner {
-    transition: none;
-  }
+html[data-movimento='reduzido'] .showcase-card,
+html[data-movimento='reduzido'] .showcase-character,
+html[data-movimento='reduzido'] .showcase-info-inner,
+html[data-movimento='reduzido'] .showcase-card.is-center .showcase-info-inner {
+  transition: none;
 }
 
 /* ================================================
@@ -739,8 +737,8 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .showcase--home .showcase-character img {
-    transition: none;
-  }
+/* Reduzir animações: opção do menu de acessibilidade
+   (já vem ligada quando o computador pede menos movimento) */
+html[data-movimento='reduzido'] .showcase--home .showcase-character img {
+  transition: none;
 }

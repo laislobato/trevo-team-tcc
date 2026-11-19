@@ -187,13 +187,13 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .faq-list-item::before,
-  .faq-list-icon,
-  .faq-list-icon::before,
-  .faq-list-icon::after,
-  .faq-list-panel,
-  .faq-list-answer {
-    transition: none;
-  }
+/* Reduzir animações: opção do menu de acessibilidade
+   (já vem ligada quando o computador pede menos movimento) */
+html[data-movimento='reduzido'] .faq-list-item::before,
+html[data-movimento='reduzido'] .faq-list-icon,
+html[data-movimento='reduzido'] .faq-list-icon::before,
+html[data-movimento='reduzido'] .faq-list-icon::after,
+html[data-movimento='reduzido'] .faq-list-panel,
+html[data-movimento='reduzido'] .faq-list-answer {
+  transition: none;
 }

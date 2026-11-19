@@ -149,15 +149,15 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .contact-help-subject,
-  .contact-help-subject.is-active,
-  .contact-help-hint-text {
-    transition: none;
-    animation: none;
-  }
+/* Reduzir animações: opção do menu de acessibilidade
+   (já vem ligada quando o computador pede menos movimento) */
+html[data-movimento='reduzido'] .contact-help-subject,
+html[data-movimento='reduzido'] .contact-help-subject.is-active,
+html[data-movimento='reduzido'] .contact-help-hint-text {
+  transition: none;
+  animation: none;
+}
 
-  .contact-help-subject:hover {
-    transform: none;
-  }
+html[data-movimento='reduzido'] .contact-help-subject:hover {
+  transform: none;
 }

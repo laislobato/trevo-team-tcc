@@ -446,14 +446,14 @@ body:has(.admin-savebar) .a11y-panel {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .a11y-fab,
-  .a11y-switch,
-  .a11y-switch span,
-  .a11y-panel {
-    transition: none;
-    animation: none;
-  }
+/* Reduzir animações: opção do menu de acessibilidade
+   (já vem ligada quando o computador pede menos movimento) */
+html[data-movimento='reduzido'] .a11y-fab,
+html[data-movimento='reduzido'] .a11y-switch,
+html[data-movimento='reduzido'] .a11y-switch span,
+html[data-movimento='reduzido'] .a11y-panel {
+  transition: none;
+  animation: none;
 }
 
 @media print {

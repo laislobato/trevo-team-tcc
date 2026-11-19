@@ -144,13 +144,13 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .contact-form,
-  .contact-form-button {
-    transition: none;
-  }
+/* Reduzir animações: opção do menu de acessibilidade
+   (já vem ligada quando o computador pede menos movimento) */
+html[data-movimento='reduzido'] .contact-form,
+html[data-movimento='reduzido'] .contact-form-button {
+  transition: none;
+}
 
-  .contact-form-button:hover {
-    transform: none;
-  }
+html[data-movimento='reduzido'] .contact-form-button:hover {
+  transform: none;
 }

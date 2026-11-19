@@ -177,6 +177,10 @@ html[data-espaco='amplo'] body :is(p, li, dd, blockquote) {
 
 /* ================================================
    REDUZIR ANIMAÇÕES
+   Vale para o site inteiro. A opção já começa ligada quando o
+   computador/celular pede menos movimento, e a pessoa pode desligar
+   no menu. Por isso os CSS dos componentes usam
+   html[data-movimento='reduzido'] (e não @media prefers-reduced-motion).
    (as animações feitas em JavaScript usam prefersReducedMotion())
    ================================================ */
 

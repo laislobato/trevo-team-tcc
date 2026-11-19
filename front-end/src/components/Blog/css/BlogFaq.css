@@ -209,10 +209,10 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .blog-faq-search,
-  .blog-faq-filter,
-  .blog-faq-count {
-    transition: none;
-  }
+/* Reduzir animações: opção do menu de acessibilidade
+   (já vem ligada quando o computador pede menos movimento) */
+html[data-movimento='reduzido'] .blog-faq-search,
+html[data-movimento='reduzido'] .blog-faq-filter,
+html[data-movimento='reduzido'] .blog-faq-count {
+  transition: none;
 }

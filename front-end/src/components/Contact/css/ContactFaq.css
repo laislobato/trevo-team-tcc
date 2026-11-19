@@ -85,12 +85,12 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .contact-faq-button {
-    transition: none;
-  }
+/* Reduzir animações: opção do menu de acessibilidade
+   (já vem ligada quando o computador pede menos movimento) */
+html[data-movimento='reduzido'] .contact-faq-button {
+  transition: none;
+}
 
-  .contact-faq-button:hover {
-    transform: none;
-  }
+html[data-movimento='reduzido'] .contact-faq-button:hover {
+  transform: none;
 }

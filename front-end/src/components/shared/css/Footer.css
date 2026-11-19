@@ -242,14 +242,14 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .footer-logo-link,
-  .footer-social {
-    transition: none;
-  }
+/* Reduzir animações: opção do menu de acessibilidade
+   (já vem ligada quando o computador pede menos movimento) */
+html[data-movimento='reduzido'] .footer-logo-link,
+html[data-movimento='reduzido'] .footer-social {
+  transition: none;
+}
 
-  .footer-logo-link:hover,
-  .footer-social:hover {
-    transform: none;
-  }
+html[data-movimento='reduzido'] .footer-logo-link:hover,
+html[data-movimento='reduzido'] .footer-social:hover {
+  transform: none;
 }
