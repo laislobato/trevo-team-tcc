@@ -2,7 +2,7 @@
  * PÁGINA: AdminDevelopers
  * =======================
  * Lista das desenvolvedoras (/painel/desenvolvedoras), usadas na seção
- * "Developed By" dos posts e como estúdio dos jogos. Só o admin abre esta página.
+ * "Desenvolvido por" dos posts e como estúdio dos jogos. Só o admin abre esta página.
  * Os logins de cada estúdio são criados na página da desenvolvedora.
  *
  *   [Buscar]  [Todas 3 | Com login 2 | Sem login 1]
@@ -93,7 +93,7 @@ export default function AdminDevelopers() {
       title="Desenvolvedoras"
       subtitle={
         status === 'ready'
-          ? `${plural(developers.length, 'estúdio', 'estúdios')} · aparecem no “Developed By” dos posts e como estúdio dos jogos.`
+          ? `${plural(developers.length, 'estúdio', 'estúdios')} · aparecem no “Desenvolvido por” dos posts e como estúdio dos jogos.`
           : undefined
       }
       crumbs={[{ label: 'Desenvolvedoras' }]}

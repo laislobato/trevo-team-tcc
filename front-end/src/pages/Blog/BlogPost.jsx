@@ -11,7 +11,7 @@
  * - PostGallery    -> uma imagem grande e duas menores
  * - PostAuthor     -> foto, nome e data
  * - Texto do post
- * - PostDeveloper  -> "Developed By": estúdio e integrantes
+ * - PostDeveloper  -> "Desenvolvido por": estúdio e integrantes
  * - Divisor curto
  * - PostNav        -> post anterior e próximo
  * - Footer

@@ -290,7 +290,7 @@ export default function PostEditor() {
               <Field label="Nome do autor" error={errors.authorName} hint="Vazio = “Equipe Trevo Team”">
                 <input value={form.authorName} maxLength={80} onChange={(e) => set('authorName', e.target.value)} />
               </Field>
-              <Field label="Desenvolvedora (Developed By)" error={errors.developerId}>
+              <Field label="Desenvolvedora (Desenvolvido por)" error={errors.developerId}>
                 <select value={form.developerId} onChange={(e) => set('developerId', e.target.value)}>
                   <option value="">Nenhuma</option>
                   {developers.map((dev) => (

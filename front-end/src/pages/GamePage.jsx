@@ -102,10 +102,10 @@ export default function GamePage() {
 
   // Quadro de informações do topo (2 colunas)
   const gameInfo = [
-    { label: 'Genre', value: game.genre },
-    { label: 'Rating', value: game.rating },
-    { label: 'Theme', value: game.theme },
-    { label: 'Platform', value: game.platforms.join(', ') },
+    { label: 'Gênero', value: game.genre },
+    { label: 'Classificação', value: game.rating },
+    { label: 'Tema', value: game.theme },
+    { label: 'Plataformas', value: game.platforms.join(', ') },
   ]
 
   // 3 imagens (vazias = bloco cinza)

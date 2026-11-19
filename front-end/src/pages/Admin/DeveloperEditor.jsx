@@ -166,7 +166,7 @@ export default function DeveloperEditor() {
   return (
     <AdminLayout
       title={title}
-      subtitle={!isAdmin ? 'O perfil do estúdio aparece no “Developed By” dos posts.' : undefined}
+      subtitle={!isAdmin ? 'O perfil do estúdio aparece no “Desenvolvido por” dos posts.' : undefined}
       crumbs={crumbs}
       dirty={dirty}
       actions={
@@ -345,7 +345,7 @@ export default function DeveloperEditor() {
             <p className="admin-note">
               {form.isTrevo
                 ? 'Os integrantes aparecem na seção da equipe da página About.'
-                : 'Aparece no “Developed By” dos posts e como estúdio dos jogos.'}
+                : 'Aparece no “Desenvolvido por” dos posts e como estúdio dos jogos.'}
             </p>
           </Section>
         </aside>

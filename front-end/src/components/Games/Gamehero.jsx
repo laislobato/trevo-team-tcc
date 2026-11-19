@@ -9,8 +9,8 @@
  *      │    │      [TÍTULO]
  *    ╔═╧════╧═╗    [subtítulo]
  *    ║  arte  ║    [texto]
- *    ╚═╤════╤═╝    [Genre]   [Rating]
- *      │    │      [Theme]   [Platform]
+ *    ╚═╤════╤═╝    [Gênero]  [Classif.]
+ *      │    │      [Tema]    [Plataformas]
  *      └────┘
  *   A barra colorida começa colada no header. A arte do jogo (imagem do
  *   personagem) ocupa a barra de ponta a ponta na altura e, na largura,

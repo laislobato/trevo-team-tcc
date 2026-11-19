@@ -1,7 +1,7 @@
 /**
  * COMPONENTE: PostDeveloper
  * =========================
- * Seção "Developed By" da página do post:
+ * Seção "Desenvolvido por" da página do post:
  *
  *   [ card do estúdio: logo, nome, devs ativos, texto, redes ]   [ integrante 1 (foto) ]
  *                                                                [ integrante 2 (foto) ]
@@ -19,7 +19,7 @@ export default function PostDeveloper({ developer }) {
 
   return (
     <section className="post-developer" aria-labelledby="post-developer-title">
-      <h3 id="post-developer-title" className="post-developer-heading">Developed By</h3>
+      <h3 id="post-developer-title" className="post-developer-heading">Desenvolvido por</h3>
 
       <div className="post-developer-grid">
         {/* 🏢 CARD DO ESTÚDIO */}
