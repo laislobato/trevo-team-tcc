@@ -23,7 +23,7 @@ export const GAME_STATUS = ['rascunho', 'publicado']
 export const GAME_COLORS = ['green', 'cyan', 'orange']
 /** Classificação indicativa (ClassInd) */
 export const GAME_RATINGS = ['Livre', '10 anos', '12 anos', '14 anos', '16 anos', '18 anos']
-export const GAME_PLATFORMS = ['PC', 'PlayStation', 'Xbox', 'Nintendo Switch', 'Mobile']
+export const GAME_PLATFORMS = ['PC', 'PlayStation', 'Xbox', 'Nintendo Switch', 'Mobile', 'Tabuleiro']
 
 const toIso = (sql) => (sql ? `${sql.replace(' ', 'T')}Z` : null)
 

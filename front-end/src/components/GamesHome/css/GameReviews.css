@@ -126,6 +126,7 @@
 .review-platform--playstation { background: #0070d1; }
 .review-platform--switch { background: #e60012; }
 .review-platform--gog { background: #5100DC; }
+.review-platform--tabuleiro { background: #6b3e1f; } /* jogo físico: marrom de madeira */
 
 /* ================================================
    REDUZIR MOVIMENTO: faixa parada, com rolagem

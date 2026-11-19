@@ -97,12 +97,12 @@ test('login da equipe e troca de senha', () => {
   assert.ok(checkLogin(db, 'equipe@trevo.com', 'nova-senha-123'))
 })
 
-test('exemplos: 4 posts e 2 desenvolvedoras, só uma vez', () => {
+test('exemplos: 4 posts e 1 desenvolvedora, só uma vez', () => {
   const db = freshDb()
   assert.equal(seedExamples(db), true)
   assert.equal(seedExamples(db), false)
   assert.equal(posts.listPublicPosts(db).length, 4)
-  assert.equal(devs.listDevelopers(db).length, 3, 'Trevo Team + 2 exemplos')
+  assert.equal(devs.listDevelopers(db).length, 2, 'Trevo Team + Coletivo Lume')
   assert.equal(posts.listPublicPosts(db, 'patch').length, 1)
   assert.throws(() => posts.listPublicPosts(db, 'invalido'), /Tipo/)
 })
@@ -132,11 +132,12 @@ test('rascunho e agendado não aparecem no site; publicado aparece', () => {
 test('post público traz anterior e próximo', () => {
   const db = freshDb()
   seedExamples(db)
-  const { post, previous, next } = posts.getPublicPost(db, 'lumen-drift-patch-1-2')
+  const { post, previous, next } = posts.getPublicPost(db, 'the-treasure-in-the-deep-livro-de-regras')
   assert.equal(post.developer.name, 'Coletivo Lume')
-  assert.equal(previous.slug, 'raizes-de-vidro-data-de-lancamento') // mais antigo
-  assert.equal(next.slug, 'manutencao-servidores-outubro') // mais novo
-  const newest = posts.getPublicPost(db, 'mare-alta-world-premiere')
+  assert.equal(previous.slug, 'never-lost-world-premiere') // mais antigo
+  assert.equal(next.slug, 'manutencao-programada-outubro') // mais novo
+  assert.equal(posts.getPublicPost(db, 'never-lost-world-premiere').post.developer.name, 'Trevo Team')
+  const newest = posts.getPublicPost(db, 'pequeno-guardiao-world-premiere')
   assert.equal(newest.next, null)
 })
 
@@ -335,11 +336,11 @@ test('exemplos: 3 jogos ligados às desenvolvedoras, só uma vez', () => {
   const db = freshDb()
   seedExamples(db)
   const list = games.listPublicGames(db)
-  assert.deepEqual(list.map((g) => g.slug), ['raizes-de-vidro', 'mare-alta', 'lumen-drift'])
-  assert.equal(list[0].developer.name, 'Estúdio Orvalho')
+  assert.deepEqual(list.map((g) => g.slug), ['never-lost', 'pequeno-guardiao', 'the-treasure-in-the-deep'])
+  assert.equal(list[0].developer.name, 'Trevo Team')
   assert.equal(list[2].developer.name, 'Coletivo Lume')
-  assert.deepEqual(list[2].platforms, ['PC', 'Xbox', 'PlayStation'])
-  assert.equal(list[0].characters.length, 3)
+  assert.deepEqual(list[2].platforms, ['Tabuleiro'])
+  assert.equal(list[0].characters.length, 6)
 
   // apagou todos os exemplos: eles não voltam quando o servidor reinicia
   for (const g of list) games.deleteGame(db, g.id)
@@ -349,13 +350,12 @@ test('exemplos: 3 jogos ligados às desenvolvedoras, só uma vez', () => {
 
 test('banco antigo com posts ganha os jogos de exemplo, sem repetir os posts', () => {
   const db = freshDb()
-  devs.createDeveloper(db, { name: 'Estúdio Orvalho' })
   posts.createPost(db, validPost())
   assert.equal(seedExamples(db), true, 'criou os jogos')
   assert.equal(posts.listAllPosts(db).length, 1, 'não colocou os posts de exemplo')
   assert.equal(games.listAllGames(db).length, 3)
-  assert.equal(games.getPublicGame(db, 'raizes-de-vidro').game.developer.name, 'Estúdio Orvalho')
-  assert.equal(games.getPublicGame(db, 'lumen-drift').game.developer, null, 'Coletivo Lume não existe nesse banco')
+  assert.equal(games.getPublicGame(db, 'never-lost').game.developer.name, 'Trevo Team')
+  assert.equal(games.getPublicGame(db, 'the-treasure-in-the-deep').game.developer, null, 'Coletivo Lume não existe nesse banco')
 })
 
 test('jogo: criar, slug, rascunho fora do site e outros projetos', () => {
@@ -461,11 +461,11 @@ test('banners: exemplos criam um banner por jogo na página /jogo; a Home começ
   const db = freshDb()
   seedExamples(db)
   assert.deepEqual(banners.listBanners(db, 'jogos').map((b) => b.link), [
-    '/jogo/raizes-de-vidro',
-    '/jogo/mare-alta',
-    '/jogo/lumen-drift',
+    '/jogo/never-lost',
+    '/jogo/pequeno-guardiao',
+    '/jogo/the-treasure-in-the-deep',
   ])
-  assert.equal(banners.listBanners(db, 'jogos')[0].alt, 'Raízes de Vidro')
+  assert.equal(banners.listBanners(db, 'jogos')[0].alt, 'Never Lost')
   assert.deepEqual(banners.listBanners(db, 'home'), [])
   assert.throws(() => banners.listBanners(db, 'blog'), (e) => e.status === 404)
 })

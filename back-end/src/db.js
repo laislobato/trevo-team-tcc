@@ -278,7 +278,8 @@ function seedPosts(db) {
   const insertDev = db.prepare(`
     INSERT INTO developers (name, description, active_devs, socials, members)
     VALUES (:name, :description, :activeDevs, :socials, :members)`)
-  const devIds = {}
+  // 'trevo' = a própria Trevo Team (criada antes, em ensureTrevo)
+  const devIds = { trevo: db.prepare('SELECT id FROM developers WHERE is_trevo = 1').get()?.id ?? null }
   for (const dev of EXAMPLE_DEVELOPERS) {
     const { lastInsertRowid } = insertDev.run({
       name: dev.name,

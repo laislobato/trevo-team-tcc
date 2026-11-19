@@ -14,61 +14,61 @@
 // ===============================================
 
 /**
- * platform: 'steam' | 'xbox' | 'playstation' | 'switch' | 'gog'
+ * platform: 'steam' | 'xbox' | 'playstation' | 'switch' | 'gog' | 'tabuleiro'
  * game: nome do jogo, do jeito que aparece no card
  *
- * EXEMPLO: comentários fictícios sobre os jogos de exemplo do site
- * (Raízes de Vidro, Maré Alta e Lumen Drift), cada um numa plataforma
- * em que o jogo existe. Troque pelos comentários reais quando tiver.
+ * EXEMPLO: comentários fictícios sobre os jogos da Trevo Team (Never Lost,
+ * O Pequeno Guardião e The Treasure in the Deep), cada um numa plataforma em
+ * que o jogo existe. Troque pelos comentários reais quando tiver.
  */
 export const reviews = [
   {
     user: 'ana_ventania',
     platform: 'steam',
-    game: 'Maré Alta',
-    text: 'Jogo um dia na ilha antes de dormir e já virou ritual. Cada visitante tem uma história que fica com você.',
+    game: 'Never Lost',
+    text: 'Joguei pensando no meu bichinho de pelúcia de criança. A Bunny é uma fofura e a história aperta o coração.',
   },
   {
-    user: 'Caio_Drift',
-    platform: 'playstation',
-    game: 'Lumen Drift',
-    text: 'As pistas mudam a cada volta, então nenhuma corrida é igual. Com quatro amigos no sofá é caos do bom.',
-  },
-  {
-    user: 'mirandaplays',
-    platform: 'switch',
-    game: 'Raízes de Vidro',
-    text: 'Os quebra-cabeças com sementes são muito criativos. Joguei no portátil e não larguei até o segundo guardião.',
-  },
-  {
-    user: 'BetoNoControle',
-    platform: 'xbox',
-    game: 'Lumen Drift',
-    text: 'Gostei de ganhar só se a equipe inteira cruzar a linha. Meu filho de 10 anos joga junto e se diverte.',
-  },
-  {
-    user: 'lu.pixelada',
-    platform: 'gog',
-    game: 'Raízes de Vidro',
-    text: 'A pixel art é linda e cada área da floresta tem uma música própria. O Tico já é meu personagem favorito.',
-  },
-  {
-    user: 'farol_do_sul',
-    platform: 'steam',
-    game: 'Maré Alta',
-    text: 'Um jogo calmo que respeita o seu tempo. A maré abrindo caminhos pela ilha é uma ideia muito bem feita.',
+    user: 'mesa_de_sabado',
+    platform: 'tabuleiro',
+    game: 'The Treasure in the Deep',
+    text: 'Jogamos em cinco e ninguém queria deixar o outro para trás. As cartas de evento mudam a partida toda hora.',
   },
   {
     user: 'GabiSpeedrun',
     platform: 'steam',
-    game: 'Lumen Drift',
-    text: 'Controles precisos e visual neon caprichado. O patch 1.2 com cooperativo local ficou excelente.',
+    game: 'Never Lost',
+    text: 'O pulo duplo é bem gostoso de controlar, e as tocas ajudam muito a cortar caminho. Já estou tentando zerar mais rápido.',
+  },
+  {
+    user: 'lu.pixelada',
+    platform: 'gog',
+    game: 'O Pequeno Guardião',
+    text: 'Só vi as primeiras imagens e já quero saber o que tem dentro daquele cadeado. O visual está lindo.',
+  },
+  {
+    user: 'BetoNoControle',
+    platform: 'tabuleiro',
+    game: 'The Treasure in the Deep',
+    text: 'Fácil de explicar para quem nunca jogou. Meu filho de 10 anos escolheu o Kobold e liderou o grupo.',
   },
   {
     user: 'joao.semente',
-    platform: 'switch',
-    game: 'Raízes de Vidro',
-    text: 'Comecei sem esperar muito e me peguei anotando os segredos da floresta num caderno. Recomendo!',
+    platform: 'steam',
+    game: 'Never Lost',
+    text: 'Fiquei FEDIDO por causa da Maria Fedida e atraí uma nuvem de mosquitos. Ri muito, que mecânica criativa!',
+  },
+  {
+    user: 'dado_de_seis',
+    platform: 'tabuleiro',
+    game: 'The Treasure in the Deep',
+    text: 'A trilha em espiral até o centro deixa a tensão crescer a cada rodada. Chegar todo mundo vivo foi uma vitória.',
+  },
+  {
+    user: 'miranda.joga',
+    platform: 'steam',
+    game: 'Never Lost',
+    text: 'A luta contra o Guardião do Jardim é o melhor momento do jogo. Desafiador, mas nunca injusto.',
   },
 ]
 
@@ -79,4 +79,5 @@ export const PLATFORM_NAMES = {
   playstation: 'PlayStation',
   switch: 'Nintendo Switch',
   gog: 'GOG',
+  tabuleiro: 'Tabuleiro',
 }
