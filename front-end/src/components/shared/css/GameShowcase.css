@@ -710,7 +710,7 @@ html[data-movimento='reduzido'] .showcase-card.is-center .showcase-info-inner {
    --wide: quanto a arte pode passar de cada lado do arco */
 
 .showcase {
-  --pop: 40px;
+  --pop: 32px;
   --wide: 28px;
 }
 
@@ -752,7 +752,7 @@ html[data-movimento='reduzido'] .showcase-card.is-center .showcase-info-inner {
 
 @media (max-width: 860px) {
   .showcase {
-    --pop: 40px;
+    --pop: 28px;
     --wide: 14px;
   }
 }
