@@ -38,12 +38,12 @@ import './css/Testimonials.css'
 // CONTEÚDO (troque pelos dados reais)
 // ===============================================
 
-const TITLE = 'Lorem Ipsum'
+const TITLE = 'Nossos Objetivos'
 
 const TESTIMONIALS = [
-  { id: 1, author: 'Jogador 1', photo: '', color: 'cyan', text: 'Lorem ipsum dolor sit amet consectetur' },
-  { id: 2, author: 'Jogador 2', photo: '', color: 'green', text: 'Lorem ipsum dolor sit amet consectetur' },
-  { id: 3, author: 'Jogador 3', photo: '', color: 'orange', text: 'Lorem ipsum dolor sit amet consectetur' },
+  { id: 1, author: 'Jogador 1', photo: '', color: 'cyan', text: 'Marketing e Divulgação' },
+  { id: 2, author: 'Jogador 2', photo: '', color: 'green', text: 'Transparencia e integridade com nossos jogadores' },
+  { id: 3, author: 'Jogador 3', photo: '', color: 'orange', text: 'Trazer uma boa experiência para os fans' },
 ]
 
 // ⭐ ARTES (hoje estrelas). Para trocar uma estrela pela arte:
