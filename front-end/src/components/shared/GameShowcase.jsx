@@ -33,6 +33,11 @@
  *                com o canto de baixo cortado e um "+" que leva para o jogo;
  *                embaixo do nome aparece o estúdio (Home)
  *
+ * Card do meio: clicar em qualquer parte dele abre a página do jogo
+ * (não só no "Ver mais" / "+"). Com o mouse em cima do card, o "Ver mais"
+ * sobe e o "+" gira, como se o mouse estivesse neles. Pelo teclado, o
+ * caminho continua sendo o link ("Ver mais" ou "+").
+ *
  * Gêneros: "MOBA, Hero Shooter" (separados por vírgula ou /) viram etiquetas.
  *
  * Props:
@@ -42,7 +47,7 @@
  */
 
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import './css/GameShowcase.css'
 
 /** Personagem: imagem do jogo ou o desenho padrão (silhueta) */
@@ -79,6 +84,7 @@ export default function GameShowcase({ title = 'CONHEÇA NOSSOS JOGOS', games = 
   const [active, setActive] = useState(0) // posição do card do meio na lista "cards"
   const previousActive = useRef(0)
   const touchStartX = useRef(null)
+  const navigate = useNavigate()
 
   const total = games.length // jogos de verdade
   // Com 2 jogos, repete a lista para ter um card em cada lateral
@@ -127,6 +133,14 @@ export default function GameShowcase({ title = 'CONHEÇA NOSSOS JOGOS', games = 
     touchStartX.current = null
   }
 
+  // Clique num card: o da lateral vem para o meio; o do meio abre o jogo
+  const handleCardClick = (e, index, isCenter, game) => {
+    if (!isCenter) return goTo(index)
+    if (e.target.closest('a')) return // clicou no próprio link: ele já leva
+    if (window.getSelection?.().toString()) return // estava selecionando o texto
+    navigate(`/jogo/${game.slug}`)
+  }
+
   if (total === 0) return null
 
   return (
@@ -163,7 +177,7 @@ export default function GameShowcase({ title = 'CONHEÇA NOSSOS JOGOS', games = 
                 key={`${game.slug}-${index}`}
                 className={classes}
                 style={{ '--offset': offset }}
-                onClick={() => !isCenter && goTo(index)}
+                onClick={(e) => handleCardClick(e, index, isCenter, game)}
                 aria-hidden={!isCenter}
                 title={isCenter ? undefined : `Ver ${game.title}`}
               >

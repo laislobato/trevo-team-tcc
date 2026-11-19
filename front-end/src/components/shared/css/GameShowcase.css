@@ -92,6 +92,11 @@
   opacity: 1;
 }
 
+/* Meio: o card inteiro é clicável (abre a página do jogo) */
+.showcase-card.is-center {
+  cursor: pointer;
+}
+
 /* Meio: largo, com fundo cinza em volta do personagem (como no protótipo) */
 .showcase-card.is-center {
   width: var(--center-width);
@@ -272,7 +277,8 @@
   color: var(--color-on-accent);
 }
 
-.showcase-link:hover {
+.showcase-link:hover,
+.showcase-card.is-center:hover .showcase-link {
   transform: translateY(-2px);
   opacity: 1;
 }
@@ -620,7 +626,9 @@ html[data-movimento='reduzido'] .showcase-card.is-center .showcase-info-inner {
   height: 34px;
 }
 
-.showcase-plus:hover {
+/* Gira com o mouse em qualquer parte do card do meio */
+.showcase-plus:hover,
+.showcase-card.is-center:hover .showcase-plus {
   transform: rotate(90deg) scale(1.1);
   opacity: 1;
 }
