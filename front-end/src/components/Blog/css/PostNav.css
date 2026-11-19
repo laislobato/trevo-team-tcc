@@ -1,42 +1,97 @@
 /**
- * ESTILOS: PostGallery
- * ====================
- * Grade de 2 colunas: a imagem 1 ocupa as duas linhas da esquerda,
- * as imagens 2 e 3 ficam empilhadas à direita.
+ * ESTILOS: PostNav
+ * ================
+ * Dois cards ciano lado a lado no fim do post: "← Anterior" e "Próxima →",
+ * cada um com a miniatura (capa do post, ou laranja se não tiver) e o título.
+ * Tamanhos em rem para acompanhar a opção de texto maior.
  */
 
-.post-gallery {
+.post-nav {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: var(--spacing-sm);
-  height: 380px;
+  gap: var(--spacing-md);
+  padding-bottom: var(--spacing-xl);
 }
 
-.post-gallery-item {
-  background: var(--color-gray);
+.post-nav-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--color-cyan);
+  color: var(--color-text);
   border-radius: 4px;
+  padding: var(--spacing-sm);
+  text-decoration: none;
+  transition: transform var(--transition-normal);
+}
+
+.post-nav-card:hover {
+  transform: translateY(-4px);
+  opacity: 1;
+}
+
+.post-nav-card:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.post-nav-label {
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.post-nav-card--next .post-nav-label {
+  text-align: right;
+}
+
+.post-nav-body {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+/* No card "Próxima" a miniatura fica à direita */
+.post-nav-card--next .post-nav-body {
+  flex-direction: row-reverse;
+}
+
+.post-nav-thumb {
+  width: 120px;
+  height: 70px;
+  border-radius: 4px;
+  background: var(--primary-orange);
   overflow: hidden;
+  flex-shrink: 0;
 }
 
-.post-gallery-item--1 {
-  grid-row: 1 / 3;
-}
-
-.post-gallery-item img {
+.post-nav-thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-@media (max-width: 480px) {
-  .post-gallery {
+.post-nav-title {
+  flex: 1;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  text-align: center;
+}
+
+/* ================================================
+   CELULAR: um card embaixo do outro
+   ================================================ */
+
+@media (max-width: 600px) {
+  .post-nav {
     grid-template-columns: 1fr;
-    grid-template-rows: 220px 140px 140px;
-    height: auto;
   }
 
-  .post-gallery-item--1 {
-    grid-row: auto;
+  .post-nav-empty {
+    display: none;
+  }
+
+  .post-nav-thumb {
+    width: 90px;
+    height: 56px;
   }
 }
