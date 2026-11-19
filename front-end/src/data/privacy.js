@@ -70,17 +70,9 @@ export const dataUses = [
   {
     name: 'Mensagens do Contact Us',
     data: 'Nome, e-mail, assunto escolhido e a mensagem.',
-    purpose: 'Responder sua mensagem, pedido de suporte, proposta de parceria ou contato de imprensa.',
+    purpose: 'Responder sua mensagem, pedido de suporte, proposta de jogo ou de parceria e contato de imprensa.',
     keep: 'Até 1 ano depois da resposta.',
     basis: 'Interesse legítimo em responder a quem procura a equipe (art. 7º, IX).',
-  },
-  {
-    name: 'Enviar um jogo',
-    soon: true,
-    data: 'Nome, e-mail, nome do estúdio e as informações do jogo que você enviar.',
-    purpose: 'Avaliar a proposta e conversar sobre uma possível parceria.',
-    keep: 'Até 1 ano depois da resposta à proposta.',
-    basis: 'Conversas antes de uma parceria, feitas a seu pedido (art. 7º, V).',
   },
   {
     name: 'Logins do Painel',
@@ -191,7 +183,7 @@ export const sections = [
     blocks: [
       {
         type: 'p',
-        text: 'Não vendemos, não alugamos e não trocamos seus dados. Eles ficam com a equipe da Trevo Team e com os serviços da seção anterior. Uma proposta de jogo só é mostrada a quem da equipe vai avaliá-la.',
+        text: 'Não vendemos, não alugamos e não trocamos seus dados. Eles ficam com a equipe da Trevo Team e com os serviços da seção anterior. Uma proposta de jogo enviada pelo Contact Us só é mostrada a quem da equipe vai avaliá-la.',
       },
       {
         type: 'p',
@@ -249,7 +241,7 @@ export const sections = [
     blocks: [
       {
         type: 'p',
-        text: 'Qualquer pessoa pode navegar pelo site. Para mandar uma mensagem ou enviar um jogo, menores de 12 anos precisam da autorização de um dos pais ou responsável. Se uma criança mandou dados sem essa autorização, fale com a gente que apagamos.',
+        text: 'Qualquer pessoa pode navegar pelo site. Para mandar uma mensagem pelo Contact Us, inclusive uma proposta de jogo, menores de 12 anos precisam da autorização de um dos pais ou responsável. Se uma criança mandou dados sem essa autorização, fale com a gente que apagamos.',
       },
     ],
   },
@@ -259,7 +251,7 @@ export const sections = [
     blocks: [
       {
         type: 'p',
-        text: 'Quando o site ganhar funções novas, como a página Enviar um jogo, esta página vai mudar. A data da última mudança fica no topo. Se a mudança for grande, avisamos aqui no site.',
+        text: 'Quando o site ganhar funções novas ou passar a usar outros serviços, esta página vai mudar. A data da última mudança fica no topo. Se a mudança for grande, avisamos aqui no site.',
       },
     ],
   },
