@@ -1,0 +1,118 @@
+/**
+ * ESTILOS: PrivacyHero
+ * ====================
+ * Bloco ciano do topo (o cabeçalho flutua por cima, por isso o padding
+ * de cima), com o título centralizado, o texto e a data.
+ * Embaixo sobra um espaço para os cards do resumo subirem por cima.
+ */
+
+.privacy-hero {
+  position: relative;
+  padding: 170px 0 150px; /* em cima: cabeçalho | embaixo: lugar dos cards */
+  background: var(--color-cyan);
+  border-radius: 0 0 8px 8px;
+}
+
+.privacy-hero-inner {
+  position: relative;
+  width: min(820px, calc(100% - 2 * var(--spacing-md)));
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* "LGPD · LEI Nº 13.709/2018" */
+.privacy-hero-kicker {
+  display: inline-block;
+  margin: 0 0 18px;
+  padding: 5px 14px;
+  border: 2px solid var(--color-text);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.privacy-hero-title {
+  margin: 0 0 20px;
+  font-size: 3.25rem;
+  line-height: 3.5rem;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+/* "PRIVACIDADE" em verde-escuro */
+.privacy-hero-title-accent {
+  color: var(--color-text-strong-green);
+}
+
+.privacy-hero-text {
+  max-width: 600px;
+  margin: 0 auto 16px;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: var(--color-text);
+}
+
+.privacy-hero-date {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-text);
+}
+
+/* ================================================
+   ESTRELAS (enfeite)
+   ================================================ */
+
+.privacy-hero-star {
+  position: absolute;
+  pointer-events: none;
+}
+
+.privacy-hero-star--left {
+  left: -40px;
+  top: 10px;
+  transform: rotate(-12deg);
+}
+
+.privacy-hero-star--right {
+  right: -20px;
+  bottom: 30px;
+  transform: rotate(10deg);
+}
+
+/* ================================================
+   CELULAR (até 768px)
+   ================================================ */
+
+@media (max-width: 768px) {
+  .privacy-hero {
+    padding: 120px 0 72px;
+  }
+
+  .privacy-hero-title {
+    font-size: 2.125rem;
+    line-height: 2.5rem;
+  }
+
+  .privacy-hero-text {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
+  /* Estrelas menores e encostadas nas bordas */
+  .privacy-hero-star--left {
+    left: -6px;
+    top: -36px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .privacy-hero-star--right {
+    right: -6px;
+    bottom: -48px;
+    width: 28px;
+    height: 28px;
+  }
+}

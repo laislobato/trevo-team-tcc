@@ -1,0 +1,58 @@
+/**
+ * ESTILOS: PrivacyHelp
+ * ====================
+ * Caixa ciano de canto cortado (igual ao "Não achou sua resposta?" do
+ * FAQ), com o e-mail e o botão laranja para a página Contact.
+ * Onde ela aparece (coluna ou fim do texto) fica no Privacy.css.
+ */
+
+.privacy-help {
+  --cut: 30px;
+  padding: 22px 22px 28px;
+  border-radius: 14px;
+  background: var(--color-cyan);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%);
+}
+
+.privacy-help-title {
+  margin: 0 0 6px;
+  font-size: 1.0625rem;
+  font-weight: 800;
+}
+
+.privacy-help-text {
+  margin: 0 0 16px;
+  font-size: 0.875rem;
+  line-height: 1.375rem;
+}
+
+.privacy-help-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 22px;
+  border-radius: 8px;
+  background: var(--primary-orange);
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--color-on-accent);
+  transition: transform var(--transition-normal);
+}
+
+.privacy-help-button:hover {
+  transform: translateY(-2px);
+  opacity: 1;
+}
+
+.privacy-help-button:focus-visible {
+  outline: 3px solid var(--color-text);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Alto contraste: borda branca (sem o canto cortado, que esconderia a borda) */
+html[data-contraste='alto'] .privacy-help {
+  clip-path: none;
+  box-shadow: inset 0 0 0 2px #ffffff;
+}

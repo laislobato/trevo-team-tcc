@@ -51,7 +51,7 @@ const socials = [
   { label: 'Discord', url: '#' },
 ]
 
-// Páginas (Privacy ainda vai ser criada)
+// Páginas ("href" = rota do App.jsx)
 const links = [
   { label: 'Games', href: '/jogo' },
   { label: 'Contact Us', href: '/contato' },

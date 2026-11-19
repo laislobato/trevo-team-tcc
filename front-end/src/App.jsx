@@ -11,6 +11,7 @@
  * - /blog        -> Blog (lista de posts, com abas e FAQ)
  * - /blog/:slug  -> BlogPost (página de um post)
  * - /contato     -> Contact (Contact Us e suporte)
+ * - /privacidade -> Privacy (política de privacidade, link "Privacy" do rodapé)
  *
  * Painel da equipe (precisa de login):
  * - /login                          -> entrar
@@ -31,12 +32,12 @@
  *
  * Estúdio só vê os posts e jogos dele: quem garante isso é a API.
  *
- * Qualquer outro endereço -> volta para a Home
+ * Qualquer outro endereço -> NotFound (página de erro 404)
  *
  * Em todas as páginas aparece o menu de acessibilidade (bolinha no canto).
  */
 
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/Admin/ProtectedRoute'
 import AccessibilityMenu from './components/shared/AccessibilityMenu'
@@ -51,6 +52,8 @@ import Games from './pages/Games'
 import GamePage from './pages/GamePage'
 import Blog from './pages/Blog/Blog'
 import BlogPost from './pages/Blog/BlogPost'
+import Privacy from './pages/Privacy'
+import NotFound from './pages/NotFound'
 
 // Painel
 import Login from './pages/Admin/Login'
@@ -84,6 +87,7 @@ export default function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/contato" element={<Contact />} />
+          <Route path="/privacidade" element={<Privacy />} />
 
           {/* ---------- Painel ---------- */}
           <Route path="/login" element={<Login />} />
@@ -101,8 +105,8 @@ export default function App() {
           <Route path="/painel/desenvolvedoras/:id" element={admin(<DeveloperEditor />)} />
           <Route path="/painel/conta" element={admin(<AdminAccount />)} />
 
-          {/* Qualquer rota desconhecida volta para a Home */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+          {/* Qualquer rota desconhecida: página de erro 404 */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
 
         {/* Menu de acessibilidade: em todas as páginas (site, login e painel) */}

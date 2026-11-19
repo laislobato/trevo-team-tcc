@@ -1,0 +1,105 @@
+/**
+ * ESTILOS: Privacy (página /privacidade)
+ * ======================================
+ * Wrapper da página, as duas colunas (sumário parado + texto) e as
+ * peças usadas por vários componentes (links e texto só de leitor de tela).
+ * Cada parte tem o CSS dela (PrivacyHero, PrivacySummary, PrivacyNav,
+ * PrivacySection e PrivacyHelp).
+ */
+
+.privacy-page {
+  width: 100%;
+  overflow-x: clip; /* evita rolagem lateral no celular (e não atrapalha o sumário parado) */
+  background: var(--color-bg);
+}
+
+/* ================================================
+   DUAS COLUNAS
+   ================================================ */
+
+.privacy-body {
+  width: min(1120px, calc(100% - 2 * var(--spacing-md)));
+  margin: 0 auto;
+  padding: 72px 0 128px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.9fr);
+  gap: 72px;
+  align-items: start;
+}
+
+/* Coluna da esquerda parada enquanto o texto rola */
+.privacy-aside {
+  position: sticky;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* A caixa de dúvidas: na coluna (computador) ou no fim (celular) */
+.privacy-help--end {
+  display: none;
+}
+
+/* ================================================
+   PEÇAS COMUNS
+   ================================================ */
+
+/* Links dentro do texto: sublinhados, em verde-escuro */
+.privacy-link {
+  font-weight: 700;
+  color: var(--color-text-strong-green);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere; /* o e-mail quebra em vez de vazar */
+}
+
+.privacy-link:hover {
+  opacity: 1;
+  text-decoration-color: var(--primary-orange);
+}
+
+.privacy-link:focus-visible {
+  outline: 3px solid var(--color-text);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Texto só para leitores de tela (não aparece na tela) */
+.privacy-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ================================================
+   TABLET E CELULAR (até 900px): uma coluna
+   ================================================ */
+
+@media (max-width: 900px) {
+  .privacy-body {
+    grid-template-columns: minmax(0, 1fr); /* com texto grande, a coluna não passa da tela */
+    gap: 40px;
+    padding: 48px 0 80px;
+  }
+
+  .privacy-aside {
+    position: static;
+  }
+
+  .privacy-help--aside {
+    display: none;
+  }
+
+  .privacy-help--end {
+    display: block;
+    margin-top: 48px;
+  }
+}

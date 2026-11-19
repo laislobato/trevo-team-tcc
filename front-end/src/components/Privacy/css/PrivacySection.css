@@ -1,0 +1,207 @@
+/**
+ * ESTILOS: PrivacySection
+ * =======================
+ * Cada seção do texto: número + título com a linha preta embaixo
+ * (como os grupos do FAQ), parágrafos, listas, a caixa de destaque e
+ * os cards de cada dado.
+ */
+
+.privacy-section {
+  scroll-margin-top: 24px; /* o link do sumário não deixa o título colado no topo */
+}
+
+.privacy-section + .privacy-section {
+  margin-top: 56px;
+}
+
+/* ================================================
+   TÍTULO
+   ================================================ */
+
+.privacy-section-title {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin: 0 0 20px;
+  padding-bottom: 14px;
+  border-bottom: 1.5px solid var(--color-text);
+  font-size: 1.5rem;
+  line-height: 1.875rem;
+  font-weight: 800;
+}
+
+.privacy-section-number {
+  flex-shrink: 0;
+  font-size: 0.9375rem;
+  font-weight: 800;
+  color: var(--color-text-strong-green);
+}
+
+/* ================================================
+   TEXTO E LISTAS
+   ================================================ */
+
+.privacy-paragraph,
+.privacy-list {
+  max-width: 68ch; /* linhas não muito compridas, para ler melhor */
+  margin: 0 0 16px;
+  font-size: 1.0625rem;
+  line-height: 1.75rem;
+}
+
+.privacy-list {
+  padding-left: 0;
+  list-style: none;
+}
+
+.privacy-list li {
+  position: relative;
+  padding-left: 26px;
+}
+
+.privacy-list li + li {
+  margin-top: 8px;
+}
+
+/* Marcador: losango verde */
+.privacy-list li::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 0.62em;
+  width: 9px;
+  height: 9px;
+  background: var(--primary-green);
+  transform: rotate(45deg);
+}
+
+/* Caixa de destaque (ex.: como pedir seus direitos) */
+.privacy-note {
+  max-width: 68ch;
+  margin: 24px 0 0;
+  padding: 18px 20px;
+  border-left: 5px solid var(--primary-orange);
+  border-radius: 0 10px 10px 0;
+  background: var(--color-tint-orange);
+  font-size: 1rem;
+  line-height: 1.625rem;
+}
+
+/* ================================================
+   CARDS DE CADA DADO
+   ================================================ */
+
+.privacy-data {
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+}
+
+.privacy-data-card {
+  padding: 20px 22px;
+  border: 2px solid var(--color-text);
+  border-radius: 14px;
+  background: var(--color-surface);
+}
+
+/* Função que ainda vai existir: borda tracejada */
+.privacy-data-card.is-soon {
+  border-style: dashed;
+}
+
+.privacy-data-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-bottom: 14px;
+}
+
+.privacy-data-name {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+  font-weight: 800;
+}
+
+.privacy-data-badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--primary-cyan);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #000000; /* ciano é claro também no modo escuro */
+}
+
+/* Linhas: nome do campo à esquerda, texto à direita */
+.privacy-data-fields {
+  margin: 0;
+}
+
+.privacy-data-field {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 4px 16px;
+  padding: 9px 0;
+  border-top: 1px solid var(--color-line);
+}
+
+.privacy-data-field dt {
+  font-size: 0.6875rem;
+  line-height: 1.375rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-text-soft);
+}
+
+.privacy-data-field dd {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.375rem;
+}
+
+/* Alto contraste: bordas brancas */
+html[data-contraste='alto'] .privacy-data-card {
+  border-color: #ffffff;
+}
+
+html[data-contraste='alto'] .privacy-note {
+  border-left-color: var(--color-highlight);
+  box-shadow: inset 0 0 0 1px #ffffff;
+}
+
+/* ================================================
+   CELULAR (até 768px)
+   ================================================ */
+
+@media (max-width: 768px) {
+  .privacy-section + .privacy-section {
+    margin-top: 44px;
+  }
+
+  .privacy-section-title {
+    font-size: 1.25rem;
+    line-height: 1.625rem;
+  }
+
+  .privacy-paragraph,
+  .privacy-list {
+    font-size: 1rem;
+    line-height: 1.625rem;
+  }
+
+  .privacy-data-card {
+    padding: 16px;
+  }
+
+  /* Nome do campo em cima do texto */
+  .privacy-data-field {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
