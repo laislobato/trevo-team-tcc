@@ -21,7 +21,6 @@
 import '../styles/globals.css'
 import Header from '../components/shared/Header'
 import Hero from '../components/Home/Hero'
-import Projects from '../components/Home/Projects'
 import Testimonials from '../components/Home/Testimonials'
 import Footer from '../components/shared/Footer'
 import { useEffect, useState } from 'react'
