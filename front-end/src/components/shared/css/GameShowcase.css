@@ -696,9 +696,11 @@ html[data-movimento='reduzido'] .showcase-card.is-center .showcase-info-inner {
 /* ================================================
    PERSONAGEM SAINDO DA MOLDURA (Home e página de jogos)
    ================================================
-   No card do meio, a arte aparece INTEIRA e maior que o arco colorido:
+   No card do meio, a arte fica GRANDE (como nos cards das laterais) e
    passa por cima do topo e um pouco dos lados, como se estivesse saindo
-   da moldura. Só a base fica presa na linha de baixo do arco.
+   da moldura. Embaixo ela fica presa na linha do arco: se a arte for
+   mais alta que o espaço, o que sobra é cortado embaixo (os pés), nunca
+   a cabeça.
    Nos cards das laterais, a arte continua dentro do arco.
 
    Funciona com arte de fundo transparente (PNG ou WEBP); uma imagem com
@@ -708,8 +710,8 @@ html[data-movimento='reduzido'] .showcase-card.is-center .showcase-info-inner {
    --wide: quanto a arte pode passar de cada lado do arco */
 
 .showcase {
-  --pop: 64px;
-  --wide: 24px;
+  --pop: 80px;
+  --wide: 28px;
 }
 
 /* O palco continua cortando dos lados (cards escondidos), mas deixa
@@ -739,18 +741,19 @@ html[data-movimento='reduzido'] .showcase-card.is-center .showcase-info-inner {
   overflow: visible;
 }
 
-/* A arte cresce para cima e para os lados, inteira (sem cortar nada) */
+/* A arte cresce para cima e para os lados, preenchendo o espaço
+   (cover, como nas laterais); se sobrar, corta embaixo */
 .showcase-card.is-center .showcase-character img {
   width: calc(100% + 2 * var(--wide));
   height: calc(100% + var(--pop));
-  object-fit: contain;
-  object-position: center bottom; /* a base fica no pé do arco */
+  object-fit: cover;
+  object-position: center top; /* a cabeça sempre aparece */
 }
 
 @media (max-width: 860px) {
   .showcase {
-    --pop: 44px;
-    --wide: 12px;
+    --pop: 52px;
+    --wide: 14px;
   }
 }
 
